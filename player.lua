@@ -81,3 +81,14 @@ function Player:keyreleased(key)
     self.dx = 0
   end
 end
+
+function Player:getPosition()
+  return self.x, self.y
+end
+
+function Player:eat()
+  self.hunger = self.hunger + 20
+  if self.hunger > 100 then
+    self.hunger = 100
+  end
+end

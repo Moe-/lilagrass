@@ -8,6 +8,8 @@ function love.load()
   if arg[#arg] == "-debug" then 
     require("mobdebug").start() 
   end
+  math.randomseed( os.time() )
+
   resetGame()
   game_state = 1
 end
@@ -25,7 +27,7 @@ end
 
 function resetGame()
   gGui = Gui:new()
-  gWorld = World:new()
+  gWorld = World:new(800, 600)
 end
 
 
