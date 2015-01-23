@@ -2,9 +2,11 @@ require('utils')
 require('background')
 require('player')
 require('world')
+require('gui')
 
 function love.draw()
   gWorld:draw()
+  gGui:draw()
 end
 
 function love.load()
@@ -15,6 +17,7 @@ function love.load()
 end
 
 function resetGame()
+  gGui = Gui:new()
   gWorld = World:new()
 end
 
