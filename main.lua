@@ -3,20 +3,35 @@ require('background')
 require('player')
 require('world')
 require('gui')
+require('menu')
+require('intro')
 
 function love.load()
   if arg[#arg] == "-debug" then 
     require("mobdebug").start() 
   end
   resetGame()
-  game_state = 1
+	game_state = 1
+
+	menu = newMenu()
+	intro = newIntro()
+end
+
+function love.update(dt)
+	if game_state == 1 then
+		menu:update()
+	elseif game_state == 2 then
+		intro:update()
+	elseif game_state == 3 then
+		gWorld:update(dt)
+	end
 end
 
 function love.draw()
 	if game_state == 1 then
-		love.graphics.print("menu", 16, 16)
+		menu:draw()
 	elseif game_state == 2 then
-		love.graphics.print("intro", 16, 16)
+		intro:draw()
 	elseif game_state == 3 then
 		gWorld:draw()
 		gGui:draw()
@@ -26,11 +41,6 @@ end
 function resetGame()
   gGui = Gui:new()
   gWorld = World:new()
-end
-
-
-function love.update(dt)
-  gWorld:update(dt)
 end
 
 function love.mousepressed(x, y, button)
