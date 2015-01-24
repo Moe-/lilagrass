@@ -6,7 +6,9 @@ class "Gui" {
 }
 
 function Gui:__init()
-	
+	--self.foodImage = love.graphics.newImage("gfx/food.png")
+	--self.drinkImage = love.graphics.newImage("gfx/drink.png")
+	--self.airImage = love.graphics.newImage("gfx/air.png")
 end
 
 function Gui:draw()

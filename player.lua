@@ -7,13 +7,18 @@ class "Player" {
   hunger = 100;
   thurst = 100;
   dead = false;
+  --direction: 0=up; 1=right; 2=down; 3=left
+  walkingState = 0; -- 0=standing; 1=walking;
+  currentDirection = 0;
+  dWalking = 0;
+  
 }
 
 function Player:__init(x, y)
   self.x = x
   self.y = y
-  self.image = love.graphics.newImage("gfx/player.png")
-  self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+  self.image = love.graphics.newImage("gfx/hero.png")
+  self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 end
@@ -35,8 +40,8 @@ function Player:draw()
 end
 
 function Player:update(dt)
-  self.x = self.x + 15 * self.dx * dt
-  self.y = self.y + 15 * self.dy * dt
+  self.x = self.x + 25 * self.dx * dt
+  self.y = self.y + 25 * self.dy * dt
   if self.dead then
     return
   end
@@ -45,7 +50,32 @@ function Player:update(dt)
   self.hunger = self.hunger - 2 * dt
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
     self.dead = true
+    self.dx = 0
+    self.dy = 0
   end
+  self.dWalking = self.dWalking + dt
+  local direction
+  if self.dx ==	-1 then
+	direction = 3
+  elseif self.dx == 1 then
+	direction = 1
+  end
+  if self.dy == -1 then
+	direction = 0
+  elseif self.dy == 1 then
+	direction = 2
+  end
+  if self.currentDirection == direction and self.dWalking > 0.5 then
+	self.dWalking = self.dWalking - 0.5
+	if self.walkingState < 3 then
+		self.walkingState = self.walkingState + 1
+	else
+		self.walkingState = 0
+	end
+  end
+  self:setDirection(direction)
+  self.currentDirection = direction
+	
 end
 
 function Player:keypressed(key)
@@ -54,7 +84,7 @@ function Player:keypressed(key)
   end
 
   if key == 'w' then
-    self.dy = -1
+    self.dy = -1	
   elseif key == 's' then
     self.dy = 1
   end
@@ -79,5 +109,67 @@ function Player:keyreleased(key)
     self.dx = 0
   elseif key == 'd' and not love.keypressed('a') then
     self.dx = 0
+  end
+end
+
+function Player:setDirection(direction)
+	
+	if direction == 0 then --up
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(0, 32, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 32, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(0, 32, 24, 32)
+		end
+	elseif direction == 1 then --right
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(24, 32, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 64, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(24, 64, 24, 32)
+		end
+	elseif direction == 2 then --down
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(0, 0, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 0, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(0, 0, 24, 32)
+		end
+	elseif direction == 3 then --left
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(24, 0, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(48, 0, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(48, 32, 24, 32)
+		end
+	end
+end
+	
+function Player:getPosition()
+  return self.x + self.width / 2, self.y + self.height / 2
+end
+
+function Player:eat()
+  self.hunger = self.hunger + 20
+  if self.hunger > 100 then
+    self.hunger = 100
+  end
+end
+
+function Player:breath()
+  self.air = self.air + 20
+  if self.air > 100 then
+    self.air = 100
+  end
+end
+
+function Player:drink()
+  self.thurst = self.thurst + 20
+  if self.thurst > 100 then
+    self.thurst = 100
   end
 end

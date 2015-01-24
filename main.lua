@@ -11,8 +11,10 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
 
 	if arg[#arg] == "-debug" then 
-		require("mobdebug").start() 
+	require("mobdebug").start() 
 	end
+
+	math.randomseed( os.time() )
 
 	resetGame()
 	game_state = 1
@@ -48,7 +50,7 @@ end
 
 function resetGame()
   gGui = Gui:new()
-  gWorld = World:new()
+  gWorld = World:new(800, 600)
 end
 
 function love.mousepressed(x, y, button)
@@ -62,12 +64,14 @@ end
 function love.keypressed(key)
   gWorld:keypressed(key)
   if key == "1" then
-	game_state = 1
+    game_state = 1
   elseif key == "2" then
 	game_state = 2
 	intro:reset()
   elseif key == "3" then
-	game_state = 3
+    game_state = 3
+  elseif key == "9" then
+    resetGame()
   end
 end
 
