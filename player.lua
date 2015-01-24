@@ -7,9 +7,9 @@ class "Player" {
   dy = 0;
   offsetx = 0;
   offsety = 0;
-  air = 65;
-  hunger = 75;
-  thurst = 70;
+  air = 100;
+  hunger = 100;
+  thurst = 100;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
   walkingState = 0; -- 0/2=standing; 1/3=walking
@@ -19,6 +19,9 @@ class "Player" {
   textDisplayTime = 0;
   partsLeft = 0;
   speed = 100;
+  thurstFactor = 1;
+  airFactor = 1.5;
+  hungerFactor = 0.75;
 }
 
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
@@ -33,13 +36,10 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.width = 24--self.image:getWidth()
   self.height = 32--self.image:getHeight()
   self.partsLeft = partsToFind
+  self.poisoned = false
 end
 
 function Player:draw()
-  if self.dead then
-    love.graphics.setColor(192, 0, 0, 255);
-    love.graphics.circle("fill", self.x + self.width / 2, self.y + self.height / 2 + 20, 50, 100); -- Draw white circle with 100 segments.
-  end
   love.graphics.draw(self.image, self.quad, self.x, self.y)
   
   if self.textDisplayTime > 0 then
@@ -55,11 +55,24 @@ function Player:draw()
   love.graphics.setColor(255, 255, 255, 255)
 end
 
-function Player:update(dt, safe)
+function Player:update(dt, safe, bushes)
   local offsetx = self.speed * self.dx * dt
   local offsety = self.speed * self.dy * dt
-  self.x = self.x + offsetx
-  self.y = self.y + offsety
+  
+  local playerBlocked = false
+  
+  for i, v in pairs(bushes) do
+    local bx, by = v:getPosition()
+    local dist = getDistance(self.x + offsetx + self.width / 2, self.y + offsety + self.height / 2, bx, by)
+    if dist < 16 then
+      playerBlocked = true
+    end
+  end
+  
+  if not playerBlocked then
+    self.x = self.x + offsetx
+    self.y = self.y + offsety
+  end
   
   if self.x < 0 then
     self.x = 0
@@ -83,18 +96,41 @@ function Player:update(dt, safe)
     return
   end
   
-  if safe == false then
-    self.air = self.air - 1.5 * dt
-    self.thurst = self.thurst - 1 * dt
-    self.hunger = self.hunger - 0.75 * dt
+  if self.poisoned then
+    self.air = 0.95 * self.air
   end
   
-  if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
+  if safe == false then
+    self.air = self.air - self.airFactor * dt
+    self.thurst = self.thurst - self.thurstFactor * dt
+    self.hunger = self.hunger - self.hungerFactor * dt
+  end
+  
+  if self.air <= 0 or self.thurst <= 0 or self.hunger <= 0 then
     self:die()
     self.dx = 0
     self.dy = 0
+	self.air = 0
   end
-  gGui:update(self.hunger, self.thurst, self.air)
+  if self.air <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.air = 0
+  end
+  if self.thurst <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.thurst = 0
+  end
+  if self.hunger <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.hunger = 0
+  end
+  gGui:update(self.hunger, self.thurst, self.air, self.partsLeft)
   self.dWalking = self.dWalking + dt
   local direction
   if self.dx ==	-1 then
@@ -218,6 +254,46 @@ function Player:drink(v)
   self.thurst = self.thurst + 20
   if self.thurst > 100 then
     self.thurst = 100
+  end
+end
+
+function Player:bathing(v, dt)
+  --self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
+  --if self.thurst > 100 then
+  --  self.thurst = 100
+  --end
+  
+  self.textDisplayTime = 7.5
+  local wType = v:getType()
+  if wType == 'salt' then
+    self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
+    self.showText = "Delicious! Salty water!"
+  elseif wType == 'poison' then
+    self.thurst = self.thurst - 15 * self.thurstFactor * dt
+    self.showText = "What the hell is this?!?"
+  else
+    self.thurst = self.thurst + 1.5 * self.thurstFactor * dt
+    self.showText = "Like on good old earth!"
+  end
+end
+
+function Player:useBush(v)
+  if v:takeBerries() then
+    self.textDisplayTime = 7.5
+    
+    local bType = v:getBerryType()
+    if bType == 'tasty' then
+      self.hunger = self.hunger + 15 * self.hungerFactor * dt
+      self.showText = "Wow, that is delicious!"
+    elseif bType == 'spicy' then
+      self.thurst = self.thurst - 15 * self.thurstFactor * dt
+      self.showText = "I never ate something so spicy!"
+    elseif bType == 'poison' then
+      self.poisoned = true
+      self.showText = "I cannot breath anymore!"
+    else
+      self.showText = "Tastes like a rice cake!"
+    end
   end
 end
 
