@@ -8,10 +8,10 @@ class "Gui" {
 function Gui:__init()
 	self.foodbarImage = love.graphics.newImage("gfx/foodbar.png")
 	self.foodbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.foodbarImage:getWidth(), self.foodbarImage:getHeight())
-	--[[self.drinkbarImage = love.graphics.newImage("gfx/drink.png")
+	self.drinkbarImage = love.graphics.newImage("gfx/bottlebar.png")
 	self.drinkbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.drinkbarImage:getWidth(), self.drinkbarImage:getHeight())
-	self.airbarImage = love.graphics.newImage("gfx/air.png")
-	self.airbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())]]--
+	self.airbarImage = love.graphics.newImage("gfx/airbar.png")
+	self.airbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())
 end
 
 function Gui:draw()
@@ -39,19 +39,23 @@ function Gui:drawHunger()
 end
 
 function Gui:drawThirst()
-	love.graphics.setColor(255, 0, 0)
+	--[[love.graphics.setColor(255, 0, 0)
 	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 80, 50, 10)
 	love.graphics.setColor(0, 255, 0)
 	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 80, (100-self.thirst)/2, 10)
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.setColor(255, 255, 255)]]--
+	self.drinkbarQuad = love.graphics.newQuad(0, 0, 320-(100-self.thirst)*3.2, 64, self.drinkbarImage:getWidth(), self.drinkbarImage:getHeight())
+	love.graphics.draw(self.drinkbarImage, self.drinkbarQuad, love.graphics.getWidth()-350, 80)
 end
 
 function Gui:drawAir()
-	love.graphics.setColor(255, 0, 0)
-	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 100, 50, 10)
+	--[[love.graphics.setColor(255, 0, 0)
+	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 150, 50, 10)
 	love.graphics.setColor(0, 255, 0)
-	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 100, self.air/2, 10)
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 150, self.air/2, 10)
+	love.graphics.setColor(255, 255, 255)]]--
+	self.airbarQuad = love.graphics.newQuad(0, 0, 320-(100-self.air)*3.2, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())
+	love.graphics.draw(self.airbarImage, self.airbarQuad, love.graphics.getWidth()-350, 150)
 end
 
 function Gui:update(hunger, thirst, air)
