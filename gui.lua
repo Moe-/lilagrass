@@ -22,16 +22,19 @@ function Gui:__init()
 	self.airbarIcon = love.graphics.newImage("gfx/air.png")
 	self.airbarImage = love.graphics.newImage("gfx/airbar.png")
 	self.airbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())
+	self.showHunger = false;
+	self.showThirst = false;
+	self.showAir = false;
 end
 
 function Gui:draw(x, y)
-		if showHunger then
+		if self.showHunger then
 			self:drawHunger(x, y)
 		end
-		if showThirst then 
+		if self.showThirst then 
 			self:drawThirst(x, y)
 		end
-		if showAir then
+		if self.showAir then
 			self:drawAir(x, y)
 		end
 end
@@ -118,12 +121,12 @@ function Gui:update(hunger, thirst, air)
 	self.thirst = thirst;
 	self.air = air;
 	if hunger < 60 then
-		showHunger = true
+		self.showHunger = true
 	end
 	if thirst < 60 then
-		showThirst = true
+		self.showThirst = true
 	end
 	if air < 60 then
-		showAir = true
+		self.showAir = true
 	end
 end
