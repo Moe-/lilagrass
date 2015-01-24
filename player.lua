@@ -16,9 +16,11 @@ class "Player" {
   partsLeft = 0;
 }
 
-function Player:__init(x, y, partsToFind)
+function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.x = x
   self.y = y
+  self.mapWidth = mapWidth
+  self.mapHeight = mapHeight
   self.image = love.graphics.newImage("gfx/hero.png")
   self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = 24--self.image:getWidth()
@@ -49,14 +51,31 @@ end
 function Player:update(dt, safe)
   self.x = self.x + 45 * self.dx * dt
   self.y = self.y + 45 * self.dy * dt
+  
+  if self.x < 0 then
+    self.x = 0
+  end
+  
+  if self.x + self.width > self.mapWidth then
+    self.x = self.mapWidth - self.width
+  end
+  
+  if self.y < 0 then
+    self.y = 0
+  end
+  
+  if self.y + self.height > self.mapHeight then
+    self.y = self.mapHeight - self.height
+  end
+
   if self.dead then
     return
   end
   
   if safe == false then
-    self.air = self.air - 5 * dt
-    self.thurst = self.thurst - 5 * dt
-    self.hunger = self.hunger - 2 * dt
+    self.air = self.air - 2.5 * dt
+    self.thurst = self.thurst - 1.75 * dt
+    self.hunger = self.hunger - 1 * dt
   end
   
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then

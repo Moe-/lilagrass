@@ -10,6 +10,11 @@ class "World" {
   height = 0;
   itemSpawnTime = 5;
   partsToFind = 5;
+  numberZones = 5;
+  numberObjects = 6;
+  offsetX = 0;
+  offsetY = 0;
+  scale = 2;
 }
 
 function World:__init(width, height)
@@ -21,7 +26,7 @@ function World:__init(width, height)
   self.safezone = {}
   self.parts = {}
   self.background = Background:new()
-  self.player = Player:new(10, 10, self.partsToFind)
+  self.player = Player:new(10, 10, self.partsToFind, self.background:getSize())
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
@@ -30,11 +35,11 @@ function World:__init(width, height)
   
   self.effect_time = 3
   
-  for i = 1, 15 do
+  for i = 1, self.numberObjects do
     self:genObj()
   end
   
-  for i = 1, 5 do
+  for i = 1, self.numberZones do
     self:genZones()
   end
   
@@ -75,7 +80,9 @@ end
 
 function World:draw()
   love.graphics.push()
-  love.graphics.scale(2)
+  --love.graphics.translate(self.offsetX, self.offsetY)
+  love.graphics.scale(self.scale)
+  love.graphics.translate(self.offsetX, self.offsetY)
   self.background:draw()
   
   for i, v in pairs(self.safezone) do
@@ -183,6 +190,27 @@ function World:update(dt)
   end
   
   self.effect_time = self.effect_time - dt
+  
+  self:updateScrolling()
+end
+
+function World:updateScrolling()
+  local px, py = self.player:getPosition()
+  --local width, height = self.background:getSize()
+  local width = love.window.getWidth() / self.scale
+  local height = love.window.getHeight() / self.scale
+  
+  if px + self.offsetX < 50 then
+    self.offsetX = self.offsetX + 2
+  elseif px + self.offsetX > width - 50 then
+    self.offsetX = self.offsetX - 5
+  end
+  
+  if py + self.offsetY < 50 then
+    self.offsetY = self.offsetY + 2
+  elseif py + self.offsetY > height - 50 then
+    self.offsetY = self.offsetY - 5
+  end
 end
 
 function World:keypressed(key)
