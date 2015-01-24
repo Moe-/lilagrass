@@ -7,6 +7,8 @@ class "Player" {
   hunger = 100;
   thurst = 100;
   dead = false;
+  direction = 0; --0=up; 1=right; 2=down; 3=left
+  walkingState = 0; --0=standing; 1=walking
 }
 
 function Player:__init(x, y)
@@ -16,6 +18,7 @@ function Player:__init(x, y)
   self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
+  self.dWalking = love.timer.getTime()
 end
 
 function Player:draw()
@@ -32,6 +35,8 @@ function Player:draw()
   love.graphics.setColor(0, 255, 255, 255)
   love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
   love.graphics.setColor(255, 255, 255, 255)
+  self.dWalking = self.dWalking - love.timer.getTime()
+  --if seld.dWalking >= 50
 end
 
 function Player:update(dt)
@@ -55,13 +60,17 @@ function Player:keypressed(key)
 
   if key == 'w' then
     self.dy = -1
+	Player:setDirection(0)
   elseif key == 's' then
     self.dy = 1
+	Player:setDirection(2)
   end
   if key == 'a' then
     self.dx = -1
+	Player:setDirection(3)
   elseif key == 'd' then
     self.dx = 1
+	Player:setDirection(1)
   end
 end
 
@@ -80,4 +89,18 @@ function Player:keyreleased(key)
   elseif key == 'd' and not love.keypressed('a') then
     self.dx = 0
   end
+end
+
+function Player:setDirection(direction)
+	if self.direction == direction
+		--do nothing
+	elseif direction == 0
+		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+	elseif direction == 1
+		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+	elseif direction == 2
+		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+	elseif direction == 3
+		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+	end
 end
