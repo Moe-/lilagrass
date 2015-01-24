@@ -35,8 +35,7 @@ function newCredits()
 
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(self.space)
-		love.graphics.draw(self.planet, 256, 128, self.planet_rotation, self.planet_scale, self.planet_scale, 60, 60)
-		love.graphics.draw(self.spaceship, -64 + self.spaceship_move * 8, 256 - self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
+		love.graphics.draw(self.planet, 200, 150, self.planet_rotation, self.planet_scale, self.planet_scale, 200, 150)
 		if self.effect_time < 2 then
 			love.graphics.setColor(255, 255, 255, self.effect_time * 127)
 		end
