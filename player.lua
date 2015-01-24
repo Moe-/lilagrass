@@ -5,9 +5,9 @@ class "Player" {
   dy = 0;
   offsetx = 0;
   offsety = 0;
-  air = 65;
-  hunger = 75;
-  thurst = 70;
+  air = 100;
+  hunger = 100;
+  thurst = 100;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
   walkingState = 0; -- 0/2=standing; 1/3=walking
@@ -36,10 +36,6 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
 end
 
 function Player:draw()
-  if self.dead then
-    love.graphics.setColor(192, 0, 0, 255);
-    love.graphics.circle("fill", self.x + self.width / 2, self.y + self.height / 2 + 20, 50, 100); -- Draw white circle with 100 segments.
-  end
   love.graphics.draw(self.image, self.quad, self.x, self.y)
   
   if self.textDisplayTime > 0 then
@@ -106,12 +102,31 @@ function Player:update(dt, safe, bushes)
     self.hunger = self.hunger - self.hungerFactor * dt
   end
   
-  if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
+  if self.air <= 0 or self.thurst <= 0 or self.hunger <= 0 then
     self:die()
     self.dx = 0
     self.dy = 0
+	self.air = 0
   end
-  gGui:update(self.hunger, self.thurst, self.air)
+  if self.air <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.air = 0
+  end
+  if self.thurst <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.thurst = 0
+  end
+  if self.hunger <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.hunger = 0
+  end
+  gGui:update(self.hunger, self.thurst, self.air, self.partsLeft)
   self.dWalking = self.dWalking + dt
   local direction
   if self.dx ==	-1 then

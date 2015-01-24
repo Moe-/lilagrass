@@ -3,9 +3,12 @@ class "Gui" {
 	hunger = 100;
 	thirst = 100;
 	air = 100;
+	partsLeft = 0;
+	maxRepairItems = 0;
 	showHunger = false;
 	showThirst = false;
 	showAir = false;
+	showRepairProgress = false;
 }
 
 function Gui:__init()
@@ -22,9 +25,13 @@ function Gui:__init()
 	self.airbarIcon = love.graphics.newImage("gfx/air.png")
 	self.airbarImage = love.graphics.newImage("gfx/airbar.png")
 	self.airbarQuad = love.graphics.newQuad(0, 0, 320, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())
+	
+	self.repairIcon = love.graphics.newImage("gfx/shippiece.png")
 	self.showHunger = false;
 	self.showThirst = false;
 	self.showAir = false;
+	self.showRepairProgress = false;
+	self.maxRepairItems = 0;
 end
 
 function Gui:draw(x, y)
@@ -36,6 +43,9 @@ function Gui:draw(x, y)
 		end
 		if self.showAir then
 			self:drawAir(x, y)
+		end
+		if self.showRepairProgress then
+			self:drawRepairProgress(x, y)
 		end
 end
 
@@ -116,10 +126,20 @@ function Gui:drawAir(x, y)
 	love.graphics.setFont(font)
 end
 
-function Gui:update(hunger, thirst, air)
-	self.hunger = hunger;
-	self.thirst = thirst;
-	self.air = air;
+function Gui:drawRepairProgress(x, y)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(self.repairIcon, 360 - x, 10 - y)
+	love.graphics.setFont(font2)
+	local foundItems = self.maxRepairItems - self.partsLeft
+	love.graphics.printf(foundItems .. "/" .. self.maxRepairItems, 275 - x + 24, 10 - y + 8, 88, "center")
+	love.graphics.setFont(font)
+end
+
+function Gui:update(hunger, thirst, air, partsLeft)
+	self.hunger = hunger
+	self.thirst = thirst
+	self.air = air
+	self.partsLeft = partsLeft
 	if hunger < 60 then
 		self.showHunger = true
 	end
@@ -129,4 +149,12 @@ function Gui:update(hunger, thirst, air)
 	if air < 60 then
 		self.showAir = true
 	end
+	if partsLeft < self.maxRepairItems then
+		self.showRepairProgress = true
+	end
 end
+
+function Gui:setMaxRepairItems(num)
+	self.maxRepairItems = num
+end
+

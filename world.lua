@@ -22,7 +22,6 @@ class "World" {
   showFood = false;
   showDrinks = false;
   showAir = false;
-  showParts = false;
   centerPosX = 188; --calculated from window width and 1/2 player image width
   centerPosY = 134; --calculated from window height and 1/2 player image height
   dayCicle = 1;
@@ -70,6 +69,7 @@ function World:__init(width, height)
   for i = 1, self.partsToFind do
     self:genParts()
   end
+  gGui:setMaxRepairItems(self.partsToFind)
   
   for i = 1, self.numberBushes do
     self:genBushes()
