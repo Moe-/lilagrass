@@ -40,7 +40,7 @@ function Player:draw()
   
   if self.textDisplayTime > 0 then
     love.graphics.setColor(0, 192, 255, 255)
-    love.graphics.print(self.showText, self.x, self.y - 16)
+    love.graphics.print(self.showText, self.x-125, self.y - 16)
   end
   --love.graphics.setColor(0, 0, 255, 255)
   --love.graphics.print(tostring(self.air), self.x, self.y - 50)
