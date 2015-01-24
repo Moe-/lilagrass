@@ -5,14 +5,18 @@ require('world')
 require('gui')
 require('menu')
 require('intro')
+require('lib/postshader')
 
 function love.load()
-  if arg[#arg] == "-debug" then 
-    require("mobdebug").start() 
-  end
-  math.randomseed( os.time() )
+	love.graphics.setDefaultFilter("nearest", "nearest")
 
-  resetGame()
+	if arg[#arg] == "-debug" then 
+	require("mobdebug").start() 
+	end
+
+	math.randomseed( os.time() )
+
+	resetGame()
 	game_state = 1
 
 	menu = newMenu()
@@ -21,9 +25,9 @@ end
 
 function love.update(dt)
 	if game_state == 1 then
-		menu:update()
+		menu:update(dt)
 	elseif game_state == 2 then
-		intro:update()
+		intro:update(dt)
 	elseif game_state == 3 then
 		gWorld:update(dt)
 	end
@@ -34,6 +38,10 @@ function love.draw()
 		menu:draw()
 	elseif game_state == 2 then
 		intro:draw()
+
+		if intro.effect_time >= 5 then
+			game_state = 3
+		end
 	elseif game_state == 3 then
 		gWorld:draw()
 		gGui:draw()
@@ -58,7 +66,8 @@ function love.keypressed(key)
   if key == "1" then
     game_state = 1
   elseif key == "2" then
-    game_state = 2
+	game_state = 2
+	intro:reset()
   elseif key == "3" then
     game_state = 3
   elseif key == "9" then
