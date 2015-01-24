@@ -29,6 +29,14 @@ function SafeZone:inside(x, y)
   return false
 end
 
+function SafeZone:getSize()
+  return self.size
+end
+
+function SafeZone:getPosition()
+  return self.x + self.size / 2, self.y + self.size / 2
+end
+
 function SafeZone:generateBatch()
   local spriteSize = 32
   local size = self.size / spriteSize

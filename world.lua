@@ -129,9 +129,24 @@ function World:genAir()
 end
 
 function World:genZones()
-  local x = math.random(1, (self.background:getWidth() - 256)/32) * 32
-  local y = math.random(1, (self.background:getHeight() - 256)/32) * 32
   local size = math.random(1, 8) * 32
+  
+  local distance
+  local x, y
+  
+  repeat
+    x = math.random(1, (self.background:getWidth() - 256)/32) * 32
+    y = math.random(1, (self.background:getHeight() - 256)/32) * 32
+    
+    distance = 999999
+    for i,v in pairs(self.safezone) do
+      local tsize = v:getSize()
+      local tx, ty = v:getPosition()
+      local dist = getDistance(x, y, tx, ty) - (size + tsize)
+      distance = math.min(distance, dist)
+    end
+  until distance > 0
+  
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
