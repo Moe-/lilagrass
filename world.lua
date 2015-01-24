@@ -46,7 +46,7 @@ end
 
 function World:draw()
   love.graphics.push()
-  --love.graphics.scale(2)
+  love.graphics.scale(2)
   self.background:draw()
   self.player:draw()
   
