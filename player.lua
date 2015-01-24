@@ -19,8 +19,8 @@ function Player:__init(x, y)
   self.y = y
   self.image = love.graphics.newImage("gfx/hero.png")
   self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
-  self.width = self.image:getWidth()
-  self.height = self.image:getHeight()
+  self.width = 24--self.image:getWidth()
+  self.height = 32--self.image:getHeight()
 end
 
 function Player:draw()
