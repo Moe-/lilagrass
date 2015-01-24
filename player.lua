@@ -179,15 +179,32 @@ function Player:keyreleased(key)
     return
   end
 
-  if key == 'w' and not love.keypressed('s') then
-    self.dy = 0
-  elseif key == 's' and not love.keypressed('w') then
-    self.dy = 0
+  if key == 'w' then
+    if not love.keyboard.isDown('s') then
+      self.dy = 0
+    else
+      self.dy = 1
+    end
+  elseif key == 's' then
+    if not love.keyboard.isDown('w') then
+      self.dy = 0
+    else
+      self.dy = -1
+    end
   end
-  if key == 'a' and not love.keypressed('d') then
-    self.dx = 0
-  elseif key == 'd' and not love.keypressed('a') then
-    self.dx = 0
+  
+  if key == 'a' then
+    if not love.keyboard.isDown('d') then
+      self.dx = 0
+    else
+      self.dx = 1
+    end
+  elseif key == 'd' then
+    if not love.keyboard.isDown('a') then
+      self.dx = 0
+    else
+      self.dx = -1
+    end
   end
 end
 
