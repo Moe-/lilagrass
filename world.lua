@@ -77,16 +77,46 @@ function World:__init(width, height)
 end
 
 function World:genObj()
-  local x = math.random(1, self.background:getWidth())
-  local y = math.random(1, self.background:getHeight())
   local objType = math.random(1, 3)
-  if objType == 1 and self.showFood then
-    table.insert(self.food, Food:new(self.foodgfx, x, y))
-  elseif objType == 2 and self.showAir then
-    table.insert(self.air, Food:new(self.airgfx, x, y))
-  elseif objType == 3 and self.showDrinks then
-    table.insert(self.drink, Food:new(self.drinkgfx, x, y))
+  if objType == 1 then
+	if self.showFood then
+		self:genFood()
+	else
+		objType = objType + 1
+	end
   end
+  if objType == 2 then
+	if self.showDrinks then
+		self:genDrink()
+	else
+		objType = objType + 1
+	end
+  end
+  if objType == 3 then
+	if self.showAir then
+		self:genAir()
+	else
+		objType = objType + 1
+	end
+  end
+end
+
+function World:genFood()	
+  local x = math.random(1, self.background:getWidth() - 24)
+  local y = math.random(1, self.background:getHeight() - 32)
+  table.insert(self.food, Food:new(self.foodgfx, x, y))
+end
+
+function World:genDrink()
+	local x = math.random(1, self.background:getWidth() - 24)
+	local y = math.random(1, self.background:getHeight() - 32)
+	table.insert(self.drink, Food:new(self.drinkgfx, x, y))
+end
+
+function World:genAir()
+	local x = math.random(1, self.background:getWidth() - 24)
+	local y = math.random(1, self.background:getHeight() - 32)
+	table.insert(self.air, Food:new(self.airgfx, x, y))
 end
 
 function World:genZones()
@@ -100,50 +130,48 @@ function World:genParts()
   local x = 0
   local y = 0
   repeat 
-	x = math.random(1, self.background:getWidth())
+	x = math.random(1, self.background:getWidth() - 32)
   until self.playerInitialX - x < -512 or self.playerInitialX - x > 512 
   repeat 
-	y = math.random(1, self.background:getHeight())
+	y = math.random(1, self.background:getHeight() - 32)
   until self.playerInitialY - y < -512 or self.playerInitialY - y > 512 
   table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
 end
 
 function World:draw()
-  self.background:draw()
+	self.background:draw()
 
-lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
-footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
+	lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
+	footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
-  for i, v in pairs(self.safezone) do
-    v:draw()
-  end
+	for i, v in pairs(self.safezone) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.food) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.air) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.drink) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.parts) do
+		v:draw()
+	end
   
-  
-  
-  for i, v in pairs(self.food) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.air) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.drink) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.parts) do
-    v:draw()
-  end
-  
-  love.graphics.pop()
-  love.graphics.push()
-  lightWorld.update()	
-  lightWorld.drawShadow()
-  love.graphics.pop()
-  love.graphics.push()
-   love.graphics.scale(self.scale)
-  love.graphics.translate(self.offsetX, self.offsetY)
+	love.graphics.pop()
+	love.graphics.push()
+	lightWorld.update()	
+	lightWorld.drawShadow()
+	love.graphics.pop()
+	love.graphics.push()
+	love.graphics.scale(self.scale)
+	love.graphics.translate(self.offsetX, self.offsetY)
   
   self.football:draw()
   
@@ -152,7 +180,7 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
   lightWorld.drawShine()
   love.graphics.pop()
   love.graphics.push()
-   love.graphics.scale(self.scale)
+  love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
   
    self.player:draw()
@@ -209,16 +237,25 @@ function World:update(dt)
 	self.showFood = true
 	self.player.textDisplayTime = 4
 	self.player.showText = "I am getting hungry!"
+	for i = 1, 3 do
+		self:genFood()
+	end
   end
   if self.player.thurst < 60 and not self.showDrinks then
 	self.showDrinks = true
 	self.player.textDisplayTime = 4
 	self.player.showText = "I am getting thirsty!"
+	for i = 1, 3 do
+		self:genDrink()
+	end
   end
   if self.player.air < 60 and not self.showAir then
 	self.showAir = true
 	self.player.textDisplayTime = 4
 	self.player.showText = "The air is getting thinner!"
+	for i = 1, 3 do
+		self:genAir()
+	end
   end
   px, py = self.player:getPosition()
   
