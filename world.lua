@@ -37,7 +37,7 @@ function World:__init(width, height)
   self.safezonegfx = love.graphics.newImage("gfx/safezone.png")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
   
-  self.effect_time = 3
+  self.effect_time = 0
   
   for i = 1, self.numberObjects do
     self:genObj()
@@ -118,19 +118,34 @@ function World:draw()
   
   self.football:draw()
   
-	if self.effect_time >= 0 then
-		love.graphics.setColor(255, 255, 255, self.effect_time * 85)
-		love.graphics.rectangle("fill", 0, 0, 400, 300)
+	if self.effect_time <= 2 then
+		love.graphics.setColor(255, 255, 255, (2 - self.effect_time) * 127)
+		love.graphics.rectangle("fill", -self.offsetX, -self.offsetY, 400, 300)
 	end
-  love.graphics.pop()
-  
-  if self.player:isDead() then
-    love.graphics.setColor(255, 92, 0, 255)
-    love.graphics.print("You are the biggest shame of humanity!", 10, 250, 0, 2, 2)
-  elseif self.player:isRescued() then
-    love.graphics.setColor(0, 255, 92, 255)
-    love.graphics.print("You managed to escape from this planet!", 10, 250, 0, 2, 2)
-  end
+	
+	love.graphics.setColor(255, 255, 255)
+
+	if self.player:isDead() then
+		love.graphics.setColor(255, 92, 0, 255)
+		love.graphics.printf("You are the biggest shame of humanity!", 0, 120, 400, "center")
+	elseif self.player:isRescued() then
+		love.graphics.setColor(0, 255, 92, 255)
+		love.graphics.printf("You managed to escape from this planet!", 0, 120, 400, "center")
+	end
+
+	if self.effect_time >= 2 and self.effect_time <= 10 then
+		if self.effect_time <= 6 then
+			love.graphics.setColor(255, 255, 255, (self.effect_time - 2) * 63)
+		else
+			love.graphics.setColor(255, 255, 255,(10 - self.effect_time) * 63)
+		end
+
+		love.graphics.printf("Purple Planet", 0, 16, 400, "center")
+		
+		love.graphics.setColor(255, 255, 255)
+	end
+	
+	love.graphics.pop()
 end
 
 function World:update(dt)
@@ -213,7 +228,7 @@ function World:update(dt)
     self.spawnNextItemIn = self.spawnNextItemIn + self.itemSpawnTime
   end
   
-  self.effect_time = self.effect_time - dt
+  self.effect_time = self.effect_time + dt
   
   self:updateScrolling()
 end
