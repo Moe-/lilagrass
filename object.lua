@@ -16,7 +16,7 @@ function newObjects()
 	end
 
 	obj.init = function(self)
-		--self:new("new", 256, 256)
+		self:new("new", 256, 256)
 	end
 	
 	obj.update = function(self, dt)

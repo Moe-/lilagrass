@@ -75,12 +75,13 @@ function World:__init(width, height)
 	
 	-- add water
 	self.refraction_normal = love.graphics.newImage("gfx/refraction_normal.png")
+	self.refraction_normal:setWrap("repeat", "repeat")
 	
 	self.water = lightWorld.newBody("refraction", self.refraction_normal, 0, 0, 2048, 2048)
 	--objectTest.setShine(false)
 	--objectTest.setShadowType("rectangle")
 	--objectTest.setShadowDimension(64, 64)
-	self.water.setReflection(true)
+	--self.water.setReflection(true)
 	
 	footballShadow = lightWorld.newCircle(64, 64, 32)
 end
@@ -150,9 +151,23 @@ end
 function World:draw()
 	self.background:draw()
 
+	self.water.setPosition(self.player.x+self.offsetX+math.sin(self.dayCicle*4)*256-512, self.player.y+self.offsetY+math.sin(self.dayCicle*2)*256-512)
+	--self.water.setNormalOffset((self.dayCicle * 200+self.offsetX), (self.dayCicle * 100+self.offsetY))
+
 	lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
 	footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
+	love.graphics.pop()
+	love.graphics.push()
+	lightWorld.update()	
+	-- draw refraction
+	lightWorld.drawRefraction()
+
+	love.graphics.pop()
+	love.graphics.push()
+	love.graphics.scale(self.scale)
+	love.graphics.translate(self.offsetX, self.offsetY)
+	
 	for i, v in pairs(self.safezone) do
 		v:draw()
 	end
@@ -175,13 +190,6 @@ function World:draw()
   
 	love.graphics.pop()
 	love.graphics.push()
-	lightWorld.update()	
-	-- draw refraction
-	lightWorld.drawRefraction()
-
-	-- draw reflection
-	--lightWorld.drawReflection()
-	
 	-- draw shadow
 	lightWorld.drawShadow()
 
@@ -244,8 +252,6 @@ function World:update(dt)
 	math.sin(self.dayCicle) * 127 + 127,
 	math.sin(self.dayCicle) * 63 + 127)
 	
-	self.water.setNormalOffset(self.dayCicle * 200, self.dayCicle * 100)
-
   for i, v in pairs(self.safezone) do
     v:update(dt)
     playerSafe = playerSafe or v:inside(px, py)
