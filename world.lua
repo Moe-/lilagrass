@@ -19,6 +19,8 @@ class "World" {
   showDrinks = false;
   showAir = false;
   showParts = false;
+  playerInitialX = 188; --calculated from window width and 1/2 player image width
+  playerInitialY = 134; --calculated from window height and 1/2 player image height
   dayCicle = 1;
 }
 
@@ -31,7 +33,7 @@ function World:__init(width, height)
   self.safezone = {}
   self.parts = {}
   self.background = Background:new()
-  self.player = Player:new(188, 134, self.partsToFind, self.background:getSize())
+  self.player = Player:new(self.playerInitialX, self.playerInitialY, self.partsToFind, self.background:getSize())
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
@@ -280,8 +282,19 @@ function World:update(dt)
   self.effect_time = self.effect_time + dt
   
   local oX, oY = self.player:getOffset()
-  self.offsetX = self.offsetX - oX;
-  self.offsetY = self.offsetY - oY;
+  self.offsetX = self.offsetX - oX
+  self.offsetY = self.offsetY - oY
+  if self.offsetX > self.playerInitialX then
+	self.offsetX = self.playerInitialX;
+  elseif self.offsetX < self.playerInitialX - self.background:getWidth() + 24 then
+	self.offsetX = self.playerInitialX - self.background:getWidth() + 24
+  end
+  if self.offsetY > self.playerInitialY then
+	self.offsetY = self.playerInitialY;
+  elseif self.offsetY < self.playerInitialY - self.background:getHeight() + 32 then
+	self.offsetY = self.playerInitialY - self.background:getHeight() + 32
+  end
+  print(self.offsetX, self.offsetY)
 end
 
 --[[function World:updateScrolling()
