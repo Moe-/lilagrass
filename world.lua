@@ -101,7 +101,6 @@ function World:genObj()
 		objType = objType + 1
 	end
   end
-  print(objType)
 end
 
 function World:genZones()
