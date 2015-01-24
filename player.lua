@@ -73,9 +73,9 @@ function Player:update(dt, safe)
   end
   
   if safe == false then
-    self.air = self.air - 2.5 * dt
-    self.thurst = self.thurst - 1.75 * dt
-    self.hunger = self.hunger - 1 * dt
+    self.air = self.air - 1.5 * dt
+    self.thurst = self.thurst - 1 * dt
+    self.hunger = self.hunger - 0.75 * dt
   end
   
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
@@ -212,7 +212,7 @@ function Player:getPiece(v)
   if self.partsLeft == 0 then
     self.showText = "Let's go home!"
   else
-    self.showText = "I will be home soon again!"
+    self.showText = "I will be home again soon!"
   end
 end
 

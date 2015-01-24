@@ -15,6 +15,10 @@ class "World" {
   offsetX = 0;
   offsetY = 0;
   scale = 2;
+  showFood = false;
+  showDrinks = false;
+  showAir = false;
+  showParts = false;
 }
 
 function World:__init(width, height)
@@ -55,11 +59,11 @@ function World:genObj()
   local x = math.random(1, self.width)
   local y = math.random(1, self.height)
   local objType = math.random(1, 3)
-  if objType == 1 then
+  if objType == 1 and showFood then
     table.insert(self.food, Food:new(self.foodgfx, x, y))
-  elseif objType == 2 then
+  elseif objType == 2 and showAir then
     table.insert(self.air, Food:new(self.airgfx, x, y))
-  elseif objType == 3 then
+  elseif objType == 3 and showDrinks then
     table.insert(self.drink, Food:new(self.drinkgfx, x, y))
   end
 end
@@ -134,6 +138,21 @@ function World:update(dt)
   end
   
   self.player:update(dt, playerSafe)
+  if self.player.hunger < 60 then
+	showFood = true
+	self.player.textDisplayTime = 7.5
+	self.player.showText = "I am getting hungry!"
+  end
+  if self.player.thurst < 60 then
+	showDrinks = true
+	self.player.textDisplayTime = 7.5
+	self.player.showText = "I am getting thirsty!"
+  end
+  if self.player.air < 60 then
+	showAir = true
+	self.player.textDisplayTime = 7.5
+	self.player.showText = "The air is getting thinner!"
+  end
   px, py = self.player:getPosition()
   
   for i, v in pairs(self.food) do
