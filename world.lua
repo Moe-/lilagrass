@@ -90,8 +90,8 @@ function World:genObj()
 end
 
 function World:genZones()
-  local x = math.random(1, self.background:getWidth())
-  local y = math.random(1, self.background:getHeight())
+  local x = math.random(1, self.background:getWidth() - 256)
+  local y = math.random(1, self.background:getHeight() - 256)
   local size = math.random(64, 256)
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
