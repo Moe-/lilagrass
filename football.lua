@@ -34,18 +34,22 @@ function Football:update(dt)
   
   if self.x < 0 then
     self.x = 0
+    self.dx = -self.dx
   end
   
   if self.x + self.width > self.mapWidth then
     self.x = self.mapWidth - self.width
+    self.dx = -self.dx
   end
   
   if self.y < 0 then
     self.y = 0
+    self.dy = -self.dy
   end
   
   if self.y + self.height > self.mapHeight then
     self.y = self.mapHeight - self.height
+    self.dy = -self.dy
   end
 end
 

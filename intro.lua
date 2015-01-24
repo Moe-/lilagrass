@@ -41,6 +41,7 @@ function newIntro()
 		if intro.effect_time >= 7 then
 			game_state = 3
 			resetGame()
+			setMusic(game_state)
 		end
 		
 		self.sysParticle:update(dt)

@@ -1,10 +1,12 @@
 function StartGame()
 	game_state = 2
+  setMusic(game_state)
 	intro:reset()
 end
 
 function ShowCredits()
 	game_state = 4
+  setMusic(game_state)
 end
 
 function QuitGame()

@@ -8,7 +8,7 @@ require('shippiece')
 class "World" {
   width = 0;
   height = 0;
-  itemSpawnTime = 5;
+  itemSpawnTime = 3;
   partsToFind = 5;
   numberZones = 5;
   numberObjects = 6;
@@ -80,11 +80,11 @@ function World:genObj()
   local x = math.random(1, self.background:getWidth())
   local y = math.random(1, self.background:getHeight())
   local objType = math.random(1, 3)
-  if objType == 1 and showFood then
+  if objType == 1 and self.showFood then
     table.insert(self.food, Food:new(self.foodgfx, x, y))
-  elseif objType == 2 and showAir then
+  elseif objType == 2 and self.showAir then
     table.insert(self.air, Food:new(self.airgfx, x, y))
-  elseif objType == 3 and showDrinks then
+  elseif objType == 3 and self.showDrinks then
     table.insert(self.drink, Food:new(self.drinkgfx, x, y))
   end
 end
@@ -101,10 +101,10 @@ function World:genParts()
   local y = 0
   repeat 
 	x = math.random(1, self.background:getWidth())
-  until self.playerInitialX - x >= -512 and self.playerInitialX - x <= 512 
+  until self.playerInitialX - x < -512 or self.playerInitialX - x > 512 
   repeat 
 	y = math.random(1, self.background:getHeight())
-  until self.playerInitialY - y >= -512 and self.playerInitialY - y <= 512 
+  until self.playerInitialY - y < -512 or self.playerInitialY - y > 512 
   table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
 end
 
