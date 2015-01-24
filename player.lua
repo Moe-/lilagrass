@@ -40,8 +40,8 @@ function Player:draw()
 end
 
 function Player:update(dt)
-  self.x = self.x + 15 * self.dx * dt
-  self.y = self.y + 15 * self.dy * dt
+  self.x = self.x + 25 * self.dx * dt
+  self.y = self.y + 25 * self.dy * dt
   if self.dead then
     return
   end
@@ -50,6 +50,8 @@ function Player:update(dt)
   self.hunger = self.hunger - 2 * dt
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
     self.dead = true
+    self.dx = 0
+    self.dy = 0
   end
   self.dWalking = self.dWalking + dt
   local direction
@@ -146,4 +148,29 @@ function Player:setDirection(direction)
 			self.quad:setViewport(48, 32, 24, 32)
 		end
 	end
+end
+	
+function Player:getPosition()
+  return self.x + self.width / 2, self.y + self.height / 2
+end
+
+function Player:eat()
+  self.hunger = self.hunger + 20
+  if self.hunger > 100 then
+    self.hunger = 100
+  end
+end
+
+function Player:breath()
+  self.air = self.air + 20
+  if self.air > 100 then
+    self.air = 100
+  end
+end
+
+function Player:drink()
+  self.thurst = self.thurst + 20
+  if self.thurst > 100 then
+    self.thurst = 100
+  end
 end
