@@ -9,6 +9,11 @@ require('lib/postshader')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
+	font = love.graphics.newImageFont("gfx/font.png",
+    " abcdefghijklmnopqrstuvwxyz" ..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+    "123456789.,!?-+/():;%&`'*#=[]\"")
+	love.graphics.setFont(font)
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
@@ -65,6 +70,7 @@ function love.keypressed(key)
   gWorld:keypressed(key)
   if key == "1" then
     game_state = 1
+	menu:reset()
   elseif key == "2" then
 	game_state = 2
 	intro:reset()

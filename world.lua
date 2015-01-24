@@ -21,6 +21,8 @@ function World:__init(width, height)
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
   
+  self.effect_time = 3
+  
   for i = 1, 15 do
     self:genObj()
   end
@@ -61,6 +63,11 @@ function World:draw()
   end
   
   self.football:draw()
+  
+	if self.effect_time >= 0 then
+		love.graphics.setColor(255, 255, 255, self.effect_time * 85)
+		love.graphics.rectangle("fill", 0, 0, 400, 300)
+	end
   love.graphics.pop()
 end
 
@@ -110,6 +117,8 @@ function World:update(dt)
     self:genObj()
     self.spawnNextItemIn = self.spawnNextItemIn + self.itemSpawnTime
   end
+  
+  self.effect_time = self.effect_time - dt
 end
 
 function World:keypressed(key)
