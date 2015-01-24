@@ -5,6 +5,7 @@ require('world')
 require('gui')
 require('menu')
 require('intro')
+require('credits')
 require('lib/postshader')
 
 function love.load()
@@ -26,6 +27,7 @@ function love.load()
 
 	menu = newMenu()
 	intro = newIntro()
+	credits = newCredits()
 end
 
 function love.update(dt)
@@ -35,6 +37,8 @@ function love.update(dt)
 		intro:update(dt)
 	elseif game_state == 3 then
 		gWorld:update(dt)
+	elseif game_state == 4 then
+		credits:update(dt)
 	end
 end
 
@@ -43,13 +47,11 @@ function love.draw()
 		menu:draw()
 	elseif game_state == 2 then
 		intro:draw()
-
-		if intro.effect_time >= 5 then
-			game_state = 3
-		end
 	elseif game_state == 3 then
 		gWorld:draw()
 		gGui:draw()
+	elseif game_state == 4 then
+		credits:draw()
 	end
 end
 

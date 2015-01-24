@@ -18,16 +18,24 @@ function newIntro()
 
 	obj.update = function(self, dt)
 		self.planet_rotation = self.planet_rotation + dt * 0.1
-		self.planet_scale = self.planet_scale + dt * 0.2
-		self.spaceship_move = self.spaceship_move + dt * 4
-		self.spaceship_scale = self.spaceship_scale - dt * 0.2
+		self.planet_scale = self.planet_scale + dt * 0.1
+		self.spaceship_move = self.spaceship_move + dt * 3.5
+		self.spaceship_scale = self.spaceship_scale - dt * 0.15
 		self.effect_time = self.effect_time + dt
+		
+		if intro.effect_time >= 7 then
+			game_state = 3
+		end
 	end
 
 	obj.draw = function(self)
 		love.graphics.push()
 		love.graphics.scale(4)
-		love.graphics.translate(math.random(0,self.effect_time), math.random(0,self.effect_time))
+		if intro.effect_time <= 6 then
+			love.graphics.translate(math.random(0,self.effect_time * 0.5), math.random(0,self.effect_time * 0.5))
+		else
+			love.graphics.translate(math.random(0, (6 - self.effect_time) * 0.5), math.random(0, (6 - self.effect_time) * 0.5))
+		end
 		love.postshader.setBuffer("render")
 		love.postshader.setScale(4)
 
@@ -40,8 +48,8 @@ function newIntro()
 		love.graphics.draw(self.stardust, self.stardust_quad)
 		self.stardust_quad:setViewport(self.spaceship_move * 40, -self.spaceship_move * 20, 200, 150)
 		love.graphics.draw(self.stardust, self.stardust_quad)
-		if obj.effect_time >= 3 then
-			love.graphics.setColor(255, 255, 255, (obj.effect_time - 3) * 63)
+		if obj.effect_time >= 4 then
+			love.graphics.setColor(255, 255, 255, (obj.effect_time - 4) * 63)
 			love.graphics.rectangle("fill", 0, 0, 200, 150)
 		end
 
