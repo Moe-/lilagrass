@@ -5,6 +5,7 @@ require('football')
 require('safezone')
 require('shippiece')
 require('water')
+require('bush')
 
 class "World" {
   width = 0;
@@ -14,6 +15,7 @@ class "World" {
   numberZones = 5;
   numberWater = 5;
   numberObjects = 6;
+  numberBushes = 30;
   offsetX = 0;
   offsetY = 0;
   scale = 2;
@@ -35,6 +37,7 @@ function World:__init(width, height)
   self.safezone = {}
   self.waterzone = {}
   self.parts = {}
+  self.bushes = {}
   self.background = Background:new()
   self.playerInitialX = self.background:getWidth()/2
   self.playerInitialY = self.background:getHeight()/2
@@ -48,6 +51,7 @@ function World:__init(width, height)
   --self.safezonegfx:setWrap("repeat", "repeat")
   self.waterzonegfx = love.graphics.newImage("gfx/water_tiles_on_grass.png")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
+  self.bushgfx = love.graphics.newImage("gfx/item_tileset.png")
   
   self.effect_time = 0
   
@@ -65,6 +69,10 @@ function World:__init(width, height)
   
   for i = 1, self.partsToFind do
     self:genParts()
+  end
+  
+  for i = 1, self.numberBushes do
+    self:genBushes()
   end
   
   self.football = Football:new(150, 150, self.background:getSize())
@@ -165,6 +173,12 @@ function World:genZones()
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
+function World:genBushes()
+  local x = math.random(1, self.background:getWidth() - 32)
+  local y = math.random(1, self.background:getHeight() - 32)
+  table.insert(self.bushes, Bush:new(self.bushgfx, x, y))
+end
+
 function World:genWaterZones()
   local size = math.random(1, 8) * 32
   
@@ -230,6 +244,10 @@ function World:draw()
 	end
   
   for i, v in pairs(self.waterzone) do
+		v:draw()
+	end
+  
+  for i, v in pairs(self.bushes) do
 		v:draw()
 	end
 
@@ -326,7 +344,7 @@ function World:update(dt)
     end
   end
   
-  self.player:update(dt, playerSafe)
+  self.player:update(dt, playerSafe, self.bushes)
   if self.player.hunger < 60 and not self.showFood then
 	self.showFood = true
 	self.player.textDisplayTime = 4
@@ -380,6 +398,15 @@ function World:update(dt)
     if distance < 24 then
       self.player:drink(v)
       self.drink[i] = nil
+    end
+  end
+  
+  for i, v in pairs(self.bushes) do
+    v:update(dt)
+    local fx, fy = v:getPosition()
+    local distance = getDistance(px, py, fx, fy)
+    if distance < 24 then
+      self.player:useBush(v)
     end
   end
   

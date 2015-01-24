@@ -32,6 +32,7 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.width = 24--self.image:getWidth()
   self.height = 32--self.image:getHeight()
   self.partsLeft = partsToFind
+  self.poisoned = false
 end
 
 function Player:draw()
@@ -54,11 +55,24 @@ function Player:draw()
   love.graphics.setColor(255, 255, 255, 255)
 end
 
-function Player:update(dt, safe)
+function Player:update(dt, safe, bushes)
   local offsetx = self.speed * self.dx * dt
   local offsety = self.speed * self.dy * dt
-  self.x = self.x + offsetx
-  self.y = self.y + offsety
+  
+  local playerBlocked = false
+  
+  for i, v in pairs(bushes) do
+    local bx, by = v:getPosition()
+    local dist = getDistance(self.x + offsetx + self.width / 2, self.y + offsety + self.height / 2, bx, by)
+    if dist < 16 then
+      playerBlocked = true
+    end
+  end
+  
+  if not playerBlocked then
+    self.x = self.x + offsetx
+    self.y = self.y + offsety
+  end
   
   if self.x < 0 then
     self.x = 0
@@ -80,6 +94,10 @@ function Player:update(dt, safe)
 
   if self.dead then
     return
+  end
+  
+  if self.poisoned then
+    self.air = 0.95 * self.air
   end
   
   if safe == false then
@@ -237,6 +255,26 @@ function Player:bathing(v, dt)
   else
     self.thurst = self.thurst + 1.5 * self.thurstFactor * dt
     self.showText = "Like on good old earth!"
+  end
+end
+
+function Player:useBush(v)
+  if v:takeBerries() then
+    self.textDisplayTime = 7.5
+    
+    local bType = v:getBerryType()
+    if bType == 'tasty' then
+      self.hunger = self.hunger + 15 * self.hungerFactor * dt
+      self.showText = "Wow, that is delicious!"
+    elseif bType == 'spicy' then
+      self.thurst = self.thurst - 15 * self.thurstFactor * dt
+      self.showText = "I never ate something so spicy!"
+    elseif bType == 'poison' then
+      self.poisoned = true
+      self.showText = "I cannot breath anymore!"
+    else
+      self.showText = "Tastes like a rice cake!"
+    end
   end
 end
 
