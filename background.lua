@@ -4,9 +4,10 @@ class "Background" {
 
 function Background:__init()
   self.image = love.graphics.newImage("gfx/background.png")
-  self.quad = love.graphics.newQuad(0, 0, 2048, 2048, self.image:getWidth()*2, self.image:getHeight()*2)
-  self.width = self.image:getWidth()*2
-  self.height = self.image:getHeight()*2
+  self.image:setWrap("repeat", "repeat")
+  self.quad = love.graphics.newQuad(0, 0, 2048, 2048, self.image:getWidth(), self.image:getHeight())
+  self.width = self.image:getWidth()*64
+  self.height = self.image:getHeight()*64
 end
 
 function Background:draw()

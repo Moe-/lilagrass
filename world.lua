@@ -35,6 +35,7 @@ function World:__init(width, height)
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
   self.safezonegfx = love.graphics.newImage("gfx/safezone.png")
+  self.safezonegfx:setWrap("repeat", "repeat")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
   
   self.effect_time = 0
