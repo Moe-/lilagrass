@@ -90,7 +90,7 @@ function Player:update(dt, safe)
     self.dx = 0
     self.dy = 0
   end
-  gGui:update(self.hunger, self.thurst, self.air)
+  gGui:update(self.hunger, self.thurst, self.air, self.partsLeft)
   self.dWalking = self.dWalking + dt
   local direction
   if self.dx ==	-1 then
