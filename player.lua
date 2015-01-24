@@ -35,10 +35,6 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
 end
 
 function Player:draw()
-  if self.dead then
-    love.graphics.setColor(192, 0, 0, 255);
-    love.graphics.circle("fill", self.x + self.width / 2, self.y + self.height / 2 + 20, 50, 100); -- Draw white circle with 100 segments.
-  end
   love.graphics.draw(self.image, self.quad, self.x, self.y)
   
   if self.textDisplayTime > 0 then
@@ -88,10 +84,29 @@ function Player:update(dt, safe)
     self.hunger = self.hunger - self.hungerFactor * dt
   end
   
-  if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
+  if self.air <= 0 or self.thurst <= 0 or self.hunger <= 0 then
     self:die()
     self.dx = 0
     self.dy = 0
+	self.air = 0
+  end
+  if self.air <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.air = 0
+  end
+  if self.thurst <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.thurst = 0
+  end
+  if self.hunger <= 0 then
+    self:die()
+    self.dx = 0
+    self.dy = 0
+	self.hunger = 0
   end
   gGui:update(self.hunger, self.thurst, self.air, self.partsLeft)
   self.dWalking = self.dWalking + dt
