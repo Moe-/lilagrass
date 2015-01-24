@@ -19,8 +19,8 @@ class "World" {
   showDrinks = false;
   showAir = false;
   showParts = false;
-  playerInitialX = 188; --calculated from window width and 1/2 player image width
-  playerInitialY = 134; --calculated from window height and 1/2 player image height
+  centerPosX = 188; --calculated from window width and 1/2 player image width
+  centerPosY = 134; --calculated from window height and 1/2 player image height
   dayCicle = 1;
 }
 
@@ -33,6 +33,10 @@ function World:__init(width, height)
   self.safezone = {}
   self.parts = {}
   self.background = Background:new()
+  self.playerInitialX = self.background:getWidth()/2
+  self.playerInitialY = self.background:getHeight()/2
+  self.offsetX = -self.playerInitialX + 188;
+  self.offsetY = -self.playerInitialY + 134;
   self.player = Player:new(self.playerInitialX, self.playerInitialY, self.partsToFind, self.background:getSize())
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
@@ -95,12 +99,12 @@ end
 function World:genParts()
   local x = 0
   local y = 0
-  while self.player.x - x >= -512 and self.player.x - x <= 512 do
+  repeat 
 	x = math.random(1, self.background:getWidth())
-  end
-  while self.player.y - y >= -512 and self.player.y - y <= 512 do
+  until self.playerInitialX - x >= -512 and self.playerInitialX - x <= 512 
+  repeat 
 	y = math.random(1, self.background:getHeight())
-  end
+  until self.playerInitialY - y >= -512 and self.playerInitialY - y <= 512 
   table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
 end
 
@@ -271,17 +275,16 @@ function World:update(dt)
   local oX, oY = self.player:getOffset()
   self.offsetX = self.offsetX - oX
   self.offsetY = self.offsetY - oY
-  if self.offsetX > self.playerInitialX then
-	self.offsetX = self.playerInitialX;
-  elseif self.offsetX < self.playerInitialX - self.background:getWidth() + 24 then
-	self.offsetX = self.playerInitialX - self.background:getWidth() + 24
+  if self.offsetX > self.centerPosX then
+	self.offsetX = self.centerPosX;
+  elseif self.offsetX < self.centerPosX - self.background:getWidth() + 24 then
+	self.offsetX = self.centerPosX - self.background:getWidth() + 24
   end
-  if self.offsetY > self.playerInitialY then
-	self.offsetY = self.playerInitialY;
-  elseif self.offsetY < self.playerInitialY - self.background:getHeight() + 32 then
-	self.offsetY = self.playerInitialY - self.background:getHeight() + 32
+  if self.offsetY > self.centerPosY then
+	self.offsetY = self.centerPosY;
+  elseif self.offsetY < self.centerPosY - self.background:getHeight() + 32 then
+	self.offsetY = self.centerPosY - self.background:getHeight() + 32
   end
-  print(self.offsetX, self.offsetY)
 end
 
 --[[function World:updateScrolling()
