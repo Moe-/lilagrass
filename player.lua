@@ -97,8 +97,8 @@ function Player:update(dt, safe)
   elseif self.dy == 1 then
 	direction = 2
   end
-  if self.currentDirection == direction and self.dWalking > 0.2 then
-	self.dWalking = self.dWalking - 0.2
+  if self.currentDirection == direction and self.dWalking > 0.15 then
+	self.dWalking = self.dWalking - 0.15
 	if self.walkingState < 3 then
 		self.walkingState = self.walkingState + 1
 	else
@@ -151,33 +151,33 @@ function Player:setDirection(direction)
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 32, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 32, 24, 32)
+			self.quad:setViewport(24, 32, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(0, 32, 24, 32)
+			self.quad:setViewport(48, 32, 24, 32)
 		end
 	elseif direction == 1 then --right
 		if self.walkingState == 0 or self.walkingState == 2 then
-			self.quad:setViewport(24, 32, 24, 32)
+			self.quad:setViewport(0, 96, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 64, 24, 32)
+			self.quad:setViewport(24, 96, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(24, 64, 24, 32)
+			self.quad:setViewport(48, 96, 24, 32)
 		end
 	elseif direction == 2 then --down
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 0, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 0, 24, 32)
+			self.quad:setViewport(24, 0, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(0, 0, 24, 32)
+			self.quad:setViewport(48, 0, 24, 32)
 		end
 	elseif direction == 3 then --left
 		if self.walkingState == 0 or self.walkingState == 2 then
-			self.quad:setViewport(24, 0, 24, 32)
+			self.quad:setViewport(0, 64, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(48, 0, 24, 32)
+			self.quad:setViewport(24, 64, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(48, 32, 24, 32)
+			self.quad:setViewport(48, 64, 24, 32)
 		end
 	end
 end
@@ -220,7 +220,7 @@ end
 function Player:die()
   if not self:isRescued() then
     self.dead = true
-	self.quad:setViewport(48, 64, 24, 32)
+	self.quad:setViewport(0, 128, 24, 32)
   end
 end
 
