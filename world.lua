@@ -109,41 +109,39 @@ function World:genParts()
 end
 
 function World:draw()
-  self.background:draw()
+	self.background:draw()
 
-lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
-footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
+	lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
+	footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
-  for i, v in pairs(self.safezone) do
-    v:draw()
-  end
+	for i, v in pairs(self.safezone) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.food) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.air) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.drink) do
+		v:draw()
+	end
+
+	for i, v in pairs(self.parts) do
+		v:draw()
+	end
   
-  
-  
-  for i, v in pairs(self.food) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.air) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.drink) do
-    v:draw()
-  end
-  
-  for i, v in pairs(self.parts) do
-    v:draw()
-  end
-  
-  love.graphics.pop()
-  love.graphics.push()
-  lightWorld.update()	
-  lightWorld.drawShadow()
-  love.graphics.pop()
-  love.graphics.push()
-   love.graphics.scale(self.scale)
-  love.graphics.translate(self.offsetX, self.offsetY)
+	love.graphics.pop()
+	love.graphics.push()
+	lightWorld.update()	
+	lightWorld.drawShadow()
+	love.graphics.pop()
+	love.graphics.push()
+	love.graphics.scale(self.scale)
+	love.graphics.translate(self.offsetX, self.offsetY)
   
   self.football:draw()
   
@@ -152,7 +150,7 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
   lightWorld.drawShine()
   love.graphics.pop()
   love.graphics.push()
-   love.graphics.scale(self.scale)
+  love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
   
    self.player:draw()
