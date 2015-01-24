@@ -54,6 +54,17 @@ function World:__init(width, height)
   
   self.football = Football:new(150, 150, self.background:getSize())
   self.spawnNextItemIn = self.itemSpawnTime
+ 
+	-- create light world
+	lightWorld = love.light.newWorld()
+	lightWorld.setAmbientColor(15, 15, 31)
+	lightWorld.setRefractionStrength(32.0)
+
+	-- create light
+	lightHero = lightWorld.newLight(0, 0, 255, 127, 63, 300)
+	lightHero.setGlowStrength(0.3)
+	
+	footballShadow = lightWorld.newCircle(64, 64, 32)
 end
 
 function World:genObj()
@@ -89,15 +100,21 @@ function World:genParts()
 end
 
 function World:draw()
-  love.graphics.push()
+lightWorld.update()	
+love.graphics.setColor(255, 255, 255)
+
 	love.postshader.setBuffer("render")
+  love.graphics.push()
 	love.postshader.setScale(self.scale)
 	love.postshader.setTranslation(self.offsetX, self.offsetY)
   --love.graphics.translate(self.offsetX, self.offsetY)
   love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
   self.background:draw()
-  
+
+lightHero.setPosition((self.player.x+self.offsetX)*2, (self.player.y+self.offsetY)*2)
+footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
+
   for i, v in pairs(self.safezone) do
     v:draw()
   end
@@ -120,7 +137,23 @@ function World:draw()
     v:draw()
   end
   
+  love.graphics.pop()
+  love.graphics.push()
+  lightWorld.drawShadow()
+  love.graphics.pop()
+  love.graphics.push()
+   love.graphics.scale(self.scale)
+  love.graphics.translate(self.offsetX, self.offsetY)
+  
   self.football:draw()
+  
+  love.graphics.pop()
+  love.graphics.push()
+  lightWorld.drawShine()
+  love.graphics.pop()
+  love.graphics.push()
+   love.graphics.scale(self.scale)
+  love.graphics.translate(self.offsetX, self.offsetY)
   
 	if self.effect_time <= 2 then
 		love.graphics.setColor(255, 255, 255, (2 - self.effect_time) * 127)

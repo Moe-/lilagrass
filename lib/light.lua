@@ -130,8 +130,8 @@ function love.light.newWorld()
 						LOVE_LIGHT_CURRENT = o.lights[i]
 
 						o.shader:send("lightPosition", {
-							(o.lights[i].x + LOVE_LIGHT_TRANSLATE_X) * LOVE_LIGHT_TRANSLATE_SCALE + love.graphics.getWidth() * 0.5,
-							love.graphics.getHeight() - ((o.lights[i].y + LOVE_LIGHT_TRANSLATE_Y) * LOVE_LIGHT_TRANSLATE_SCALE + love.graphics.getHeight() * 0.5),
+							(o.lights[i].x + LOVE_LIGHT_TRANSLATE_X) * LOVE_LIGHT_TRANSLATE_SCALE,
+							love.graphics.getHeight() - (o.lights[i].y + LOVE_LIGHT_TRANSLATE_Y),
 							o.lights[i].z
 						})
 						o.shader:send("lightRange", o.lights[i].range * LOVE_LIGHT_TRANSLATE_SCALE)
@@ -227,7 +227,7 @@ function love.light.newWorld()
 							love.graphics.translate(love.window.getWidth() * 0.5, love.window.getHeight() * 0.5)
 							love.graphics.scale(LOVE_LIGHT_TRANSLATE_SCALE)
 							love.graphics.rotate(LOVE_LIGHT_TRANSLATE_ROTATION)
-							love.graphics.translate(LOVE_LIGHT_TRANSLATE_X, LOVE_LIGHT_TRANSLATE_Y)
+							love.graphics.translate(LOVE_LIGHT_TRANSLATE_X*0.5, LOVE_LIGHT_TRANSLATE_Y*0.5)
 						end
 
 						lightsOnScreen = lightsOnScreen + 1
