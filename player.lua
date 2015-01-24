@@ -5,9 +5,9 @@ class "Player" {
   dy = 0;
   offsetx = 0;
   offsety = 0;
-  air = 65;
-  hunger = 75;
-  thurst = 70;
+  air = 100;
+  hunger = 100;
+  thurst = 100;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
   walkingState = 0; -- 0/2=standing; 1/3=walking
