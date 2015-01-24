@@ -95,11 +95,14 @@ function love.keypressed(key)
   if key == "1" then
     game_state = 1
 	menu:reset()
+	resetGame()
   elseif key == "2" then
 	game_state = 2
 	intro:reset()
+	resetGame()
   elseif key == "3" then
     game_state = 3
+	resetGame()
   elseif key == "9" then
     resetGame()
   end
@@ -109,8 +112,11 @@ function love.keyreleased(key)
   if key == 'escape' then
 	if game_state == 1 then
 		love.event.quit()
+	elseif game_state == 2 then
+		game_state = 3
 	else
 		game_state = 1
+		resetGame()
 	end
   end
   gWorld:keyreleased(key)

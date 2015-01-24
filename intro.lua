@@ -9,6 +9,20 @@ function newIntro()
 	obj.stardust:setWrap("repeat", "repeat")
 	obj.stardust_quad = love.graphics.newQuad(0, 0, 200, 150, 200, 150)
 	
+	obj.imgParticle = love.graphics.newImage("gfx/particle.png");
+	
+    obj.sysParticle = love.graphics.newParticleSystem(obj.imgParticle, 1000);
+    obj.sysParticle:setParticleLifetime(1, 2)
+    obj.sysParticle:setEmissionRate(500)
+    obj.sysParticle:setSizeVariation(1)
+	obj.sysParticle:setSizes(1, 2)
+    obj.sysParticle:setLinearAcceleration(-20, -20, 0, 0)
+    obj.sysParticle:setColors(255, 255, 127, 255, 255, 0, 0, 0)
+	
+	for i = 1, 20 do
+		obj.sysParticle:update(0.1)
+	end
+
 	obj.reset = function(self, dt)
 		self.planet_rotation = 0
 		self.planet_scale = 1
@@ -26,7 +40,10 @@ function newIntro()
 		
 		if intro.effect_time >= 7 then
 			game_state = 3
+			resetGame()
 		end
+		
+		self.sysParticle:update(dt)
 	end
 
 	obj.draw = function(self)
@@ -43,13 +60,15 @@ function newIntro()
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(self.space)
 		love.graphics.draw(self.planet, 200, 150, self.planet_rotation, self.planet_scale, self.planet_scale, 200, 150)
-		self.spaceship_quad:setViewport(math.random(0,1) * 128, 128, 128, 128)
+		self.spaceship_quad:setViewport(math.floor(math.abs(math.sin(self.effect_time * 20) + 0.5)) * 128, 128, 128, 128)
 		love.graphics.draw(self.spaceship, self.spaceship_quad, 32 + self.spaceship_move * 8, 128 + self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
 
 		if self.effect_time >= 4 then
 			love.graphics.setColor(255, 255, 255, (self.effect_time - 4) * 63)
 			love.graphics.rectangle("fill", 0, 0, 400, 300)
 		end
+		
+		love.graphics.draw(self.sysParticle, 40 + self.spaceship_move * 8, 136 + self.spaceship_move * 2, 0, 1 - self.effect_time / 7);
 		
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("blur",math.floor(self.effect_time),math.floor(self.effect_time))

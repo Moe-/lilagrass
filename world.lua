@@ -182,7 +182,9 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
 			love.graphics.setColor(255, 255, 255,(10 - self.effect_time) * 63)
 		end
 
-		love.graphics.printf("Purple Planet", 0 - self.offsetX, 16 - self.offsetY, 400, "center")
+		love.graphics.scale(2)
+		love.graphics.printf("Purple Planet", 0 - self.offsetX * 0.5, 8 - self.offsetY * 0.5, 200, "center")
+		love.graphics.scale(0.5)
 		
 		love.graphics.setColor(255, 255, 255)
 	end
