@@ -21,6 +21,8 @@ function World:__init(width, height)
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
   
+  self.effect_time = 3
+  
   for i = 1, 15 do
     self:genObj()
   end
@@ -61,6 +63,11 @@ function World:draw()
   end
   
   self.football:draw()
+  
+	if self.effect_time >= 0 then
+		love.graphics.setColor(255, 255, 255, self.effect_time * 85)
+		love.graphics.rectangle("fill", 0, 0, 400, 300)
+	end
   love.graphics.pop()
 end
 
@@ -72,7 +79,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 24 then
       self.player:eat(v)
       self.food[i] = nil
     end
@@ -82,7 +89,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 24 then
       self.player:breath(v)
       self.air[i] = nil
     end
@@ -92,7 +99,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 24 then
       self.player:drink(v)
       self.drink[i] = nil
     end
@@ -101,7 +108,7 @@ function World:update(dt)
   self.football:update(dt)
   local fx, fy = self.football:getPosition()
   local distance = getDistance(px, py, fx, fy)
-  if distance < 32 then
+  if distance < 24 then
     self.football:kick(fx - px, fy - py)
   end
   
@@ -110,6 +117,8 @@ function World:update(dt)
     self:genObj()
     self.spawnNextItemIn = self.spawnNextItemIn + self.itemSpawnTime
   end
+  
+  self.effect_time = self.effect_time - dt
 end
 
 function World:keypressed(key)

@@ -9,11 +9,11 @@ function newIntro()
 	obj.stardust_quad = love.graphics.newQuad(0, 0, 200, 150, 200, 150)
 	
 	obj.reset = function(self, dt)
-		obj.planet_rotation = 0
-		obj.planet_scale = 1
-		obj.spaceship_move = 0
-		obj.spaceship_scale = 1
-		obj.effect_time = 0
+		self.planet_rotation = 0
+		self.planet_scale = 1
+		self.spaceship_move = 0
+		self.spaceship_scale = 1
+		self.effect_time = 0
 	end
 
 	obj.update = function(self, dt)
@@ -34,7 +34,7 @@ function newIntro()
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(self.space)
 		love.graphics.draw(self.planet, 128, 64, self.planet_rotation, self.planet_scale, self.planet_scale, 60, 60)
-		love.graphics.draw(self.spaceship, -32 + self.spaceship_move * 8, 96 - self.spaceship_move, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
+		love.graphics.draw(self.spaceship, -32 + self.spaceship_move * 8, 128 - self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
 		love.graphics.setColor(255, 255, 255, obj.effect_time * 31)
 		self.stardust_quad:setViewport(self.spaceship_move * 80, -self.spaceship_move * 40, 200, 150)
 		love.graphics.draw(self.stardust, self.stardust_quad)
@@ -52,6 +52,8 @@ function newIntro()
 	
 		love.graphics.pop()
 	end
+	
+	obj:reset()
 	
 	return obj
 end
