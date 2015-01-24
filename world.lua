@@ -4,6 +4,7 @@ require('drink')
 require('football')
 require('safezone')
 require('shippiece')
+require('water')
 
 class "World" {
   width = 0;
@@ -11,6 +12,7 @@ class "World" {
   itemSpawnTime = 3;
   partsToFind = 5;
   numberZones = 5;
+  numberWater = 5;
   numberObjects = 6;
   offsetX = 0;
   offsetY = 0;
@@ -31,6 +33,7 @@ function World:__init(width, height)
   self.air = {}
   self.drink = {}
   self.safezone = {}
+  self.waterzone = {}
   self.parts = {}
   self.background = Background:new()
   self.playerInitialX = self.background:getWidth()/2
@@ -43,6 +46,7 @@ function World:__init(width, height)
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
   self.safezonegfx = love.graphics.newImage("gfx/purple_grass_tiles.png")
   --self.safezonegfx:setWrap("repeat", "repeat")
+  self.waterzonegfx = love.graphics.newImage("gfx/water_tiles_on_grass.png")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
   
   self.effect_time = 0
@@ -53,6 +57,10 @@ function World:__init(width, height)
   
   for i = 1, self.numberZones do
     self:genZones()
+  end
+  
+  for i = 1, self.numberWater do
+    self:genWaterZones()
   end
   
   for i = 1, self.partsToFind do
@@ -145,9 +153,43 @@ function World:genZones()
       local dist = getDistance(x, y, tx, ty) - (size + tsize)
       distance = math.min(distance, dist)
     end
+    for i,v in pairs(self.waterzone) do
+      local tsize = v:getSize()
+      local tx, ty = v:getPosition()
+      local dist = getDistance(x, y, tx, ty) - (size + tsize)
+      distance = math.min(distance, dist)
+    end
   until distance > 0
   
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
+end
+
+function World:genWaterZones()
+  local size = math.random(1, 8) * 32
+  
+  local distance
+  local x, y
+  
+  repeat
+    x = math.random(1, (self.background:getWidth() - 256)/32) * 32
+    y = math.random(1, (self.background:getHeight() - 256)/32) * 32
+    
+    distance = 999999
+    for i,v in pairs(self.safezone) do
+      local tsize = v:getSize()
+      local tx, ty = v:getPosition()
+      local dist = getDistance(x, y, tx, ty) - (size + tsize)
+      distance = math.min(distance, dist)
+    end
+    for i,v in pairs(self.waterzone) do
+      local tsize = v:getSize()
+      local tx, ty = v:getPosition()
+      local dist = getDistance(x, y, tx, ty) - (size + tsize)
+      distance = math.min(distance, dist)
+    end
+  until distance > 0
+  
+  table.insert(self.waterzone, Water:new(self.waterzonegfx, x, y, size))
 end
 
 function World:genParts()
@@ -169,6 +211,10 @@ function World:draw()
 	footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
 	for i, v in pairs(self.safezone) do
+		v:draw()
+	end
+  
+  for i, v in pairs(self.waterzone) do
 		v:draw()
 	end
 
@@ -265,6 +311,13 @@ function World:update(dt)
   for i, v in pairs(self.safezone) do
     v:update(dt)
     playerSafe = playerSafe or v:inside(px, py)
+  end
+  
+  for i, v in pairs(self.waterzone) do
+    v:update(dt)
+    if v:inside(px, py) then
+      self.player:bathing(v, dt)
+    end
   end
   
   self.player:update(dt, playerSafe)

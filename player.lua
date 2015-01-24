@@ -17,6 +17,9 @@ class "Player" {
   textDisplayTime = 0;
   partsLeft = 0;
   speed = 100;
+  thurstFactor = 1;
+  airFactor = 1.5;
+  hungerFactor = 0.75;
 }
 
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
@@ -80,9 +83,9 @@ function Player:update(dt, safe)
   end
   
   if safe == false then
-    self.air = self.air - 1.5 * dt
-    self.thurst = self.thurst - 1 * dt
-    self.hunger = self.hunger - 0.75 * dt
+    self.air = self.air - self.airFactor * dt
+    self.thurst = self.thurst - self.thurstFactor * dt
+    self.hunger = self.hunger - self.hungerFactor * dt
   end
   
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
@@ -215,6 +218,17 @@ function Player:drink(v)
   if self.thurst > 100 then
     self.thurst = 100
   end
+end
+
+function Player:bathing(v, dt)
+  --self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
+  --if self.thurst > 100 then
+  --  self.thurst = 100
+  --end
+  
+  self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
+  self.textDisplayTime = 7.5
+  self.showText = "Delicious! Salty water!"
 end
 
 function Player:getPiece(v)
