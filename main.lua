@@ -22,9 +22,9 @@ function love.load()
     "123456789.,!?-+/():;%&`'*#=[]\"")
 	love.graphics.setFont(font)
 	gMusicMenu = love.audio.newSource("sfx/menu.ogg", "stream")
-  gMusicMenu:setLooping(true)
-  gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
-  gMusicGame:setLooping(true)
+	gMusicMenu:setLooping(true)
+	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
+	gMusicGame:setLooping(true)
 	gMusicMenu:play()
 
 	if arg[#arg] == "-debug" then 
@@ -35,14 +35,14 @@ function love.load()
 
 	resetGame()
 	game_state = 1
-  gLastMusicState = -1
-  setMusic(game_state)
+	gLastMusicState = -1
+	setMusic(game_state)
 
 	menu = newMenu()
 	intro = newIntro()
 	credits = newCredits()
-	objects = newObjects()
-	objects:init()
+	gObjects = newObjects()
+	gObjects:init()
 end
 
 function love.update(dt)
@@ -52,7 +52,7 @@ function love.update(dt)
 		intro:update(dt)
 	elseif game_state == 3 then
 		gWorld:update(dt)
-		objects:update(dt)
+		gObjects:update(dt)
 	elseif game_state == 4 then
 		credits:update(dt)
 	end
@@ -75,7 +75,6 @@ function love.draw()
 		love.graphics.translate(gWorld.offsetX, gWorld.offsetY)
  
 		gWorld:draw()
-		objects:draw()
 		gGui:draw(gWorld.offsetX, gWorld.offsetY)
 		
 		--love.postshader.addEffect("bloom")

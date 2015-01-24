@@ -1,6 +1,8 @@
 class "Player" {
   x = 0;
   y = 0;
+  lastX = 0;
+  lastY = 0;
   dx = 0;
   dy = 0;
   offsetx = 0;
@@ -22,6 +24,8 @@ class "Player" {
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.x = x
   self.y = y
+  self.lastX = x
+  self.lastY = y
   self.mapWidth = mapWidth
   self.mapHeight = mapHeight
   self.image = love.graphics.newImage("gfx/hero.png")

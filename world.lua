@@ -203,6 +203,12 @@ function World:draw()
 		v:draw()
 	end
   
+  		gObjects:draw()
+		
+		self.football:draw()
+
+		gWorld.player:draw()
+  
 	love.graphics.pop()
 	love.graphics.push()
 	-- draw shadow
@@ -213,8 +219,6 @@ function World:draw()
 	love.graphics.scale(self.scale)
 	love.graphics.translate(self.offsetX, self.offsetY)
   
-  self.football:draw()
-  
   love.graphics.pop()
   love.graphics.push()
   lightWorld.drawShine()
@@ -222,8 +226,6 @@ function World:draw()
   love.graphics.push()
   love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
-  
-   self.player:draw()
 
 	if self.effect_time <= 1 then
 		love.graphics.setColor((1 - self.effect_time) * 255, (1 - self.effect_time) * 255, (1 - self.effect_time) * 255)
@@ -354,20 +356,24 @@ function World:update(dt)
   end
   
   self.effect_time = self.effect_time + dt
-  
-  local oX, oY = self.player:getOffset()
-  self.offsetX = self.offsetX - oX
-  self.offsetY = self.offsetY - oY
-  if self.offsetX > self.centerPosX then
-	self.offsetX = self.centerPosX;
-  elseif self.offsetX < self.centerPosX - self.background:getWidth() + 24 then
+
+	--[[
+	local oX, oY = self.player:getOffset()
+	self.offsetX = self.offsetX - oX
+	self.offsetY = self.offsetY - oY
+	if self.offsetX > self.centerPosX then
+	self.offsetX = -self.centerPosX;
+	elseif self.offsetX < self.centerPosX - self.background:getWidth() + 24 then
 	self.offsetX = self.centerPosX - self.background:getWidth() + 24
-  end
-  if self.offsetY > self.centerPosY then
+	end
+	if self.offsetY > self.centerPosY then
 	self.offsetY = self.centerPosY;
-  elseif self.offsetY < self.centerPosY - self.background:getHeight() + 32 then
+	elseif self.offsetY < self.centerPosY - self.background:getHeight() + 32 then
 	self.offsetY = self.centerPosY - self.background:getHeight() + 32
-  end
+	end]]--
+  
+	gWorld.offsetX = -gWorld.player.x + 200
+	gWorld.offsetY = -gWorld.player.y + 150
 end
 
 --[[function World:updateScrolling()
