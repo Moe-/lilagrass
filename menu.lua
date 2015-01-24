@@ -1,5 +1,6 @@
 function StartGame()
 	game_state = 2
+	intro:reset()
 end
 
 function ShowCredits()
@@ -15,6 +16,7 @@ function newMenu()
 
 	obj.space = love.graphics.newImage("gfx/space.png")
 	obj.spaceship = love.graphics.newImage("gfx/spaceship.png")
+	obj.spaceship_quad = love.graphics.newQuad(0, 0, 128, 128, 384, 384)
 	obj.planet = love.graphics.newImage("gfx/planet.png")
 	obj.stardust = love.graphics.newImage("gfx/stardust.png")
 	obj.stardust:setWrap("repeat", "repeat")
@@ -45,8 +47,9 @@ function newMenu()
 
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(self.space)
-		love.graphics.draw(self.planet, 256, 128, self.planet_rotation, self.planet_scale, self.planet_scale, 60, 60)
-		love.graphics.draw(self.spaceship, -64 + self.spaceship_move * 8, 256 - self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
+		love.graphics.draw(self.planet, 200, 150, self.planet_rotation, self.planet_scale, self.planet_scale, 200, 150)
+		self.spaceship_quad:setViewport(math.random(0,1) * 128, 128, 128, 128)
+		love.graphics.draw(self.spaceship, self.spaceship_quad, 32 + self.spaceship_move * 8, 128 - self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
 		if self.effect_time < 2 then
 			love.graphics.setColor(255, 255, 255, self.effect_time * 127)
 		end
