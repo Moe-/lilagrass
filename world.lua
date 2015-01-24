@@ -156,9 +156,12 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
   love.graphics.translate(self.offsetX, self.offsetY)
   
    self.player:draw()
-  
-	if self.effect_time <= 2 then
-		love.graphics.setColor(255, 255, 255, (2 - self.effect_time) * 127)
+
+	if self.effect_time <= 1 then
+		love.graphics.setColor((1 - self.effect_time) * 255, (1 - self.effect_time) * 255, (1 - self.effect_time) * 255)
+		love.graphics.rectangle("fill", -self.offsetX, -self.offsetY, 400, 300)
+	elseif self.effect_time <= 4 then
+		love.graphics.setColor(0, 0, 0, (3 - (self.effect_time - 1)) * 85)
 		love.graphics.rectangle("fill", -self.offsetX, -self.offsetY, 400, 300)
 	end
 	

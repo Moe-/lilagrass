@@ -32,7 +32,11 @@ function newIntro()
 	obj.draw = function(self)
 		love.graphics.push()
 		love.graphics.scale(2)
-		love.graphics.translate(math.random(0,self.effect_time), math.random(0,self.effect_time))
+		if self.effect_time <= 6 then
+			love.graphics.translate(math.random(0,self.effect_time), math.random(0,self.effect_time))
+		else
+			love.graphics.translate(math.random(0,(7-self.effect_time)*7), math.random(0,(7-self.effect_time)*7))
+		end
 		love.postshader.setBuffer("render")
 		love.postshader.setScale(2)
 
@@ -42,6 +46,11 @@ function newIntro()
 		self.spaceship_quad:setViewport(math.random(0,1) * 128, 128, 128, 128)
 		love.graphics.draw(self.spaceship, self.spaceship_quad, 32 + self.spaceship_move * 8, 128 + self.spaceship_move * 2, 0, self.spaceship_scale, self.spaceship_scale, 70, 55)
 
+		if self.effect_time >= 4 then
+			love.graphics.setColor(255, 255, 255, (self.effect_time - 4) * 63)
+			love.graphics.rectangle("fill", 0, 0, 400, 300)
+		end
+		
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("blur",math.floor(self.effect_time),math.floor(self.effect_time))
 
@@ -53,17 +62,14 @@ function newIntro()
 		love.graphics.push()
 		love.graphics.scale(4)
 
-		love.graphics.setColor(255, 255, 255, math.min(63, self.effect_time * 7 + 31))
-		self.stardust_quad:setViewport(self.spaceship_move * 40, -self.spaceship_move * 20, 400, 300)
-		love.graphics.draw(self.stardust, self.stardust_quad)
-		love.graphics.scale(4)
-		love.graphics.setColor(255, 255, 255, math.min(31, self.effect_time * 15))
-		self.stardust_quad:setViewport(self.spaceship_move * 40, -self.spaceship_move * 20, 400, 300)
-		love.graphics.draw(self.stardust, self.stardust_quad)
-		
-		if self.effect_time >= 4 then
-			love.graphics.setColor(255, 255, 255, (self.effect_time - 4) * 63)
-			love.graphics.rectangle("fill", 0, 0, 400, 300)
+		if self.effect_time <= 6 then
+			love.graphics.setColor(255, 255, 255, math.min(63, self.effect_time * 7 + 31))
+			self.stardust_quad:setViewport(self.spaceship_move * 40, -self.spaceship_move * 20, 400, 300)
+			love.graphics.draw(self.stardust, self.stardust_quad)
+			love.graphics.scale(4)
+			love.graphics.setColor(255, 255, 255, math.min(31, self.effect_time * 15 + 15))
+			self.stardust_quad:setViewport(self.spaceship_move * 40, -self.spaceship_move * 20, 400, 300)
+			love.graphics.draw(self.stardust, self.stardust_quad)
 		end
 		
 		love.graphics.pop()
