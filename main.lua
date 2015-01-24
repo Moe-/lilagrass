@@ -117,6 +117,7 @@ function love.keyreleased(key)
 		love.event.quit()
 	else
 		game_state = 1
+		resetGame()
     setMusic(game_state)
 	end
   end

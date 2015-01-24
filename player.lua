@@ -57,33 +57,23 @@ function Player:update(dt, safe)
   self.x = self.x + offsetx
   self.y = self.y + offsety
   
-  -- xTooFar = false
   if self.x < 0 then
     self.x = 0
-	--xTooFar = true
   end
   
   if self.x + self.width > self.mapWidth then
     self.x = self.mapWidth - self.width
-	--xTooFar = true
   end
-  --if xTooFar then
-	self.offsetx = offsetx
-  --end
+  self.offsetx = offsetx
   
-  --local yTooFar = false;
   if self.y < 0 then
     self.y = 0
-	--yTooFar = true
   end
   
   if self.y + self.height > self.mapHeight then
     self.y = self.mapHeight - self.height
-	--yTooFar = true
   end
-  --if yTooFar then
-	self.offsety = offsety
-  --end
+  self.offsety = offsety
 
   if self.dead then
     return
