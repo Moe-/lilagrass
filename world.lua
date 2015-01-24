@@ -2,6 +2,7 @@ require('food')
 require('air')
 require('drink')
 require('football')
+require('safezone')
 
 class "World" {
   width = 0;
@@ -15,16 +16,22 @@ function World:__init(width, height)
   self.food = {}
   self.air = {}
   self.drink = {}
+  self.safezone = {}
   self.background = Background:new()
   self.player = Player:new(10, 10)
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
+  self.safezonegfx = love.graphics.newImage("gfx/safezone.png")
   
   self.effect_time = 3
   
   for i = 1, 15 do
     self:genObj()
+  end
+  
+  for i = 1, 5 do
+    self:genZones()
   end
   
   self.football = Football:new(150, 150)
@@ -44,10 +51,22 @@ function World:genObj()
   end
 end
 
+function World:genZones()
+  local x = math.random(1, self.width)
+  local y = math.random(1, self.height)
+  local size = math.random(64, 256)
+  table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
+end
+
 function World:draw()
   love.graphics.push()
   love.graphics.scale(2)
   self.background:draw()
+  
+  for i, v in pairs(self.safezone) do
+    v:draw()
+  end
+  
   self.player:draw()
   
   for i, v in pairs(self.food) do
@@ -72,8 +91,16 @@ function World:draw()
 end
 
 function World:update(dt)
-  self.player:update(dt)
   local px, py = self.player:getPosition()
+  local playerSafe = false
+  
+  for i, v in pairs(self.safezone) do
+    v:update(dt)
+    playerSafe = playerSafe or v:inside(px, py)
+  end
+  
+  self.player:update(dt, playerSafe)
+  px, py = self.player:getPosition()
   
   for i, v in pairs(self.food) do
     v:update(dt)

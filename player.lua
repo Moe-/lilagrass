@@ -39,15 +39,19 @@ function Player:draw()
   love.graphics.setColor(255, 255, 255, 255)
 end
 
-function Player:update(dt)
+function Player:update(dt, safe)
   self.x = self.x + 45 * self.dx * dt
   self.y = self.y + 45 * self.dy * dt
   if self.dead then
     return
   end
-  self.air = self.air - 5 * dt
-  self.thurst = self.thurst - 5 * dt
-  self.hunger = self.hunger - 2 * dt
+  
+  if safe == false then
+    self.air = self.air - 5 * dt
+    self.thurst = self.thurst - 5 * dt
+    self.hunger = self.hunger - 2 * dt
+  end
+  
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
     self.dead = true
     self.dx = 0
