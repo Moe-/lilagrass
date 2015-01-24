@@ -29,7 +29,7 @@ function newObjects()
 	end
 
 	obj.init = function(self)
-		for i = 1, 100 do
+		for i = 1, 20 do
 			if math.random(1, 100) < 10 then
 				self:new("item", math.random(0, 2048), math.random(0, 2048), 24, 32, 1, 1, 12, 16)
 			end
