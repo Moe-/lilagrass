@@ -3,9 +3,9 @@ class "Player" {
   y = 0;
   dx = 0;
   dy = 0;
-  air = 100;
-  hunger = 100;
-  thurst = 100;
+  air = 65;
+  hunger = 75;
+  thurst = 70;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
   walkingState = 0; -- 0/2=standing; 1/3=walking
@@ -21,6 +21,7 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.y = y
   self.mapWidth = mapWidth
   self.mapHeight = mapHeight
+  print(mapHeight, mapWidth)
   self.image = love.graphics.newImage("gfx/hero.png")
   self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = 24--self.image:getWidth()
@@ -219,6 +220,7 @@ end
 function Player:die()
   if not self:isRescued() then
     self.dead = true
+	self.quad:setViewport(48, 64, 24, 32)
   end
 end
 
