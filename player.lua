@@ -171,6 +171,7 @@ function Player:setDirection(direction)
 		elseif self.walkingState == 3 then
 			self.quad:setViewport(48, 32, 24, 32)
 		end
+		lightHero.setDirection(math.pi * 0)
 	elseif direction == 1 then --right
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 96, 24, 32)
@@ -179,6 +180,7 @@ function Player:setDirection(direction)
 		elseif self.walkingState == 3 then
 			self.quad:setViewport(48, 96, 24, 32)
 		end
+		lightHero.setDirection(math.pi * 1.5)
 	elseif direction == 2 then --down
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 0, 24, 32)
@@ -187,6 +189,7 @@ function Player:setDirection(direction)
 		elseif self.walkingState == 3 then
 			self.quad:setViewport(48, 0, 24, 32)
 		end
+		lightHero.setDirection(math.pi * 1.0)
 	elseif direction == 3 then --left
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 64, 24, 32)
@@ -195,6 +198,7 @@ function Player:setDirection(direction)
 		elseif self.walkingState == 3 then
 			self.quad:setViewport(48, 64, 24, 32)
 		end
+		lightHero.setDirection(math.pi * 0.5)
 	end
 end
 	
