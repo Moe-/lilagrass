@@ -18,7 +18,7 @@ function newMenu()
 
 	obj.draw = function(self)
 		love.graphics.push()
-		love.graphics.scale(4, 4)
+		love.graphics.scale(4)
 		love.postshader.setBuffer("render")
 		love.postshader.setScale(4)
 

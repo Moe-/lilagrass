@@ -26,7 +26,7 @@ function newIntro()
 
 	obj.draw = function(self)
 		love.graphics.push()
-		love.graphics.scale(4, 4)
+		love.graphics.scale(4)
 		love.graphics.translate(math.random(0,self.effect_time), math.random(0,self.effect_time))
 		love.postshader.setBuffer("render")
 		love.postshader.setScale(4)
