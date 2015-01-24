@@ -21,7 +21,6 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.y = y
   self.mapWidth = mapWidth
   self.mapHeight = mapHeight
-  print(mapHeight, mapWidth)
   self.image = love.graphics.newImage("gfx/hero.png")
   self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = 24--self.image:getWidth()
@@ -97,8 +96,8 @@ function Player:update(dt, safe)
   elseif self.dy == 1 then
 	direction = 2
   end
-  if self.currentDirection == direction and self.dWalking > 0.5 then
-	self.dWalking = self.dWalking - 0.5
+  if self.currentDirection == direction and self.dWalking > 0.2 then
+	self.dWalking = self.dWalking - 0.2
 	if self.walkingState < 3 then
 		self.walkingState = self.walkingState + 1
 	else
