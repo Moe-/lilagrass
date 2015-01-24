@@ -30,12 +30,12 @@ function Player:draw()
   end
   love.graphics.draw(self.image, self.quad, self.x, self.y)
   
-  love.graphics.setColor(0, 0, 255, 255)
-  love.graphics.print(tostring(self.air), self.x, self.y - 50)
-  love.graphics.setColor(255, 0, 0, 255)
-  love.graphics.print(tostring(self.hunger), self.x, self.y - 32)
-  love.graphics.setColor(0, 255, 255, 255)
-  love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
+  --love.graphics.setColor(0, 0, 255, 255)
+  --love.graphics.print(tostring(self.air), self.x, self.y - 50)
+  --love.graphics.setColor(255, 0, 0, 255)
+  --love.graphics.print(tostring(self.hunger), self.x, self.y - 32)
+  --love.graphics.setColor(0, 255, 255, 255)
+  --love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
   love.graphics.setColor(255, 255, 255, 255)
 end
 

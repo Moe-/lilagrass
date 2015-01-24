@@ -46,7 +46,7 @@ end
 
 function World:draw()
   love.graphics.push()
-  love.graphics.scale(2)
+  --love.graphics.scale(2)
   self.background:draw()
   self.player:draw()
   
@@ -79,7 +79,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 32 then
       self.player:eat(v)
       self.food[i] = nil
     end
@@ -89,7 +89,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 32 then
       self.player:breath(v)
       self.air[i] = nil
     end
@@ -99,7 +99,7 @@ function World:update(dt)
     v:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
-    if distance < 64 then
+    if distance < 32 then
       self.player:drink(v)
       self.drink[i] = nil
     end
@@ -108,7 +108,7 @@ function World:update(dt)
   self.football:update(dt)
   local fx, fy = self.football:getPosition()
   local distance = getDistance(px, py, fx, fy)
-  if distance < 32 then
+  if distance < 16 then
     self.football:kick(fx - px, fy - py)
   end
   
