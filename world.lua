@@ -3,11 +3,13 @@ require('air')
 require('drink')
 require('football')
 require('safezone')
+require('shippiece')
 
 class "World" {
   width = 0;
   height = 0;
   itemSpawnTime = 5;
+  partsToFind = 5;
 }
 
 function World:__init(width, height)
@@ -17,12 +19,14 @@ function World:__init(width, height)
   self.air = {}
   self.drink = {}
   self.safezone = {}
+  self.parts = {}
   self.background = Background:new()
-  self.player = Player:new(10, 10)
+  self.player = Player:new(10, 10, self.partsToFind)
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
   self.safezonegfx = love.graphics.newImage("gfx/safezone.png")
+  self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
   
   self.effect_time = 3
   
@@ -32,6 +36,10 @@ function World:__init(width, height)
   
   for i = 1, 5 do
     self:genZones()
+  end
+  
+  for i = 1, self.partsToFind do
+    self:genParts()
   end
   
   self.football = Football:new(150, 150)
@@ -58,6 +66,13 @@ function World:genZones()
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
+function World:genParts()
+  local x = math.random(1, self.width)
+  local y = math.random(1, self.height)
+
+  table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
+end
+
 function World:draw()
   love.graphics.push()
   love.graphics.scale(2)
@@ -78,6 +93,10 @@ function World:draw()
   end
   
   for i, v in pairs(self.drink) do
+    v:draw()
+  end
+  
+  for i, v in pairs(self.parts) do
     v:draw()
   end
   
@@ -129,6 +148,16 @@ function World:update(dt)
     if distance < 24 then
       self.player:drink(v)
       self.drink[i] = nil
+    end
+  end
+  
+  for i, v in pairs(self.parts) do
+    v:update(dt)
+    local fx, fy = v:getPosition()
+    local distance = getDistance(px, py, fx, fy)
+    if distance < 24 then
+      self.player:getPiece(v)
+      self.parts[i] = nil
     end
   end
   
