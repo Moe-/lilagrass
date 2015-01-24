@@ -130,9 +130,24 @@ function World:genAir()
 end
 
 function World:genZones()
-  local x = math.random(1, (self.background:getWidth() - 256)/32) * 32
-  local y = math.random(1, (self.background:getHeight() - 256)/32) * 32
   local size = math.random(1, 8) * 32
+  
+  local distance
+  local x, y
+  
+  repeat
+    x = math.random(1, (self.background:getWidth() - 256)/32) * 32
+    y = math.random(1, (self.background:getHeight() - 256)/32) * 32
+    
+    distance = 999999
+    for i,v in pairs(self.safezone) do
+      local tsize = v:getSize()
+      local tx, ty = v:getPosition()
+      local dist = getDistance(x, y, tx, ty) - (size + tsize)
+      distance = math.min(distance, dist)
+    end
+  until distance > 0
+  
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
@@ -220,12 +235,13 @@ function World:draw()
 	
 	love.graphics.setColor(255, 255, 255)
 
+	local playerX, playerY = self.player:getPosition()
 	if self.player:isDead() then
 		love.graphics.setColor(255, 92, 0, 255)
-		love.graphics.printf("You are the biggest shame of humanity!", 0, 120, 400, "center")
+		love.graphics.printf("You are the biggest shame of humanity!", playerX-200, playerY - self.centerPosY +30, 400, "center")
 	elseif self.player:isRescued() then
 		love.graphics.setColor(0, 255, 92, 255)
-		love.graphics.printf("You managed to escape from this planet!", 0, 120, 400, "center")
+		love.graphics.printf("You managed to escape from this planet!", playerX-200, playerY - self.centerPosY +30, 400, "center")
 	end
 
 	if self.effect_time >= 2 and self.effect_time <= 10 then
