@@ -6,15 +6,15 @@ require('football')
 class "World" {
   width = 0;
   height = 0;
-  food = {};
-  air = {};
-  drink = {};
   itemSpawnTime = 5;
 }
 
 function World:__init(width, height)
   self.width = width
   self.height = height
+  self.food = {}
+  self.air = {}
+  self.drink = {}
   self.background = Background:new()
   self.player = Player:new(200, 200)
   self.foodgfx = love.graphics.newImage("gfx/food.png")

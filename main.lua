@@ -56,11 +56,13 @@ end
 function love.keypressed(key)
   gWorld:keypressed(key)
   if key == "1" then
-	game_state = 1
+    game_state = 1
   elseif key == "2" then
-	game_state = 2
+    game_state = 2
   elseif key == "3" then
-	game_state = 3
+    game_state = 3
+  elseif key == "9" then
+    resetGame()
   end
 end
 
