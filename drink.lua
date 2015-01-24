@@ -1,9 +1,9 @@
-class "Food" {
+class "Drink" {
   x = 0;
   y = 0;
 }
 
-function Food:__init(image, x, y)
+function Drink:__init(image, x, y)
   self.x = x
   self.y = y
   self.image = image
@@ -12,14 +12,14 @@ function Food:__init(image, x, y)
   self.height = self.image:getHeight()
 end
 
-function Food:draw()
+function Drink:draw()
   love.graphics.draw(self.image, self.quad, self.x, self.y)
 end
 
-function Food:update(dt)
+function Drink:update(dt)
   
 end
 
-function Food:getPosition()
+function Drink:getPosition()
   return self.x + self.width / 2, self.y + self.height / 2
 end
