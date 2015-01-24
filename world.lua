@@ -47,7 +47,7 @@ function World:__init(width, height)
     self:genParts()
   end
   
-  self.football = Football:new(150, 150)
+  self.football = Football:new(150, 150, self.background:getSize())
   self.spawnNextItemIn = self.itemSpawnTime
 end
 
