@@ -80,13 +80,28 @@ function World:genObj()
   local x = math.random(1, self.background:getWidth())
   local y = math.random(1, self.background:getHeight())
   local objType = math.random(1, 3)
-  if objType == 1 and self.showFood then
-    table.insert(self.food, Food:new(self.foodgfx, x, y))
-  elseif objType == 2 and self.showAir then
-    table.insert(self.air, Food:new(self.airgfx, x, y))
-  elseif objType == 3 and self.showDrinks then
-    table.insert(self.drink, Food:new(self.drinkgfx, x, y))
+  if objType == 1 then
+	if self.showFood then
+		table.insert(self.food, Food:new(self.foodgfx, x, y))
+	else
+		objType = objType + 1
+	end
   end
+  if objType == 2 then
+	if self.showDrinks then
+		table.insert(self.drink, Food:new(self.drinkgfx, x, y))
+	else
+		objType = objType + 1
+	end
+  end
+  if objType == 3 then
+	if self.showAir then
+		table.insert(self.air, Food:new(self.airgfx, x, y))
+	else
+		objType = objType + 1
+	end
+  end
+  print(objType)
 end
 
 function World:genZones()
