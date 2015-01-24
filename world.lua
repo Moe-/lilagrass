@@ -87,7 +87,6 @@ function World:genObj()
   elseif objType == 3 and self.showDrinks then
     table.insert(self.drink, Food:new(self.drinkgfx, x, y))
   end
-  print(self.showFood, self.showDrinks, self.showAir,objType, x, y)
 end
 
 function World:genZones()
