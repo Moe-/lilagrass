@@ -7,6 +7,7 @@ require('menu')
 require('intro')
 require('credits')
 require('lib/postshader')
+require('lib/light')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")

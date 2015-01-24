@@ -80,6 +80,9 @@ end
 
 function World:draw()
   love.graphics.push()
+	love.postshader.setBuffer("render")
+	love.postshader.setScale(self.scale)
+	love.postshader.setTranslation(self.offsetX, self.offsetY)
   --love.graphics.translate(self.offsetX, self.offsetY)
   love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
@@ -131,11 +134,13 @@ function World:draw()
 			love.graphics.setColor(255, 255, 255,(10 - self.effect_time) * 63)
 		end
 
-		love.graphics.printf("Purple Planet", 0, 16, 400, "center")
+		love.graphics.printf("Purple Planet", 0 - self.offsetX, 16 - self.offsetY, 400, "center")
 		
 		love.graphics.setColor(255, 255, 255)
 	end
-	
+	--love.postshader.addEffect("bloom")
+	love.postshader.addEffect("scanlines")
+	love.postshader.draw()
 	love.graphics.pop()
 end
 
