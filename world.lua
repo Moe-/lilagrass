@@ -107,6 +107,14 @@ function World:draw()
 		love.graphics.rectangle("fill", 0, 0, 400, 300)
 	end
   love.graphics.pop()
+  
+  if self.player:isDead() then
+    love.graphics.setColor(255, 92, 0, 255)
+    love.graphics.print("You are the biggest shame of humanity!", 10, 250, 0, 2, 2)
+  elseif self.player:isRescued() then
+    love.graphics.setColor(0, 255, 92, 255)
+    love.graphics.print("You managed to escape from this planet!", 10, 250, 0, 2, 2)
+  end
 end
 
 function World:update(dt)

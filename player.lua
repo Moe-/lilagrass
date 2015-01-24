@@ -60,7 +60,7 @@ function Player:update(dt, safe)
   end
   
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
-    self.dead = true
+    self:die()
     self.dx = 0
     self.dy = 0
   end
@@ -195,4 +195,21 @@ function Player:getPiece(v)
   else
     self.showText = "I will be home soon again!"
   end
+end
+
+function Player:die()
+  if not self:isRescued() then
+    self.dead = true
+  end
+end
+
+function Player:isDead()
+  return self.dead
+end
+
+function Player:isRescued()
+  if self.partsLeft == 0 then
+    return true
+  end
+  return false
 end
