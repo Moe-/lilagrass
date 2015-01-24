@@ -16,7 +16,7 @@ function World:__init(width, height)
   self.air = {}
   self.drink = {}
   self.background = Background:new()
-  self.player = Player:new(200, 200)
+  self.player = Player:new(10, 10)
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
@@ -43,6 +43,8 @@ function World:genObj()
 end
 
 function World:draw()
+  love.graphics.push()
+  love.graphics.scale(4, 4)
   self.background:draw()
   self.player:draw()
   
@@ -59,6 +61,7 @@ function World:draw()
   end
   
   self.football:draw()
+  love.graphics.pop()
 end
 
 function World:update(dt)

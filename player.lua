@@ -66,7 +66,6 @@ function Player:update(dt)
 	direction = 2
   end
   if self.currentDirection == direction and self.dWalking > 0.5 then
-	print(self.dWalking)
 	self.dWalking = self.dWalking - 0.5
 	if self.walkingState < 3 then
 		self.walkingState = self.walkingState + 1
