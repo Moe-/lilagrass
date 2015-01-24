@@ -25,7 +25,7 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.mapWidth = mapWidth
   self.mapHeight = mapHeight
   self.image = love.graphics.newImage("gfx/hero.png")
-  self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
+  self.quad = love.graphics.newQuad(0, 0, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = 24--self.image:getWidth()
   self.height = 32--self.image:getHeight()
   self.partsLeft = partsToFind
