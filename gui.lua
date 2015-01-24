@@ -3,6 +3,9 @@ class "Gui" {
 	hunger = 100;
 	thirst = 100;
 	air = 100;
+	showHunger = false;
+	showThirst = false;
+	showAir = false;
 }
 
 function Gui:__init()
@@ -15,9 +18,15 @@ function Gui:__init()
 end
 
 function Gui:draw()
-	self:drawHunger()
-	self:drawThirst()
-	self:drawAir()
+	if showHunger then
+		self:drawHunger()
+	end
+	if showThirst then 
+		self:drawThirst()
+	end
+	if showAir then
+		self:drawAir()
+	end
 end
 
 --[[function Gui:drawHealth()
@@ -62,4 +71,13 @@ function Gui:update(hunger, thirst, air)
 	self.hunger = hunger;
 	self.thirst = thirst;
 	self.air = air;
+	if hunger < 60 then
+		showHunger = true
+	end
+	if thirst < 60 then
+		showThirst = true
+	end
+	if air < 60 then
+		showAir = true
+	end
 end

@@ -3,9 +3,9 @@ class "Player" {
   y = 0;
   dx = 0;
   dy = 0;
-  air = 100;
-  hunger = 100;
-  thurst = 100;
+  air = 65;
+  hunger = 75;
+  thurst = 70;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
   walkingState = 0; -- 0/2=standing; 1/3=walking
@@ -74,9 +74,9 @@ function Player:update(dt, safe)
   end
   
   if safe == false then
-    self.air = self.air - 2.5 * dt
-    self.thurst = self.thurst - 1.75 * dt
-    self.hunger = self.hunger - 1 * dt
+    self.air = self.air - 1.5 * dt
+    self.thurst = self.thurst - 1 * dt
+    self.hunger = self.hunger - 0.75 * dt
   end
   
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
@@ -97,8 +97,8 @@ function Player:update(dt, safe)
   elseif self.dy == 1 then
 	direction = 2
   end
-  if self.currentDirection == direction and self.dWalking > 0.5 then
-	self.dWalking = self.dWalking - 0.5
+  if self.currentDirection == direction and self.dWalking > 0.15 then
+	self.dWalking = self.dWalking - 0.15
 	if self.walkingState < 3 then
 		self.walkingState = self.walkingState + 1
 	else
@@ -151,33 +151,33 @@ function Player:setDirection(direction)
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 32, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 32, 24, 32)
+			self.quad:setViewport(24, 32, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(0, 32, 24, 32)
+			self.quad:setViewport(48, 32, 24, 32)
 		end
 	elseif direction == 1 then --right
 		if self.walkingState == 0 or self.walkingState == 2 then
-			self.quad:setViewport(24, 32, 24, 32)
+			self.quad:setViewport(0, 96, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 64, 24, 32)
+			self.quad:setViewport(24, 96, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(24, 64, 24, 32)
+			self.quad:setViewport(48, 96, 24, 32)
 		end
 	elseif direction == 2 then --down
 		if self.walkingState == 0 or self.walkingState == 2 then
 			self.quad:setViewport(0, 0, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(0, 0, 24, 32)
+			self.quad:setViewport(24, 0, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(0, 0, 24, 32)
+			self.quad:setViewport(48, 0, 24, 32)
 		end
 	elseif direction == 3 then --left
 		if self.walkingState == 0 or self.walkingState == 2 then
-			self.quad:setViewport(24, 0, 24, 32)
+			self.quad:setViewport(0, 64, 24, 32)
 		elseif self.walkingState == 1 then
-			self.quad:setViewport(48, 0, 24, 32)
+			self.quad:setViewport(24, 64, 24, 32)
 		elseif self.walkingState == 3 then
-			self.quad:setViewport(48, 32, 24, 32)
+			self.quad:setViewport(48, 64, 24, 32)
 		end
 	end
 end
@@ -213,13 +213,14 @@ function Player:getPiece(v)
   if self.partsLeft == 0 then
     self.showText = "Let's go home!"
   else
-    self.showText = "I will be home soon again!"
+    self.showText = "I will be home again soon!"
   end
 end
 
 function Player:die()
   if not self:isRescued() then
     self.dead = true
+	self.quad:setViewport(0, 128, 24, 32)
   end
 end
 

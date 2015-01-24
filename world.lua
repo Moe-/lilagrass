@@ -15,6 +15,10 @@ class "World" {
   offsetX = 0;
   offsetY = 0;
   scale = 2;
+  showFood = false;
+  showDrinks = false;
+  showAir = false;
+  showParts = false;
 }
 
 function World:__init(width, height)
@@ -52,29 +56,34 @@ function World:__init(width, height)
 end
 
 function World:genObj()
-  local x = math.random(1, self.width)
-  local y = math.random(1, self.height)
+  local x = math.random(1, self.background:getWidth())
+  local y = math.random(1, self.background:getHeight())
   local objType = math.random(1, 3)
-  if objType == 1 then
+  if objType == 1 and showFood then
     table.insert(self.food, Food:new(self.foodgfx, x, y))
-  elseif objType == 2 then
+  elseif objType == 2 and showAir then
     table.insert(self.air, Food:new(self.airgfx, x, y))
-  elseif objType == 3 then
+  elseif objType == 3 and showDrinks then
     table.insert(self.drink, Food:new(self.drinkgfx, x, y))
   end
 end
 
 function World:genZones()
-  local x = math.random(1, self.width)
-  local y = math.random(1, self.height)
+  local x = math.random(1, self.background:getWidth())
+  local y = math.random(1, self.background:getHeight())
   local size = math.random(64, 256)
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
 function World:genParts()
-  local x = math.random(1, self.width)
-  local y = math.random(1, self.height)
-
+  local x = 0
+  local y = 0
+  while self.player.x - x >= -512 and self.player.x - x <= 512 do
+	x = math.random(1, self.background:getWidth())
+  end
+  while self.player.y - y >= -512 and self.player.y - y <= 512 do
+	y = math.random(1, self.background:getHeight())
+  end
   table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
 end
 
@@ -154,6 +163,21 @@ function World:update(dt)
   end
   
   self.player:update(dt, playerSafe)
+  if self.player.hunger < 60 and not self.showFood then
+	self.showFood = true
+	self.player.textDisplayTime = 4
+	self.player.showText = "I am getting hungry!"
+  end
+  if self.player.thurst < 60 and not self.showDrinks then
+	self.showDrinks = true
+	self.player.textDisplayTime = 4
+	self.player.showText = "I am getting thirsty!"
+  end
+  if self.player.air < 60 and not self.showAir then
+	self.showAir = true
+	self.player.textDisplayTime = 4
+	self.player.showText = "The air is getting thinner!"
+  end
   px, py = self.player:getPosition()
   
   for i, v in pairs(self.food) do
