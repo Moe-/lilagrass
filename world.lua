@@ -1,6 +1,7 @@
 require('food')
 require('air')
 require('drink')
+require('football')
 
 class "World" {
   width = 0;
@@ -31,6 +32,8 @@ function World:__init(width, height)
       table.insert(self.drink, Food:new(self.drinkgfx, x, y))
     end
   end
+  
+  self.football = Football:new(150, 150)
 end
 
 function World:draw()
@@ -48,6 +51,8 @@ function World:draw()
   for i, v in pairs(self.drink) do
     v:draw()
   end
+  
+  self.football:draw()
 end
 
 function World:update(dt)
@@ -82,6 +87,13 @@ function World:update(dt)
       self.player:drink(v)
       self.drink[i] = nil
     end
+  end
+  
+  self.football:update(dt)
+  local fx, fy = self.football:getPosition()
+  local distance = getDistance(px, py, fx, fy)
+  if distance < 32 then
+    self.football:kick(fx - px, fy - py)
   end
 end
 
