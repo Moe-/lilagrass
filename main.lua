@@ -111,6 +111,7 @@ function love.keyreleased(key)
 		love.event.quit()
 	else
 		game_state = 1
+		resetGame()
 	end
   end
   gWorld:keyreleased(key)
