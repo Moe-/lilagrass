@@ -20,8 +20,11 @@ function love.load()
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
 	love.graphics.setFont(font)
-	sfxPlanet = love.audio.newSource("sfx/planet.wav", "static")
-	sfxPlanet:play()
+	gMusicMenu = love.audio.newSource("sfx/menu.ogg", "stream")
+  gMusicMenu:setLooping(true)
+  gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
+  gMusicGame:setLooping(true)
+	gMusicMenu:play()
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
@@ -31,6 +34,8 @@ function love.load()
 
 	resetGame()
 	game_state = 1
+  gLastMusicState = -1
+  setMusic(game_state)
 
 	menu = newMenu()
 	intro = newIntro()
@@ -103,6 +108,7 @@ function love.keypressed(key)
   elseif key == "9" then
     resetGame()
   end
+  setMusic(game_state)
 end
 
 function love.keyreleased(key)
@@ -112,7 +118,21 @@ function love.keyreleased(key)
 	else
 		game_state = 1
 		resetGame()
+    setMusic(game_state)
 	end
   end
   gWorld:keyreleased(key)
+end
+
+function setMusic()
+    if gLastMusicState ~= game_state then
+      if game_state == 3 then
+        gMusicMenu:stop()
+        gMusicGame:play()
+      elseif gLastMusicState == 3 then
+        gMusicGame:stop()
+        gMusicMenu:play()
+      end
+    end
+    gLastMusicState = game_state
 end

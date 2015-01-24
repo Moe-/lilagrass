@@ -1,5 +1,6 @@
 function ShowMenu()
 	game_state = 1
+  setMusic(game_state)
 end
 
 function newCredits()
