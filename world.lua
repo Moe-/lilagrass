@@ -41,8 +41,8 @@ function World:__init(width, height)
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
-  self.safezonegfx = love.graphics.newImage("gfx/safezone.png")
-  self.safezonegfx:setWrap("repeat", "repeat")
+  self.safezonegfx = love.graphics.newImage("gfx/purple_grass_tiles.png")
+  --self.safezonegfx:setWrap("repeat", "repeat")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
   
   self.effect_time = 0
@@ -90,9 +90,9 @@ function World:genObj()
 end
 
 function World:genZones()
-  local x = math.random(1, self.background:getWidth() - 256)
-  local y = math.random(1, self.background:getHeight() - 256)
-  local size = math.random(64, 256)
+  local x = math.random(1, (self.background:getWidth() - 256)/32) * 32
+  local y = math.random(1, (self.background:getHeight() - 256)/32) * 32
+  local size = math.random(1, 8) * 32
   table.insert(self.safezone, SafeZone:new(self.safezonegfx, x, y, size))
 end
 
