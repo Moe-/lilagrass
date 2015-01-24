@@ -8,7 +8,7 @@ class "Player" {
   thurst = 100;
   dead = false;
   --direction: 0=up; 1=right; 2=down; 3=left
-  walkingState = 0; -- 0=standing; 1=walking;
+  walkingState = 0; -- 0/2=standing; 1/3=walking
   currentDirection = 0;
   dWalking = 0;
   
@@ -53,6 +53,7 @@ function Player:update(dt)
     self.dx = 0
     self.dy = 0
   end
+  gGui:update(self.hunger, self.thurst, self.air)
   self.dWalking = self.dWalking + dt
   local direction
   if self.dx ==	-1 then
