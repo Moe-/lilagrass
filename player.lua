@@ -7,18 +7,20 @@ class "Player" {
   hunger = 100;
   thurst = 100;
   dead = false;
-  direction = 0; --0=up; 1=right; 2=down; 3=left
-  walkingState = 0; --0=standing; 1=walking
+  --direction: 0=up; 1=right; 2=down; 3=left
+  walkingState = 0; -- 0=standing; 1=walking;
+  currentDirection = 0;
+  dWalking = 0;
+  
 }
 
 function Player:__init(x, y)
   self.x = x
   self.y = y
-  self.image = love.graphics.newImage("gfx/player.png")
-  self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+  self.image = love.graphics.newImage("gfx/hero.png")
+  self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
-  self.dWalking = love.timer.getTime()
 end
 
 function Player:draw()
@@ -35,8 +37,6 @@ function Player:draw()
   love.graphics.setColor(0, 255, 255, 255)
   love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
   love.graphics.setColor(255, 255, 255, 255)
-  self.dWalking = self.dWalking - love.timer.getTime()
-  --if seld.dWalking >= 50
 end
 
 function Player:update(dt)
@@ -51,6 +51,30 @@ function Player:update(dt)
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
     self.dead = true
   end
+  self.dWalking = self.dWalking + dt
+  local direction
+  if self.dx ==	-1 then
+	direction = 3
+  elseif self.dx == 1 then
+	direction = 1
+  end
+  if self.dy == -1 then
+	direction = 0
+  elseif self.dy == 1 then
+	direction = 2
+  end
+  if self.currentDirection == direction and self.dWalking > 0.5 then
+	print(self.dWalking)
+	self.dWalking = self.dWalking - 0.5
+	if self.walkingState < 3 then
+		self.walkingState = self.walkingState + 1
+	else
+		self.walkingState = 0
+	end
+  end
+  self:setDirection(direction)
+  self.currentDirection = direction
+	
 end
 
 function Player:keypressed(key)
@@ -59,18 +83,14 @@ function Player:keypressed(key)
   end
 
   if key == 'w' then
-    self.dy = -1
-	Player:setDirection(0)
+    self.dy = -1	
   elseif key == 's' then
     self.dy = 1
-	Player:setDirection(2)
   end
   if key == 'a' then
     self.dx = -1
-	Player:setDirection(3)
   elseif key == 'd' then
     self.dx = 1
-	Player:setDirection(1)
   end
 end
 
@@ -92,15 +112,38 @@ function Player:keyreleased(key)
 end
 
 function Player:setDirection(direction)
-	if self.direction == direction
-		--do nothing
-	elseif direction == 0
-		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
-	elseif direction == 1
-		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
-	elseif direction == 2
-		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
-	elseif direction == 3
-		self.quad = love.graphics.newQuad(0, 0, 64, 128, self.image:getWidth(), self.image:getHeight())
+	
+	if direction == 0 then --up
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(0, 32, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 32, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(0, 32, 24, 32)
+		end
+	elseif direction == 1 then --right
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(24, 32, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 64, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(24, 64, 24, 32)
+		end
+	elseif direction == 2 then --down
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(0, 0, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(0, 0, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(0, 0, 24, 32)
+		end
+	elseif direction == 3 then --left
+		if self.walkingState == 0 or self.walkingState == 2 then
+			self.quad:setViewport(24, 0, 24, 32)
+		elseif self.walkingState == 1 then
+			self.quad:setViewport(48, 0, 24, 32)
+		elseif self.walkingState == 3 then
+			self.quad:setViewport(48, 32, 24, 32)
+		end
 	end
 end
