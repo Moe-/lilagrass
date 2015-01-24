@@ -87,7 +87,11 @@ end
 
 function love.keyreleased(key)
   if key == 'escape' then
-    love.event.quit()
+	if game_state == 1 then
+		love.event.quit()
+	else
+		game_state = 1
+	end
   end
   gWorld:keyreleased(key)
 end
