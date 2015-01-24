@@ -40,8 +40,8 @@ function Player:draw()
 end
 
 function Player:update(dt)
-  self.x = self.x + 25 * self.dx * dt
-  self.y = self.y + 25 * self.dy * dt
+  self.x = self.x + 45 * self.dx * dt
+  self.y = self.y + 45 * self.dy * dt
   if self.dead then
     return
   end

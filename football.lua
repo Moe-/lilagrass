@@ -4,13 +4,14 @@ class "Football" {
   dx = 0;
   dy = 0;
   force = 0;
+  scale = 0.5;
 }
 
 function Football:__init(x, y)
   self.x = x
   self.y = y
   self.image = love.graphics.newImage("gfx/football.png")
-  self.quad = love.graphics.newQuad(0, 0, 1024, 1024, self.image:getWidth(), self.image:getHeight())
+  self.quad = love.graphics.newQuad(0, 0, 1024, 1024, self.scale * self.image:getWidth(), self.scale * self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 end
@@ -31,7 +32,7 @@ function Football:update(dt)
 end
 
 function Football:getPosition()
-  return self.x + self.width / 2, self.y + self.height / 2
+  return self.x + self.scale * self.width / 2, self.y + self.scale * self.height / 2
 end
 
 function Football:kick(dirx, diry)
