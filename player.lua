@@ -3,6 +3,8 @@ class "Player" {
   y = 0;
   dx = 0;
   dy = 0;
+  offsetx = 0;
+  offsety = 0;
   air = 65;
   hunger = 75;
   thurst = 70;
@@ -50,8 +52,11 @@ function Player:draw()
 end
 
 function Player:update(dt, safe)
-  self.x = self.x + self.speed * self.dx * dt
-  self.y = self.y + self.speed * self.dy * dt
+  offsetx = self.speed * self.dx * dt
+  offsety = self.speed * self.dy * dt
+  self.x = self.x + offsetx
+  self.y = self.y + offsety
+  
   
   if self.x < 0 then
     self.x = 0
@@ -233,4 +238,8 @@ function Player:isRescued()
     return true
   end
   return false
+end
+
+function Player:getOffset()
+  return offsetx, offsety
 end
