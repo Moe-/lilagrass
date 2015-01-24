@@ -26,6 +26,7 @@ function newIntro()
 		
 		if intro.effect_time >= 7 then
 			game_state = 3
+      setMusic(game_state)
 		end
 	end
 
