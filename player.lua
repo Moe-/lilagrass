@@ -11,16 +11,21 @@ class "Player" {
   walkingState = 0; -- 0/2=standing; 1/3=walking
   currentDirection = 0;
   dWalking = 0;
-  
+  showText = "";
+  textDisplayTime = 0;
+  partsLeft = 0;
 }
 
-function Player:__init(x, y)
+function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.x = x
   self.y = y
+  self.mapWidth = mapWidth
+  self.mapHeight = mapHeight
   self.image = love.graphics.newImage("gfx/hero.png")
   self.quad = love.graphics.newQuad(24, 32, 24, 32, self.image:getWidth(), self.image:getHeight())
   self.width = 24--self.image:getWidth()
   self.height = 32--self.image:getHeight()
+  self.partsLeft = partsToFind
 end
 
 function Player:draw()
@@ -30,26 +35,51 @@ function Player:draw()
   end
   love.graphics.draw(self.image, self.quad, self.x, self.y)
   
-  love.graphics.setColor(0, 0, 255, 255)
-  love.graphics.print(tostring(self.air), self.x, self.y - 50)
-  love.graphics.setColor(255, 0, 0, 255)
-  love.graphics.print(tostring(self.hunger), self.x, self.y - 32)
-  love.graphics.setColor(0, 255, 255, 255)
-  love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
+  if self.textDisplayTime > 0 then
+    love.graphics.setColor(0, 192, 255, 255)
+    love.graphics.print(self.showText, self.x, self.y - 16)
+  end
+  --love.graphics.setColor(0, 0, 255, 255)
+  --love.graphics.print(tostring(self.air), self.x, self.y - 50)
+  --love.graphics.setColor(255, 0, 0, 255)
+  --love.graphics.print(tostring(self.hunger), self.x, self.y - 32)
+  --love.graphics.setColor(0, 255, 255, 255)
+  --love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
   love.graphics.setColor(255, 255, 255, 255)
 end
 
-function Player:update(dt)
-  self.x = self.x + 25 * self.dx * dt
-  self.y = self.y + 25 * self.dy * dt
+function Player:update(dt, safe)
+  self.x = self.x + 45 * self.dx * dt
+  self.y = self.y + 45 * self.dy * dt
+  
+  if self.x < 0 then
+    self.x = 0
+  end
+  
+  if self.x + self.width > self.mapWidth then
+    self.x = self.mapWidth - self.width
+  end
+  
+  if self.y < 0 then
+    self.y = 0
+  end
+  
+  if self.y + self.height > self.mapHeight then
+    self.y = self.mapHeight - self.height
+  end
+
   if self.dead then
     return
   end
-  self.air = self.air - 5 * dt
-  self.thurst = self.thurst - 5 * dt
-  self.hunger = self.hunger - 2 * dt
+  
+  if safe == false then
+    self.air = self.air - 2.5 * dt
+    self.thurst = self.thurst - 1.75 * dt
+    self.hunger = self.hunger - 1 * dt
+  end
+  
   if self.air < 0 or self.thurst < 0 or self.hunger < 0 then
-    self.dead = true
+    self:die()
     self.dx = 0
     self.dy = 0
   end
@@ -77,6 +107,7 @@ function Player:update(dt)
   self:setDirection(direction)
   self.currentDirection = direction
 	
+  self.textDisplayTime = self.textDisplayTime - dt
 end
 
 function Player:keypressed(key)
@@ -154,23 +185,50 @@ function Player:getPosition()
   return self.x + self.width / 2, self.y + self.height / 2
 end
 
-function Player:eat()
+function Player:eat(v)
   self.hunger = self.hunger + 20
   if self.hunger > 100 then
     self.hunger = 100
   end
 end
 
-function Player:breath()
+function Player:breath(v)
   self.air = self.air + 20
   if self.air > 100 then
     self.air = 100
   end
 end
 
-function Player:drink()
+function Player:drink(v)
   self.thurst = self.thurst + 20
   if self.thurst > 100 then
     self.thurst = 100
   end
+end
+
+function Player:getPiece(v)
+  self.partsLeft = self.partsLeft - 1
+  self.textDisplayTime = 7.5
+  if self.partsLeft == 0 then
+    self.showText = "Let's go home!"
+  else
+    self.showText = "I will be home soon again!"
+  end
+end
+
+function Player:die()
+  if not self:isRescued() then
+    self.dead = true
+  end
+end
+
+function Player:isDead()
+  return self.dead
+end
+
+function Player:isRescued()
+  if self.partsLeft == 0 then
+    return true
+  end
+  return false
 end
