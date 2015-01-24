@@ -9,6 +9,7 @@ function Water:__init(image, x, y, size)
   self.y = y
   self.size = size
   self.image = image
+  self.waterType = math.random(1, 3)
   self.spriteBatch = love.graphics.newSpriteBatch(image)
   self:generateBatch()
   --self.quad = love.graphics.newQuad(0, 0, size, size, self.image:getWidth(), self.image:getHeight())
@@ -78,4 +79,14 @@ function Water:inside(x, y)
       return true
   end
   return false
+end
+
+function Water:getType()
+  if self.waterType == 1 then
+    return 'salt'
+  elseif self.waterType == 2 then
+    return 'poison'
+  else
+    return 'water'
+  end
 end

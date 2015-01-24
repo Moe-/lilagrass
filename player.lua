@@ -226,9 +226,18 @@ function Player:bathing(v, dt)
   --  self.thurst = 100
   --end
   
-  self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
   self.textDisplayTime = 7.5
-  self.showText = "Delicious! Salty water!"
+  local wType = v:getType()
+  if wType == 'salt' then
+    self.thurst = self.thurst - 1.5 * self.thurstFactor * dt
+    self.showText = "Delicious! Salty water!"
+  elseif wType == 'poison' then
+    self.thurst = self.thurst - 15 * self.thurstFactor * dt
+    self.showText = "What the hell is this?!?"
+  else
+    self.thurst = self.thurst + 1.5 * self.thurstFactor * dt
+    self.showText = "Like on good old earth!"
+  end
 end
 
 function Player:getPiece(v)
