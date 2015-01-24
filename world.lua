@@ -109,15 +109,6 @@ function World:genParts()
 end
 
 function World:draw()
-love.graphics.setColor(255, 255, 255)
-
-	love.postshader.setBuffer("render")
-  love.graphics.push()
-	love.postshader.setScale(self.scale)
-	love.postshader.setTranslation(self.offsetX, self.offsetY)
-  --love.graphics.translate(self.offsetX, self.offsetY)
-  love.graphics.scale(self.scale)
-  love.graphics.translate(self.offsetX, self.offsetY)
   self.background:draw()
 
 lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
@@ -192,10 +183,6 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
 		
 		love.graphics.setColor(255, 255, 255)
 	end
-	--love.postshader.addEffect("bloom")
-	love.postshader.addEffect("scanlines")
-	love.postshader.draw()
-	love.graphics.pop()
 end
 
 function World:update(dt)

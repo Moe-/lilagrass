@@ -15,6 +15,10 @@ function love.load()
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
+	font2 = love.graphics.newImageFont("gfx/font2.png",
+    " abcdefghijklmnopqrstuvwxyz" ..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+    "123456789.,!?-+/():;%&`'*#=[]\"")
 	love.graphics.setFont(font)
 	sfxPlanet = love.audio.newSource("sfx/planet.wav", "static")
 	sfxPlanet:play()
@@ -51,8 +55,23 @@ function love.draw()
 	elseif game_state == 2 then
 		intro:draw()
 	elseif game_state == 3 then
+		love.graphics.setColor(255, 255, 255)
+
+		love.postshader.setBuffer("render")
+		love.graphics.push()
+		love.postshader.setScale(gWorld.scale)
+		love.postshader.setTranslation(gWorld.offsetX, gWorld.offsetY)
+		--love.graphics.translate(self.offsetX, self.offsetY)
+		love.graphics.scale(gWorld.scale)
+		love.graphics.translate(gWorld.offsetX, gWorld.offsetY)
+ 
 		gWorld:draw()
-		gGui:draw()
+		gGui:draw(gWorld.offsetX, gWorld.offsetY)
+		
+		--love.postshader.addEffect("bloom")
+		love.postshader.addEffect("scanlines")
+		love.postshader.draw()
+		love.graphics.pop()
 	elseif game_state == 4 then
 		credits:draw()
 	end
