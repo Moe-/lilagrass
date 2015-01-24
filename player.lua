@@ -14,6 +14,7 @@ class "Player" {
   showText = "";
   textDisplayTime = 0;
   partsLeft = 0;
+  speed = 100;
 }
 
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
@@ -49,8 +50,8 @@ function Player:draw()
 end
 
 function Player:update(dt, safe)
-  self.x = self.x + 45 * self.dx * dt
-  self.y = self.y + 45 * self.dy * dt
+  self.x = self.x + self.speed * self.dx * dt
+  self.y = self.y + self.speed * self.dy * dt
   
   if self.x < 0 then
     self.x = 0
