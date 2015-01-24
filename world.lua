@@ -408,7 +408,7 @@ function World:update(dt)
     local fx, fy = v:getPosition()
     local distance = getDistance(px, py, fx, fy)
     if distance < 24 then
-      self.player:useBush(v)
+      self.player:useBush(v, dt)
     end
   end
   

@@ -277,7 +277,7 @@ function Player:bathing(v, dt)
   end
 end
 
-function Player:useBush(v)
+function Player:useBush(v, dt)
   if v:takeBerries() then
     self.textDisplayTime = 7.5
     
