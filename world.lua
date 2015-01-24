@@ -19,6 +19,7 @@ class "World" {
   showDrinks = false;
   showAir = false;
   showParts = false;
+  dayCicle = 1;
 }
 
 function World:__init(width, height)
@@ -61,8 +62,9 @@ function World:__init(width, height)
 	lightWorld.setRefractionStrength(32.0)
 
 	-- create light
-	lightHero = lightWorld.newLight(0, 0, 255, 127, 63, 300)
+	lightHero = lightWorld.newLight(0, 0, 255, 127, 63, 400)
 	lightHero.setGlowStrength(0.3)
+	lightHero.setAngle(math.pi * 0.5)
 	
 	footballShadow = lightWorld.newCircle(64, 64, 32)
 end
@@ -100,7 +102,6 @@ function World:genParts()
 end
 
 function World:draw()
-lightWorld.update()	
 love.graphics.setColor(255, 255, 255)
 
 	love.postshader.setBuffer("render")
@@ -112,14 +113,14 @@ love.graphics.setColor(255, 255, 255)
   love.graphics.translate(self.offsetX, self.offsetY)
   self.background:draw()
 
-lightHero.setPosition((self.player.x+self.offsetX)*2, (self.player.y+self.offsetY)*2)
+lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
 footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
   for i, v in pairs(self.safezone) do
     v:draw()
   end
   
-  self.player:draw()
+  
   
   for i, v in pairs(self.food) do
     v:draw()
@@ -139,6 +140,7 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
   
   love.graphics.pop()
   love.graphics.push()
+  lightWorld.update()	
   lightWorld.drawShadow()
   love.graphics.pop()
   love.graphics.push()
@@ -154,6 +156,8 @@ footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football
   love.graphics.push()
    love.graphics.scale(self.scale)
   love.graphics.translate(self.offsetX, self.offsetY)
+  
+   self.player:draw()
   
 	if self.effect_time <= 2 then
 		love.graphics.setColor(255, 255, 255, (2 - self.effect_time) * 127)
@@ -190,6 +194,11 @@ end
 function World:update(dt)
   local px, py = self.player:getPosition()
   local playerSafe = false
+  self.dayCicle = self.dayCicle + dt * 0.2
+  lightWorld.setAmbientColor(
+	math.sin(self.dayCicle) * 127 + 127,
+	math.sin(self.dayCicle) * 127 + 127,
+	math.sin(self.dayCicle) * 63 + 127)
   
   for i, v in pairs(self.safezone) do
     v:update(dt)
