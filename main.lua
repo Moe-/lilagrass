@@ -6,6 +6,7 @@ require('gui')
 require('menu')
 require('intro')
 require('credits')
+require('object')
 require('lib/postshader')
 require('lib/light')
 
@@ -40,6 +41,8 @@ function love.load()
 	menu = newMenu()
 	intro = newIntro()
 	credits = newCredits()
+	objects = newObjects()
+	objects:init()
 end
 
 function love.update(dt)
@@ -49,6 +52,7 @@ function love.update(dt)
 		intro:update(dt)
 	elseif game_state == 3 then
 		gWorld:update(dt)
+		objects:update(dt)
 	elseif game_state == 4 then
 		credits:update(dt)
 	end
@@ -71,6 +75,7 @@ function love.draw()
 		love.graphics.translate(gWorld.offsetX, gWorld.offsetY)
  
 		gWorld:draw()
+		objects:draw()
 		gGui:draw(gWorld.offsetX, gWorld.offsetY)
 		
 		--love.postshader.addEffect("bloom")
@@ -107,6 +112,9 @@ function love.keypressed(key)
 	resetGame()
   elseif key == "3" then
     game_state = 3
+	resetGame()
+  elseif key == "4" then
+    game_state = 4
 	resetGame()
   elseif key == "9" then
     resetGame()
