@@ -15,6 +15,8 @@ function love.load()
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
 	love.graphics.setFont(font)
+	sfxPlanet = love.audio.newSource("sfx/planet.wav", "static")
+	sfxPlanet:play()
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
