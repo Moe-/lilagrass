@@ -30,7 +30,7 @@ function World:__init(width, height)
   self.safezone = {}
   self.parts = {}
   self.background = Background:new()
-  self.player = Player:new(10, 10, self.partsToFind, self.background:getSize())
+  self.player = Player:new(188, 134, self.partsToFind, self.background:getSize())
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
@@ -269,10 +269,12 @@ function World:update(dt)
   
   self.effect_time = self.effect_time + dt
   
-  self:updateScrolling()
+  local oX, oY = self.player:getOffset()
+  self.offsetX = self.offsetX - oX;
+  self.offsetY = self.offsetY - oY;
 end
 
-function World:updateScrolling()
+--[[function World:updateScrolling()
   local px, py = self.player:getPosition()
   --local width, height = self.background:getSize()
   local width = love.window.getWidth() / self.scale
@@ -289,7 +291,7 @@ function World:updateScrolling()
   elseif py + self.offsetY > height - 50 then
     self.offsetY = self.offsetY - 5
   end
-end
+end]]--
 
 function World:keypressed(key)
   self.player:keypressed(key)

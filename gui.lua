@@ -44,7 +44,7 @@ function Gui:drawHunger()
 	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 10, (100-self.hunger)/2, 10)
 	love.graphics.setColor(255, 255, 255)]]--
 	self.foodbarQuad = love.graphics.newQuad(0, 0, 320-(100-self.hunger)*3.2, 64, self.foodbarImage:getWidth(), self.foodbarImage:getHeight())
-	love.graphics.draw(self.foodbarImage, self.foodbarQuad, love.graphics.getWidth()-350, 10)
+	love.graphics.draw(self.foodbarImage, self.foodbarQuad, 25, 10)
 end
 
 function Gui:drawThirst()
@@ -54,7 +54,7 @@ function Gui:drawThirst()
 	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 80, (100-self.thirst)/2, 10)
 	love.graphics.setColor(255, 255, 255)]]--
 	self.drinkbarQuad = love.graphics.newQuad(0, 0, 320-(100-self.thirst)*3.2, 64, self.drinkbarImage:getWidth(), self.drinkbarImage:getHeight())
-	love.graphics.draw(self.drinkbarImage, self.drinkbarQuad, love.graphics.getWidth()-350, 80)
+	love.graphics.draw(self.drinkbarImage, self.drinkbarQuad, 300, 10)
 end
 
 function Gui:drawAir()
@@ -64,7 +64,7 @@ function Gui:drawAir()
 	love.graphics.rectangle("fill", love.graphics.getWidth()-75, 150, self.air/2, 10)
 	love.graphics.setColor(255, 255, 255)]]--
 	self.airbarQuad = love.graphics.newQuad(0, 0, 320-(100-self.air)*3.2, 64, self.airbarImage:getWidth(), self.airbarImage:getHeight())
-	love.graphics.draw(self.airbarImage, self.airbarQuad, love.graphics.getWidth()-350, 150)
+	love.graphics.draw(self.airbarImage, self.airbarQuad, 525, 10)
 end
 
 function Gui:update(hunger, thirst, air)
