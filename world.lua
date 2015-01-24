@@ -71,6 +71,7 @@ function World:__init(width, height)
 	lightHero = lightWorld.newLight(0, 0, 255, 127, 63, 400)
 	lightHero.setGlowStrength(0.3)
 	lightHero.setAngle(math.pi * 0.5)
+	lightHero.setDirection(math.pi)
 	
 	footballShadow = lightWorld.newCircle(64, 64, 32)
 end
