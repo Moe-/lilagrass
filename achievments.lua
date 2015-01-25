@@ -41,7 +41,6 @@ function newAchievments()
 			end
 		end
 		gAchievmentLastPage = math.ceil(self.achievmentCount/3)
-		print("last page", gAchievmentLastPage)
 		
 		self.updateButton(340, 270, 48, 24, ShowMenu)
 		if gAchievmentPage ~= gAchievmentLastPage then
@@ -82,19 +81,43 @@ function newAchievments()
 		local startNum = (gAchievmentPage-1)*3+1
 		local num = startNum
 		local endNum = (gAchievmentPage-1)*3+3
-		for i, v in pairs(gAchievments) do
+		--[[for i, v in pairs(gAchievments) do
 			print(num, startNum, endNum)
 			if num >= startNum then
-				if v:isUnlocked() then
+				if v:isUnlocked() and not v:isShown() then
 					print("draw")
 					v:draw(num-startNum+1)
 					num = num + 1
+					v:show()
 				end
 			end
 			if num > endNum then
 				break
 			end
 		end
+		for i, v in pairs(gAchievments) do
+			v:reset()
+		end]]--
+		local page = 1
+		local achievmentsOnPage = 0
+		for i, v in pairs(gAchievments) do
+			if achievmentsOnPage >= 3 then
+				achievmentsOnPage = 0
+				page = page + 1
+			end
+			if v:isUnlocked() then
+				v:setPage(page)
+				achievmentsOnPage = achievmentsOnPage +1
+			end
+		end
+		achievmentsOnPage = 0
+		for i, v in pairs(gAchievments) do
+			if v:isUnlocked() and v:getPage() == gAchievmentPage then
+				v:draw(achievmentsOnPage+1)
+				achievmentsOnPage = achievmentsOnPage +1
+			end
+		end
+				
 		
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("scanlines")

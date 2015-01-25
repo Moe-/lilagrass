@@ -22,22 +22,22 @@ local achievments = {
 	{
 		name = "kenny",
 		progress = 0,
-		unlocked = true,
+		unlocked = false,
 	},
 	{
 		name = "last",
 		progress = 0,
-		unlocked = true,
+		unlocked = false,
 	},
 	{
 		name = "wilson",
 		progress = 0,
-		unlocked = true,
+		unlocked = false,
 	},
 	{
 		name = "purple",
 		progress = 0,
-		unlocked = true,
+		unlocked = false,
 	},
 }
 return achievments

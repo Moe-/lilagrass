@@ -347,17 +347,23 @@ function World:update(dt)
 	math.sin(self.dayCicle) * 127 + 127,
 	math.sin(self.dayCicle) * 63 + 127)
 	
+  local underground = 'gras'
   for i, v in pairs(self.safezone) do
     v:update(dt)
     playerSafe = playerSafe or v:inside(px, py)
+  end
+  if playerSafe then
+    underground = 'plain'
   end
   
   for i, v in pairs(self.waterzone) do
     v:update(dt)
     if v:inside(px, py) then
       self.player:bathing(v, dt)
+      underground = 'water'
     end
   end
+  self.player:setUnderground(underground)
   
   self.player:update(dt, playerSafe, self.bushes)
   if self.player.hunger < 60 and not self.showFood then

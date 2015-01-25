@@ -14,4 +14,12 @@ Nico Reitmeier (Sound)
 Nicola Robin (Art)
 Philip Braun (Code)
 
+SFX (not GPL):
+footsteps: http://www.freesound.org/people/CharlieX/
+breath: https://www.freesound.org/people/cidchili/
+drinking: https://www.freesound.org/people/Taira%20Komori/
+eating: https://www.freesound.org/people/Thedust82/
+scream: https://www.freesound.org/people/TheSubber13/
+woohoo: https://www.freesound.org/people/Pep_Molina/
+
 The game was made with Löve (http://www.love2d.org)

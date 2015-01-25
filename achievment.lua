@@ -7,10 +7,16 @@ function Achievment:__init(name, progress, unlocked)
   self.image = love.graphics.newImage(self.folder .. self.name .. ".png")
   self.progressNum = progress
   self.unlocked = unlocked
+  self.shown = false
+  self.page = 0
 end
 
 function Achievment:draw(index)
 	love.graphics.draw(self.image, 150*0.5, 75*index)
+end
+
+function Achievment:reset()
+	self.shown = false
 end
 
 function Achievment:progress()
@@ -40,6 +46,19 @@ end
 
 function Achievment:getProgress()
 	return self.progress
+end
+
+function Achievment:isShown()
+	return self.shown
+end
+function Achievment:show()
+	self.shown = true
+end
+function Achievment:setPage(num)
+	self.page = num
+end
+function Achievment:getPage()
+	return self.page
 end
 
 function table.contains(table, toCheck)
