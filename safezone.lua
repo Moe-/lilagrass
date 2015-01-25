@@ -23,6 +23,8 @@ function SafeZone:update(dt)
 end
 
 function SafeZone:inside(x, y)
+  x = x - 32
+  y = y - 32
   if x > self.x and x < self.x + self.size and y > self.y and y < self.y + self.size then
       return true
   end
