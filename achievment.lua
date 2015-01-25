@@ -5,7 +5,7 @@ class "Achievment" {
 function Achievment:__init(name, progress, unlocked)
   self.name = name
   self.image = love.graphics.newImage(self.folder .. self.name .. ".png")
-  self.progress = progress
+  self.progressNum = progress
   self.unlocked = unlocked
 end
 
@@ -14,14 +14,14 @@ function Achievment:draw(index)
 end
 
 function Achievment:progress()
-	if name == "collector" then
-		self.progress = self.progress + 1
-		if progress >= 10 then
+	if self.name == "collector" then
+		self.progressNum = self.progressNum + 1
+		if self.progressNum >= 10 then
 			self.unlocked = true
 		end
 	end
-	if name == "poison" then
-		self.progress = 1
+	if self.name == "poison" then
+		self.progressNum = 1
 		self.unlocked = true
 	end
 end

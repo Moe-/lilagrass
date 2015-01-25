@@ -152,6 +152,7 @@ function newObjects()
 
 				if v.distance <= v.radius then
 					if v.collectorAchievment then
+						print("useless")
 						if not gAchievments["collector"]:isUnlocked() then
 							gAchievments["collector"]:progress()
 						end

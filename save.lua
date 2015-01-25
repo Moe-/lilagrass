@@ -1,5 +1,10 @@
 local achievments = {
 	{
+		name = "first",
+		progress = 1,
+		unlocked = true,
+	},
+	{
 		name = "poison",
 		progress = 0,
 		unlocked = false,
@@ -17,27 +22,22 @@ local achievments = {
 	{
 		name = "kenny",
 		progress = 0,
-		unlocked = false,
+		unlocked = true,
 	},
 	{
 		name = "last",
 		progress = 0,
-		unlocked = false,
+		unlocked = true,
 	},
 	{
 		name = "wilson",
 		progress = 0,
-		unlocked = false,
+		unlocked = true,
 	},
 	{
 		name = "purple",
 		progress = 0,
-		unlocked = false,
-	},
-	{
-		name = "first",
-		progress = 1,
 		unlocked = true,
-	}
+	},
 }
 return achievments

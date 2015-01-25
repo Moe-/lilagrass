@@ -3,12 +3,12 @@ function ShowMenu()
   setMusic(game_state)
 end
 
-function NextPage()
-
+function NextPage(self)
+	gAchievmentPage = gAchievmentPage + 1
 end
 
-function PrevPage()
-
+function PrevPage(self)
+	gAchievmentPage = gAchievmentPage -1
 end
 
 function newAchievments()
@@ -27,8 +27,8 @@ function newAchievments()
 		self.spaceship_move = 0
 		self.spaceship_scale = 1
 		self.effect_time = 0
-		self.page = 1
-		self.lastPage = 1
+		gAchievmentPage = 1
+		gAchievmentLastPage = 1
 	end
 
 	obj.update = function(self, dt)
@@ -40,13 +40,14 @@ function newAchievments()
 				self.achievmentCount = self.achievmentCount + 1
 			end
 		end
-		self.lastPage = math.ceil(self.achievmentCount/3)
+		gAchievmentLastPage = math.ceil(self.achievmentCount/3)
+		print("last page", gAchievmentLastPage)
 		
 		self.updateButton(340, 270, 48, 24, ShowMenu)
-		if self.page ~= self.lastPage then
+		if gAchievmentPage ~= gAchievmentLastPage then
 			self.updateButton((love.window.getWidth()-125)/2, 150, 48, 32, NextPage)
 		end
-		if self.page ~= 1 then
+		if gAchievmentPage ~= 1 then
 			self.updateButton((125)/2-48, 150, 48, 32, PrevPage)
 		end
 	end
@@ -78,13 +79,16 @@ function newAchievments()
 		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 225, (love.window.getWidth()-300)/2, 50)
 		love.graphics.setColor(255, 255, 255)
-		local num = 1
-		local startNum = (self.page-1)*3+1
-		local endNum = (self.page-1)*3+3
+		local startNum = (gAchievmentPage-1)*3+1
+		local num = startNum
+		local endNum = (gAchievmentPage-1)*3+3
 		for i, v in pairs(gAchievments) do
+			print(num, startNum, endNum)
 			if num >= startNum then
 				if v:isUnlocked() then
+					print("draw")
 					v:draw(num-startNum+1)
+					num = num + 1
 				end
 			end
 			if num > endNum then
@@ -101,10 +105,10 @@ function newAchievments()
 		love.graphics.push()
 		love.graphics.scale(2)
 		self.drawButton("Back", 340, 270, 48, 24)
-		if self.page ~= self.lastPage then
+		if gAchievmentPage ~= gAchievmentLastPage then
 			self.drawButton("next\nPage", (love.window.getWidth()-125)/2, 150, 48, 32)
 		end
-		if self.page ~= 1 then
+		if gAchievmentPage ~= 1 then
 			self.drawButton("prev\nPage", (125)/2-48, 150, 48, 32)
 		end
 		love.graphics.pop()
