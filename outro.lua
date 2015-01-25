@@ -34,10 +34,12 @@ function newOutro()
 	obj.draw = function(self)
 		love.graphics.push()
 		love.graphics.scale(2)
-		if self.effect_time <= 6 then
-			love.graphics.translate(math.random(0,self.effect_time), math.random(0,self.effect_time))
-		elseif self.effect_time <= 7 then
-			love.graphics.translate(math.random(0,(7-self.effect_time)*7), math.random(0,(7-self.effect_time)*7))
+		if self.effect_time >= 2 then
+			if self.effect_time <= 3 then
+				love.graphics.translate(math.random(0,self.effect_time-1)*0.5, math.random(0,self.effect_time-1)*0.5)
+			elseif self.effect_time <= 4 then
+				love.graphics.translate(math.random(0,(4-self.effect_time))*0.5, math.random(0,(4-self.effect_time))*0.5)
+			end
 		end
 		love.postshader.setBuffer("render")
 		love.postshader.setScale(2)
@@ -61,9 +63,6 @@ function newOutro()
 		end
 
 		love.postshader.addEffect("bloom")
-		if self.effect_time <= 7 then
-			love.postshader.addEffect("blur",math.floor(self.effect_time),math.floor(self.effect_time))
-		end
 
 		love.postshader.addEffect("scanlines")
 		love.postshader.draw()

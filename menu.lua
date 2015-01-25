@@ -75,9 +75,11 @@ function newMenu()
 		love.graphics.draw(obj.sysParticle, 40, 136 + math.sin(self.effect_time * 4) * 2);
 		
 		love.graphics.scale(2)
-		love.graphics.printf("Purple Planet", 0, 16, 200, "center")
+		love.graphics.setColor(255, math.max(127, 255 - self.effect_time * 100), math.min(255, self.effect_time * 100 + 127))
+		love.graphics.printf("Purple Grass", 0, 16, 200, "center")
 		love.graphics.scale(0.5)
 		
+		love.graphics.setColor(255, 255, 255)
 		self.drawBlur(160, 128 + 0, 96, 24)
 		self.drawBlur(160, 128 + 32, 96, 24)
 		self.drawBlur(160, 128 + 64, 96, 24)
@@ -107,7 +109,7 @@ function newMenu()
 		love.graphics.setColor(0, 0, 0)
 		love.graphics.rectangle("line", x, y, width, height)
 		if love.mouse.getX() >= x * 2 and love.mouse.getX() <= (x + width) * 2 and love.mouse.getY() >= y * 2 and love.mouse.getY() <= (y + height) * 2 then
-			love.graphics.setColor(255, 255, 127, 191)
+			love.graphics.setColor(255, 127, 255, 191)
 		else
 			love.graphics.setColor(255, 255, 255, 191)
 		end
@@ -115,7 +117,7 @@ function newMenu()
 		love.graphics.setColor(0, 0, 0, 191)
 		love.graphics.rectangle("fill", x + 1, y + 1, width - 2, height - 2)
 		if love.mouse.getX() >= x * 2 and love.mouse.getX() <= (x + width) * 2 and love.mouse.getY() >= y * 2 and love.mouse.getY() <= (y + height) * 2 then
-			love.graphics.setColor(255, 255, 127, 191)
+			love.graphics.setColor(255, 127, 255, 191)
 		else
 			love.graphics.setColor(255, 255, 255, 191)
 		end
