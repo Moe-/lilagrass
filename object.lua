@@ -1,6 +1,7 @@
 function newObjects()
 	local obj = {}
 	obj.objects = {}
+	obj.timer = 0
 
 	obj.img = {}
 	obj.quad = {}
@@ -38,6 +39,8 @@ function newObjects()
 		o.hunger = 0
 		o.air = 0
 		o.win = false
+		o.wind = false
+		o.windStrength = 0.1
 		
 		table.insert(self.objects, o)
 		
@@ -109,13 +112,21 @@ function newObjects()
 				elseif r < 50 then
 					self:new("item", x, y, 24, 32, 2, 3, 12, 16)
 				elseif r < 60 then
-					self:new("trees", x, y, 48, 64, 0, 0, 24, 56)
+					local o = self:new("trees", x, y, 48, 64, 0, 0, 24, 56)
+					o.wind = true
+					o.windStrength = 0.1
 				elseif r < 70 then
-					self:new("trees", x, y, 48, 64, 1, 0, 24, 56)
+					local o = self:new("trees", x, y, 48, 64, 1, 0, 24, 56)
+					o.wind = true
+					o.windStrength = 0.1
 				elseif r < 80 then
-					self:new("trees", x, y, 48, 64, 0, 1, 24, 56)
+					local o = self:new("trees", x, y, 48, 64, 0, 1, 24, 56)
+					o.wind = true
+					o.windStrength = 0.1
 				elseif r < 90 then
-					self:new("trees", x, y, 48, 64, 1, 1, 24, 56)
+					local o = self:new("trees", x, y, 48, 64, 1, 1, 24, 56)
+					o.wind = true
+					o.windStrength = 0.1
 				elseif r < 100 then
 					self:new("item", x, y, 24, 32, 0, 4, 12, 16)
 				elseif r < 110 then
@@ -128,6 +139,8 @@ function newObjects()
 	end
 	
 	obj.update = function(self, dt)
+		self.timer = self.timer + dt
+
 		for k, v in ipairs(self.objects) do
 			if not v.hidden then
 				v.distance = math.distance(gWorld.player.x + 12, v.x + v.ox, gWorld.player.y + 24, v.y + v.oy)
@@ -173,10 +186,22 @@ function newObjects()
 			if not v.hidden and v.distance and v.distance <= 300 then
 				if (layer == "bottom" and ((gWorld.player.y + 16) > (v.y + v.oy) or not v.collision)) or (layer == "top" and (gWorld.player.y + 16) < (v.y + v.oy) and v.collision) then
 					self.quad[v.group]:setViewport(v.tx * v.width, v.ty * v.height, v.width, v.height)
-					love.graphics.setColor(0, 0, 0, 127)
-					love.graphics.draw(self.img[v.group], self.quad[v.group], v.x + 2, v.y - 2)
+					love.graphics.setColor(0, 0, 0, 85)
+					if v.collision then
+						if v.wind then
+							love.graphics.draw(self.img[v.group], self.quad[v.group], v.x + v.width, v.y + v.height, 0, 1, 1, v.width, v.height, -0.5 + math.sin(self.timer) * v.windStrength, 0)
+						else
+							love.graphics.draw(self.img[v.group], self.quad[v.group], v.x + v.width, v.y + v.height, 0, 1, 1, v.width, v.height, -0.5, 0)
+						end
+					else
+						love.graphics.draw(self.img[v.group], self.quad[v.group], v.x + 2, v.y - 2)
+					end
 					love.graphics.setColor(255, 255, 255)
-					love.graphics.draw(self.img[v.group], self.quad[v.group], v.x, v.y)
+					if v.wind then
+						love.graphics.draw(self.img[v.group], self.quad[v.group], v.x + v.width, v.y + v.height, 0, 1, 1, v.width, v.height, math.sin(self.timer) * v.windStrength, 0)
+					else
+						love.graphics.draw(self.img[v.group], self.quad[v.group], v.x, v.y)
+					end
 				end
 			end
 		end

@@ -131,8 +131,10 @@ function Gui:drawRepairProgress(x, y)
 	love.graphics.draw(self.repairIcon, 360 - x, 10 - y)
 	love.graphics.setFont(font2)
 	local foundItems = self.maxRepairItems - self.partsLeft
+	love.graphics.setColor(63, 255, 31)
 	love.graphics.printf(foundItems .. "/" .. self.maxRepairItems, 275 - x + 24, 10 - y + 8, 88, "center")
 	love.graphics.setFont(font)
+	love.graphics.setColor(255, 255, 255)
 end
 
 function Gui:update(hunger, thirst, air, partsLeft)

@@ -17,7 +17,8 @@ function Particle:__init(x, y, r, g, b, lifetime)
     end
   end
   
-  local i = love.graphics.newImage(id)
+  --local i = love.graphics.newImage(id)
+  local i = love.graphics.newImage("gfx/particle.png")
   
   self.p = love.graphics.newParticleSystem(i, 256)
   self.p:setEmissionRate          (20)
@@ -32,7 +33,7 @@ function Particle:__init(x, y, r, g, b, lifetime)
   self.p:setSpeed                 (10, 30)
   self.p:setRadialAcceleration    (10)
   self.p:setTangentialAcceleration(10)
-  self.p:setSizes                 (1)
+  self.p:setSizes                 (0.1, 1)
   self.p:setSizeVariation         (0.5)
   self.p:setRotation              (0)
   self.p:setSpin                  (0)

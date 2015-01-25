@@ -14,11 +14,11 @@ function ShipPiece:__init(image, x, y)
 end
 
 function ShipPiece:draw()
-  self.particle:draw()
   love.graphics.setColor(0, 0, 0, 127)
   love.graphics.draw(self.image, self.quad, self.x + 2, self.y + 2)
   love.graphics.setColor(255, 255, 255)
   love.graphics.draw(self.image, self.quad, self.x, self.y)
+  self.particle:draw()
 end
 
 function ShipPiece:update(dt)
