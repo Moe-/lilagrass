@@ -14,6 +14,10 @@ require('lib/light')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
+  
+  gIcon = love.image.newImageData("gfx/icon.png")
+  love.window.setIcon(gIcon)
+  
 	font = love.graphics.newImageFont("gfx/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
