@@ -34,7 +34,12 @@ function newAchievments()
 	obj.update = function(self, dt)
 		self.effect_time = self.effect_time + dt
 		
-		self.achievmentCount = #gAchievments
+		self.achievmentCount = 0
+		for i, v in pairs(gAchievments) do
+			if v:isUnlocked() then
+				achievmentCount = achievmentCount + 1
+			end
+		end
 		self.lastPage = math.ceil(achievmentCount/3)
 		
 		self.updateButton(340, 270, 48, 24, ShowMenu)

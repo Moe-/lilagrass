@@ -57,7 +57,12 @@ function love.load()
 
 	gObjects = newObjects()
 	gObjects:init()
+	
 	gAchievments = {}
+	achievmentSave = dofile(arg[1] .. "/save.lua")	
+	for i, v in pairs(achievmentSave) do
+		gAchievments[v.name] = Achievment:new(v.name, v.progress, v.unlocked)
+	end
 end
 
 function love.update(dt)
