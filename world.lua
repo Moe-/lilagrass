@@ -50,6 +50,7 @@ function World:__init(width, height)
   --self.safezonegfx:setWrap("repeat", "repeat")
   self.waterzonegfx = love.graphics.newImage("gfx/water_tiles_on_grass.png")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
+  self.shippiecegfx2 = love.graphics.newImage("gfx/spanner.png")
   self.bushgfx = love.graphics.newImage("gfx/item_tileset.png")
   
   self.effect_time = 0
@@ -211,12 +212,17 @@ function World:genParts()
   local x = 0
   local y = 0
   repeat 
-	x = math.random(1, self.background:getWidth() - 32)
+    x = math.random(1, self.background:getWidth() - 32)
   until self.playerInitialX - x < -512 or self.playerInitialX - x > 512 
   repeat 
-	y = math.random(1, self.background:getHeight() - 32)
+    y = math.random(1, self.background:getHeight() - 32)
   until self.playerInitialY - y < -512 or self.playerInitialY - y > 512 
-  table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
+  
+  if math.random(1, 2) == 1 then
+    table.insert(self.parts, ShipPiece:new(self.shippiecegfx, x, y))
+  else
+    table.insert(self.parts, ShipPiece:new(self.shippiecegfx2, x, y))
+  end
 end
 
 function World:draw()
