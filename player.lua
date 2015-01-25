@@ -44,7 +44,7 @@ function Player:draw()
   
   if self.textDisplayTime > 0 then
     love.graphics.setColor(0, 192, 255, 255)
-    love.graphics.print(self.showText, self.x-125, self.y - 16)
+    love.graphics.printf(self.showText, self.x - 200, self.y - 16, 400, "center")
   end
   --love.graphics.setColor(0, 0, 255, 255)
   --love.graphics.print(tostring(self.air), self.x, self.y - 50)
@@ -52,6 +52,14 @@ function Player:draw()
   --love.graphics.print(tostring(self.hunger), self.x, self.y - 32)
   --love.graphics.setColor(0, 255, 255, 255)
   --love.graphics.print(tostring(self.thurst), self.x, self.y - 16)
+  love.graphics.setColor(255, 255, 255, 255)
+end
+
+function Player:drawText()
+  if self.textDisplayTime > 0 then
+    love.graphics.setColor(0, 192, 255, 255)
+    love.graphics.printf(self.showText, self.x - 200, self.y - 16, 400, "center")
+  end
   love.graphics.setColor(255, 255, 255, 255)
 end
 
@@ -144,7 +152,7 @@ function Player:update(dt, safe, bushes)
 	direction = 2
   end
   if self.currentDirection == direction and self.dWalking > 0.15 then
-	self.dWalking = self.dWalking - 0.15
+	self.dWalking = self.dWalking - 0.12
 	if self.walkingState < 3 then
 		self.walkingState = self.walkingState + 1
 	else

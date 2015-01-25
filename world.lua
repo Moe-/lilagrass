@@ -88,7 +88,7 @@ function World:__init(width, height)
 	--lightHero.setGlowStrength(0.3)
 	lightHero.setAngle(math.pi * 0.5)
 	lightHero.setDirection(math.pi)
-	lightHero2 = lightWorld.newLight(0, 0, 255, 127, 63, 100)
+	lightHero2 = lightWorld.newLight(0, 0, 255, 127, 63, 200)
 	
 	-- add water
 	self.refraction_normal = love.graphics.newImage("gfx/refraction_normal.png")
@@ -100,7 +100,7 @@ function World:__init(width, height)
 	--objectTest.setShadowDimension(64, 64)
 	--self.water.setReflection(true)
 	
-	--footballShadow = lightWorld.newCircle(64, 64, 32)
+	--shipShadow = lightWorld.newCircle(900, 900, 128)
 end
 
 function World:genObj()
@@ -287,6 +287,8 @@ function World:draw()
 	love.graphics.scale(self.scale)
 	love.graphics.translate(self.offsetX, self.offsetY)
   
+  gWorld.player:drawText()
+  
   love.graphics.pop()
   love.graphics.push()
   lightWorld.drawShine()
@@ -314,11 +316,11 @@ function World:draw()
 		love.graphics.printf("You managed to escape from this planet!", playerX-200, playerY - self.centerPosY +30, 400, "center")
 	end
 
-	if self.effect_time >= 2 and self.effect_time <= 10 then
+	if self.effect_time >= 2 and self.effect_time <= 4 then
 		if self.effect_time <= 6 then
 			love.graphics.setColor(255, 255, 255, (self.effect_time - 2) * 63)
 		else
-			love.graphics.setColor(255, 255, 255,(10 - self.effect_time) * 63)
+			love.graphics.setColor(255, 255, 255,(4 - self.effect_time) * 63)
 		end
 
 		love.graphics.scale(2)

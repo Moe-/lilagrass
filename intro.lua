@@ -38,7 +38,7 @@ function newIntro()
 		self.spaceship_scale = self.spaceship_scale - dt * 0.15
 		self.effect_time = self.effect_time + dt
 		
-		if intro.effect_time >= 7 then
+		if self.effect_time >= 7 then
 			game_state = 3
 			resetGame()
 			setMusic(game_state)

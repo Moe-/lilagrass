@@ -5,6 +5,7 @@ require('world')
 require('gui')
 require('menu')
 require('intro')
+require('outro')
 require('credits')
 require('object')
 require('lib/postshader')
@@ -41,6 +42,7 @@ function love.load()
 	menu = newMenu()
 	intro = newIntro()
 	credits = newCredits()
+	outro = newOutro()
 
 	gObjects = newObjects()
 	gObjects:init()
@@ -56,6 +58,8 @@ function love.update(dt)
 		gObjects:update(dt)
 	elseif game_state == 4 then
 		credits:update(dt)
+	elseif game_state == 5 then
+		outro:update(dt)
 	end
 end
 
@@ -84,6 +88,8 @@ function love.draw()
 		love.graphics.pop()
 	elseif game_state == 4 then
 		credits:draw()
+	elseif game_state == 5 then
+		outro:draw()
 	end
 end
 
@@ -118,6 +124,10 @@ function love.keypressed(key)
 	resetGame()
   elseif key == "4" then
     game_state = 4
+	resetGame()
+  elseif key == "5" then
+    game_state = 5
+	outro:reset()
 	resetGame()
   elseif key == "9" then
     resetGame()
