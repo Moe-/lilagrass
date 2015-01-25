@@ -16,10 +16,10 @@ require('lib/TSerial')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
-  
-  gIcon = love.image.newImageData("gfx/icon.png")
-  love.window.setIcon(gIcon)
-  
+
+	gIcon = love.image.newImageData("gfx/icon.png")
+	love.window.setIcon(gIcon)
+
 	font = love.graphics.newImageFont("gfx/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
@@ -33,10 +33,14 @@ function love.load()
 	gMusicMenu:setLooping(true)
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
+	gMusicIntro = love.audio.newSource("sfx/intro.mp3", "stream")
+	gMusicIntro:setLooping(true)
+	gMusicOutro = love.audio.newSource("sfx/outro.mp3", "stream")
+	gMusicOutro:setLooping(true)
 	gMusicMenu:play()
-  loadPlayerSounds()
+	loadPlayerSounds()
   
-  gScreenCount = 0
+	gScreenCount = 0
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
