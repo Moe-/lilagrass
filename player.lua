@@ -23,6 +23,7 @@ class "Player" {
   airFactor = 1.5;
   hungerFactor = 0.75;
   talkNext = 0;
+  underground = 'gras';
 }
 
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
@@ -183,6 +184,7 @@ function Player:keypressed(key)
   elseif key == 'd' then
     self.dx = 1
   end
+  self:playWalkSound()
 end
 
 function Player:keyreleased(key)
@@ -217,6 +219,7 @@ function Player:keyreleased(key)
       self.dx = -1
     end
   end
+  self:playWalkSound()
 end
 
 function Player:setDirection(direction)
@@ -269,6 +272,9 @@ function Player:eat(v)
   if self.hunger > 100 then
     self.hunger = 100
   end
+  
+  gEatingSound:rewind()
+  gEatingSound:play()
 end
 
 function Player:breath(v)
@@ -276,6 +282,9 @@ function Player:breath(v)
   if self.air > 100 then
     self.air = 100
   end
+  
+  gBreathSound:rewind()
+  gBreathSound:play()
 end
 
 function Player:drink(v)
@@ -283,6 +292,9 @@ function Player:drink(v)
   if self.thurst > 100 then
     self.thurst = 100
   end
+  
+  gDrinkingSound:rewind()
+  gDrinkingSound:play()
 end
 
 function Player:bathing(v, dt)
@@ -411,6 +423,21 @@ function loadPlayerSounds()
   table.insert(gPlayerTired, love.audio.newSource("sfx/tired_3b.mp3", "stream"))
   table.insert(gPlayerTired, love.audio.newSource("sfx/tired_4a.mp3", "stream"))
   table.insert(gPlayerTired, love.audio.newSource("sfx/tired_4b.mp3", "stream"))
+  
+  gWalkSounds = {}
+  table.insert(gWalkSounds, love.audio.newSource("sfx/step.ogg", "static"))
+  table.insert(gWalkSounds, love.audio.newSource("sfx/step_gras.ogg", "static"))
+  table.insert(gWalkSounds, love.audio.newSource("sfx/step_water.ogg", "static"))
+  gWalkSounds[1]:setLooping(true)
+  gWalkSounds[2]:setLooping(true)
+  gWalkSounds[3]:setLooping(true)
+  gWalkSounds[1]:setVolume(0.1)
+  gWalkSounds[2]:setVolume(0.1)
+  gWalkSounds[3]:setVolume(0.1)
+  
+  gBreathSound = love.audio.newSource("sfx/breath.ogg", "static")
+  gDrinkingSound = love.audio.newSource("sfx/drinking.mp3", "static")
+  gEatingSound = love.audio.newSource("sfx/eating.mp3", "static")
 end
 
 function Player:talk(dt)
@@ -437,5 +464,33 @@ function Player:talk(dt)
       gPlayerHungry[index]:play()
       self.talkNext = 10 
     end
+  end
+end
+
+function Player:setUnderground(underground)
+  if self.underground ~= underground then
+    self.underground = underground
+  end
+end
+
+function Player:playWalkSound()
+  if self.dx ~= 0 or self.dy ~= 0 then
+    if self.underground == 'gras' then
+      gWalkSounds[1]:stop()
+      gWalkSounds[2]:play()
+      gWalkSounds[3]:stop()
+    elseif self.underground == 'plain' then
+      gWalkSounds[1]:play()
+      gWalkSounds[2]:stop()
+      gWalkSounds[3]:stop()
+    elseif self.underground == 'water' then
+      gWalkSounds[1]:stop()
+      gWalkSounds[2]:stop()
+      gWalkSounds[3]:play()
+    end
+  else
+    gWalkSounds[1]:stop()
+    gWalkSounds[2]:stop()
+    gWalkSounds[3]:stop()
   end
 end
