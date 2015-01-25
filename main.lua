@@ -8,6 +8,7 @@ require('intro')
 require('outro')
 require('credits')
 require('object')
+require('particle')
 require('lib/postshader')
 require('lib/light')
 
@@ -27,6 +28,8 @@ function love.load()
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
 	gMusicMenu:play()
+  
+  gScreenCount = 0
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
@@ -131,6 +134,10 @@ function love.keypressed(key)
 	resetGame()
   elseif key == "9" then
     resetGame()
+  elseif key == "f4" then
+    local s = love.graphics.newScreenshot() --ImageData
+    s:encode("pic" .. gScreenCount .. ".png", 'png')
+    gScreenCount = gScreenCount + 1
   end
   setMusic(game_state)
 end
