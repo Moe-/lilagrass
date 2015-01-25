@@ -31,6 +31,7 @@ function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
   self.y = y
   self.lastX = x
   self.lastY = y
+  self.playDeadSound = true
   self.mapWidth = mapWidth
   self.mapHeight = mapHeight
   self.image = love.graphics.newImage("gfx/hero.png")
@@ -348,11 +349,19 @@ function Player:getPiece(v)
   else
     self.showText = "Back to the spaceship!"
   end
+  
+  gWoohooSound:rewind()
+  gWoohooSound:play()
 end
 
 function Player:die()
   if not self:isRescued() then
     self.dead = true
+    if self.playDeadSound == true then
+      gScreamSound:rewind()
+      gScreamSound:play()
+      self.playDeadSound = false
+    end
 	self.quad:setViewport(0, 128, 24, 32)
   end
 end
@@ -438,6 +447,8 @@ function loadPlayerSounds()
   gBreathSound = love.audio.newSource("sfx/breath.ogg", "static")
   gDrinkingSound = love.audio.newSource("sfx/drinking.mp3", "static")
   gEatingSound = love.audio.newSource("sfx/eating.mp3", "static")
+  gScreamSound = love.audio.newSource("sfx/scream.ogg", "static")
+  gWoohooSound = love.audio.newSource("sfx/woohoo.mp3", "static")
 end
 
 function Player:talk(dt)
