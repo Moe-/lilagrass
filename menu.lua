@@ -53,10 +53,10 @@ function newMenu()
 	obj.update = function(self, dt)
 		self.effect_time = self.effect_time + dt
 		
-		self.updateButton(140, 112 + 0, 130, 24, StartGame)
-		self.updateButton(140, 112 + 32, 130, 24, ShowCredits)
-		self.updateButton(140, 112 + 64, 130, 24, ShowAchievments)
-		self.updateButton(140, 112 + 96, 130, 24, QuitGame)
+		self.updateButton(120, 112 + 0, 170, 24, StartGame)
+		self.updateButton(120, 112 + 32, 170, 24, ShowCredits)
+		self.updateButton(120, 112 + 64, 170, 24, ShowAchievments)
+		self.updateButton(120, 112 + 96, 170, 24, QuitGame)
 		
 		self.sysParticle:update(dt);
 	end
@@ -85,9 +85,10 @@ function newMenu()
 		love.graphics.scale(0.5)
 		
 		love.graphics.setColor(255, 255, 255)
-		self.drawBlur(160, 128 + 0, 96, 24)
-		self.drawBlur(160, 128 + 32, 96, 24)
-		self.drawBlur(160, 128 + 64, 96, 24)
+		self.drawBlur(120, 112 + 0, 170, 24)
+		self.drawBlur(120, 112 + 32, 170, 24)
+		self.drawBlur(120, 112 + 64, 170, 24)
+		self.drawBlur(120, 112 + 96, 170, 24)
 
 		love.graphics.setColor(255, 255, 255)
 		love.postshader.addEffect("bloom")
@@ -98,10 +99,13 @@ function newMenu()
 		
 		love.graphics.push()
 		love.graphics.scale(2)
-		self.drawButton("Start", 140, 112 + 0, 130, 24)
-		self.drawButton("Credits", 140, 112 + 32, 130, 24)
-		self.drawButton("Achievments", 140, 112 + 64, 130, 24)
-		self.drawButton("Quit", 140, 112 + 96, 130, 24)
+		self.drawButton("Start", 120, 112 + 0, 170, 24)
+		self.drawButton("Credits", 120, 112 + 32, 170, 24)
+		self.drawButton("Achievments", 120, 112 + 64, 170, 24)
+		self.drawButton("Quit", 120, 112 + 96, 170, 24)
+		
+		love.graphics.setColor(255, 255, 255, 127)
+		love.graphics.printf("v0.7b", 0, 280, 390, "right")
 		love.graphics.pop()
 	end
 	

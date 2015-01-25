@@ -12,6 +12,7 @@ require('object')
 require('particle')
 require('lib/postshader')
 require('lib/light')
+require('lib/TSerial')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
