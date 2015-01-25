@@ -7,6 +7,7 @@ require('menu')
 require('intro')
 require('credits')
 require('object')
+require('particle')
 require('lib/postshader')
 require('lib/light')
 

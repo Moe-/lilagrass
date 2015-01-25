@@ -10,9 +10,11 @@ function ShipPiece:__init(image, x, y)
   self.quad = love.graphics.newQuad(0, 0, 1024, 1024, self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
+  self.particle = Particle:new(self.x + self.width/2, self.y + self.height / 2, math.random(0, 256), math.random(0, 256), math.random(0, 256), 999999999)
 end
 
 function ShipPiece:draw()
+  self.particle:draw()
   love.graphics.setColor(0, 0, 0, 127)
   love.graphics.draw(self.image, self.quad, self.x + 2, self.y + 2)
   love.graphics.setColor(255, 255, 255)
@@ -20,7 +22,7 @@ function ShipPiece:draw()
 end
 
 function ShipPiece:update(dt)
-  
+  self.particle:update(dt)
 end
 
 function ShipPiece:getPosition()
