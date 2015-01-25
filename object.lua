@@ -182,6 +182,9 @@ function newObjects()
 						game_state = 6
 						outro:reset()
 						resetGame()
+						if not gAchievments["winner"]:isUnlocked() then
+							gAchievments["winner"]:progress()
+						end
 					end
 				end
 			end
