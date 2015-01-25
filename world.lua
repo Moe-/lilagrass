@@ -76,7 +76,7 @@ function World:__init(width, height)
     self:genBushes()
   end
   
-  self.football = Football:new(150, 150, self.background:getSize())
+  self.football = Football:new(880, 1055, self.background:getSize())
   self.spawnNextItemIn = self.itemSpawnTime
  
 	-- create light world
@@ -86,9 +86,10 @@ function World:__init(width, height)
 
 	-- create light
 	lightHero = lightWorld.newLight(0, 0, 255, 127, 63, 400)
-	lightHero.setGlowStrength(0.3)
+	--lightHero.setGlowStrength(0.3)
 	lightHero.setAngle(math.pi * 0.5)
 	lightHero.setDirection(math.pi)
+	lightHero2 = lightWorld.newLight(0, 0, 255, 127, 63, 100)
 	
 	-- add water
 	self.refraction_normal = love.graphics.newImage("gfx/refraction_normal.png")
@@ -100,7 +101,7 @@ function World:__init(width, height)
 	--objectTest.setShadowDimension(64, 64)
 	--self.water.setReflection(true)
 	
-	footballShadow = lightWorld.newCircle(64, 64, 32)
+	--footballShadow = lightWorld.newCircle(64, 64, 32)
 end
 
 function World:genObj()
@@ -232,7 +233,8 @@ function World:draw()
 	--self.water.setNormalOffset((self.dayCicle * 200+self.offsetX), (self.dayCicle * 100+self.offsetY))
 
 	lightHero.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
-	footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
+	lightHero2.setPosition((self.player.x+self.offsetX)*2 + 24, (self.player.y+self.offsetY)*2 + 32)
+	--footballShadow.setPosition((self.football.x+self.offsetX)*2 + 32, (self.football.y+self.offsetY)*2 + 32)
 
 	love.graphics.pop()
 	love.graphics.push()
@@ -273,11 +275,13 @@ function World:draw()
 		v:draw()
 	end
   
-  		gObjects:draw()
+  		gObjects:draw("bottom")
 		
 		self.football:draw()
 
 		gWorld.player:draw()
+		
+		gObjects:draw("top")
   
 	love.graphics.pop()
 	love.graphics.push()

@@ -41,6 +41,7 @@ function love.load()
 	menu = newMenu()
 	intro = newIntro()
 	credits = newCredits()
+
 	gObjects = newObjects()
 	gObjects:init()
 end
@@ -89,6 +90,9 @@ end
 function resetGame()
   gGui = Gui:new()
   gWorld = World:new(800, 600)
+	if gObjects then
+		gObjects:init()
+	end
 end
 
 function love.mousepressed(x, y, button)
