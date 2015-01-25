@@ -12,6 +12,7 @@ require('object')
 require('particle')
 require('lib/postshader')
 require('lib/light')
+require('lib/TSerial')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
@@ -33,6 +34,7 @@ function love.load()
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
 	gMusicMenu:play()
+  loadPlayerSounds()
   
   gScreenCount = 0
 

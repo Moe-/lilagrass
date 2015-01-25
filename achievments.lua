@@ -78,6 +78,8 @@ function newAchievments()
 				break
 			end
 		end
+		
+		love.graphics.setColor(0, 0, 0, 191)
 		love.graphics.rectangle("fill", 150*0.5, 75, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 225, (love.window.getWidth()-300)/2, 50)
@@ -86,7 +88,7 @@ function newAchievments()
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("scanlines")
 		love.postshader.draw()
-		
+
 		love.graphics.pop()
 		
 		love.graphics.push()
