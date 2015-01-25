@@ -10,7 +10,7 @@ function Achievment:__init(name, progress, unlocked)
 end
 
 function Achievment:draw(index)
-	love.graphics.draw(self.image, self.quad, 150*0.5, 75*index)
+	love.graphics.draw(self.image, 150*0.5, 75*index)
 end
 
 function Achievment:progress()

@@ -37,10 +37,10 @@ function newAchievments()
 		self.achievmentCount = 0
 		for i, v in pairs(gAchievments) do
 			if v:isUnlocked() then
-				achievmentCount = achievmentCount + 1
+				self.achievmentCount = self.achievmentCount + 1
 			end
 		end
-		self.lastPage = math.ceil(achievmentCount/3)
+		self.lastPage = math.ceil(self.achievmentCount/3)
 		
 		self.updateButton(340, 270, 48, 24, ShowMenu)
 		if self.page ~= self.lastPage then
@@ -72,24 +72,26 @@ function newAchievments()
 			self.drawAchievmentText(v:getText(), 0, 64 + achievmentCount*32)
 			achievmentCount = achievmentCount + 1
 		end]]--
+		
+		love.graphics.setColor(0, 0, 0, 191)
+		love.graphics.rectangle("fill", 150*0.5, 75, (love.window.getWidth()-300)/2, 50)
+		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
+		love.graphics.rectangle("fill", 150*0.5, 225, (love.window.getWidth()-300)/2, 50)
+		love.graphics.setColor(255, 255, 255)
 		local num = 1
 		local startNum = (self.page-1)*3+1
 		local endNum = (self.page-1)*3+3
 		for i, v in pairs(gAchievments) do
 			if num >= startNum then
-				v:draw(num-startNum+1)
+				if v:isUnlocked() then
+					v:draw(num-startNum+1)
+				end
 			end
 			if num > endNum then
 				break
 			end
 		end
 		
-		love.graphics.setColor(0, 0, 0, 191)
-		love.graphics.rectangle("fill", 150*0.5, 75, (love.window.getWidth()-300)/2, 50)
-		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
-		love.graphics.rectangle("fill", 150*0.5, 225, (love.window.getWidth()-300)/2, 50)
-		
-		love.graphics.setColor(255, 255, 255)
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("scanlines")
 		love.postshader.draw()
