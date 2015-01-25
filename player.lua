@@ -318,8 +318,8 @@ function Player:useBush(v, dt)
       self.showText = "I never ate something so spicy!"
     elseif bType == 'poison' then
       self.poisoned = true
-	  if gAchievments["poison"] == nil then
-		gAchievments["poison"] = Achievment:new("You got poisoned!")
+	  if not gAchievments["poison"]:isUnlocked() then
+		gAchievments["poison"]:progress()
 	  end
       self.showText = "I cannot breath anymore!"
     else
@@ -373,15 +373,15 @@ function loadPlayerSounds()
   table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_3d.mp3", "stream"))
   
   gPlayerHungry = {}
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1a.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1b.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1c.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2a.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2b.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2c.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3a.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3b.mp3", "stream"))
-  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3c.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_1a.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_1b.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_1c.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_2a.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_2b.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_2c.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_3a.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_3b.mp3", "stream"))
+  table.insert(gPlayerHungry, love.audio.newSource("sfx/hungry_3c.mp3", "stream"))
   
   gPlayerThirsty = {}
   table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_1a.mp3", "stream"))

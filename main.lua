@@ -33,10 +33,14 @@ function love.load()
 	gMusicMenu:setLooping(true)
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
+
 	gMusicIntro = love.audio.newSource("sfx/intro.mp3", "stream")
 	gMusicIntro:setLooping(true)
 	gMusicOutro = love.audio.newSource("sfx/outro.mp3", "stream")
 	gMusicOutro:setLooping(true)
+
+  gMusicGame:setVolume(0.8)
+
 	gMusicMenu:play()
 	loadPlayerSounds()
   
@@ -61,7 +65,12 @@ function love.load()
 
 	gObjects = newObjects()
 	gObjects:init()
+	
 	gAchievments = {}
+	achievmentSave = dofile(arg[1] .. "/save.lua")	
+	for i, v in pairs(achievmentSave) do
+		gAchievments[v.name] = Achievment:new(v.name, v.progress, v.unlocked)
+	end
 end
 
 function love.update(dt)
