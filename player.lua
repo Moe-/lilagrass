@@ -328,7 +328,7 @@ function Player:getPiece(v)
   if self.partsLeft == 0 then
     self.showText = "Let's go home!"
   else
-    self.showText = "I will be home again soon!"
+    self.showText = "Back to the spaceship!"
   end
 end
 
