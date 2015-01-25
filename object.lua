@@ -2,6 +2,7 @@ function newObjects()
 	local obj = {}
 	obj.objects = {}
 	obj.timer = 0
+	obj.uselessObjectsGathered = 0
 
 	obj.img = {}
 	obj.quad = {}
@@ -41,6 +42,7 @@ function newObjects()
 		o.win = false
 		o.wind = false
 		o.windStrength = 0.1
+		o.collectorAchievment = false
 		
 		table.insert(self.objects, o)
 		
@@ -84,6 +86,7 @@ function newObjects()
 					o.text = "This is broken!"
 					o.time = 2
 					o.consume = true
+					o.collectorAchievment = true
 				elseif r < 6 then
 					local o = self:new("item", x, y, 24, 32, 2, 0, 12, 16)
 					o.collision = false
@@ -97,12 +100,14 @@ function newObjects()
 					o.text = "This is useless!"
 					o.time = 2
 					o.consume = true
+					o.collectorAchievment = true
 				elseif r < 10 then
 					local o = self:new("item", x, y, 24, 32, 1, 1, 12, 16)
 					o.collision = false
 					o.text = "This is damaged!"
 					o.time = 2
 					o.consume = true
+					o.collectorAchievment = true
 				elseif r < 20 then
 					self:new("item", x, y, 24, 32, 2, 2, 12, 16)
 				elseif r < 30 then
@@ -146,6 +151,12 @@ function newObjects()
 				v.distance = math.distance(gWorld.player.x + 12, v.x + v.ox, gWorld.player.y + 24, v.y + v.oy)
 
 				if v.distance <= v.radius then
+					if v.collectorAchievment then
+						print("useless")
+						if not gAchievments["collector"]:isUnlocked() then
+							gAchievments["collector"]:progress()
+						end
+					end
 					if v.collision then
 						gWorld.player.x = gWorld.player.lastX
 						gWorld.player.y = gWorld.player.lastY

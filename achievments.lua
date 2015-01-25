@@ -3,6 +3,14 @@ function ShowMenu()
   setMusic(game_state)
 end
 
+function NextPage(self)
+	gAchievmentPage = gAchievmentPage + 1
+end
+
+function PrevPage(self)
+	gAchievmentPage = gAchievmentPage -1
+end
+
 function newAchievments()
 	local obj = {}
 
@@ -19,14 +27,29 @@ function newAchievments()
 		self.spaceship_move = 0
 		self.spaceship_scale = 1
 		self.effect_time = 0
-		self.page = 1
-		self.lastPage = 1
+		gAchievmentPage = 1
+		gAchievmentLastPage = 1
 	end
 
 	obj.update = function(self, dt)
 		self.effect_time = self.effect_time + dt
 		
+		self.achievmentCount = 0
+		for i, v in pairs(gAchievments) do
+			if v:isUnlocked() then
+				self.achievmentCount = self.achievmentCount + 1
+			end
+		end
+		gAchievmentLastPage = math.ceil(self.achievmentCount/3)
+		print("last page", gAchievmentLastPage)
+		
 		self.updateButton(340, 270, 48, 24, ShowMenu)
+		if gAchievmentPage ~= gAchievmentLastPage then
+			self.updateButton((love.window.getWidth()-125)/2, 150, 48, 32, NextPage)
+		end
+		if gAchievmentPage ~= 1 then
+			self.updateButton((125)/2-48, 150, 48, 32, PrevPage)
+		end
 	end
 
 	obj.draw = function(self)
@@ -45,18 +68,34 @@ function newAchievments()
 		love.graphics.scale(2)
 		love.graphics.printf("Achievments", 0, 16, 200, "center")
 		love.graphics.scale(0.5)
-		local achievmentCount = 0
+		--[[local achievmentCount = 0
 		for i, v in pairs(gAchievments) do
 			self.drawAchievmentText(v:getText(), 0, 64 + achievmentCount*32)
 			achievmentCount = achievmentCount + 1
-		end
+		end]]--
 		
 		love.graphics.setColor(0, 0, 0, 191)
 		love.graphics.rectangle("fill", 150*0.5, 75, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 225, (love.window.getWidth()-300)/2, 50)
-		
 		love.graphics.setColor(255, 255, 255)
+		local startNum = (gAchievmentPage-1)*3+1
+		local num = startNum
+		local endNum = (gAchievmentPage-1)*3+3
+		for i, v in pairs(gAchievments) do
+			print(num, startNum, endNum)
+			if num >= startNum then
+				if v:isUnlocked() then
+					print("draw")
+					v:draw(num-startNum+1)
+					num = num + 1
+				end
+			end
+			if num > endNum then
+				break
+			end
+		end
+		
 		love.postshader.addEffect("bloom")
 		love.postshader.addEffect("scanlines")
 		love.postshader.draw()
@@ -66,10 +105,10 @@ function newAchievments()
 		love.graphics.push()
 		love.graphics.scale(2)
 		self.drawButton("Back", 340, 270, 48, 24)
-		if self.page ~= self.lastPage then
+		if gAchievmentPage ~= gAchievmentLastPage then
 			self.drawButton("next\nPage", (love.window.getWidth()-125)/2, 150, 48, 32)
 		end
-		if self.page ~= 1 then
+		if gAchievmentPage ~= 1 then
 			self.drawButton("prev\nPage", (125)/2-48, 150, 48, 32)
 		end
 		love.graphics.pop()

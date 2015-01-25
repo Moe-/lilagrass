@@ -16,10 +16,10 @@ require('lib/TSerial')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
-  
-  gIcon = love.image.newImageData("gfx/icon.png")
-  love.window.setIcon(gIcon)
-  
+
+	gIcon = love.image.newImageData("gfx/icon.png")
+	love.window.setIcon(gIcon)
+
 	font = love.graphics.newImageFont("gfx/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
@@ -33,11 +33,16 @@ function love.load()
 	gMusicMenu:setLooping(true)
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
-  gMusicGame:setVolume(0.8)
+
+	gMusicIntro = love.audio.newSource("sfx/intro.mp3", "stream")
+	gMusicOutro = love.audio.newSource("sfx/outro.mp3", "stream")
+
+	gMusicGame:setVolume(0.8)
+
 	gMusicMenu:play()
-  loadPlayerSounds()
+	loadPlayerSounds()
   
-  gScreenCount = 0
+	gScreenCount = 0
 
 	if arg[#arg] == "-debug" then 
 	require("mobdebug").start() 
@@ -58,7 +63,12 @@ function love.load()
 
 	gObjects = newObjects()
 	gObjects:init()
+	
 	gAchievments = {}
+	achievmentSave = dofile(arg[1] .. "/save.lua")	
+	for i, v in pairs(achievmentSave) do
+		gAchievments[v.name] = Achievment:new(v.name, v.progress, v.unlocked)
+	end
 end
 
 function love.update(dt)
@@ -224,13 +234,26 @@ end
 
 function setMusic()
     if gLastMusicState ~= game_state then
-      if game_state == 3 then
-        gMusicMenu:stop()
-        gMusicGame:play()
-      elseif gLastMusicState == 3 then
-        gMusicGame:stop()
-        gMusicMenu:play()
-      end
+		if gLastMusicState == 1 then
+			gMusicMenu:stop()
+		elseif gLastMusicState == 2 then
+			gMusicIntro:stop()
+		elseif gLastMusicState == 3 then
+			gMusicGame:stop()
+		elseif gLastMusicState == 5 then
+			gMusicOutro:stop()
+		end
+
+		if game_state == 1 then
+			gMusicMenu:play()
+		elseif game_state == 2 then
+			gMusicIntro:play()
+		elseif game_state == 3 then
+			gMusicGame:play()
+		elseif game_state == 6 then
+			gMusicOutro:play()
+		end
+
+		gLastMusicState = game_state
     end
-    gLastMusicState = game_state
 end
