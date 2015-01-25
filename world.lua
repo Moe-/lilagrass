@@ -47,7 +47,7 @@ function World:__init(width, height)
   self.foodgfx = love.graphics.newImage("gfx/food.png")
   self.airgfx = love.graphics.newImage("gfx/air.png")
   self.drinkgfx = love.graphics.newImage("gfx/bottle.png")
-  self.safezonegfx = love.graphics.newImage("gfx/purple_grass_tiles.png")
+  self.safezonegfx = love.graphics.newImage("gfx/Purple_grass_tiles.png")
   --self.safezonegfx:setWrap("repeat", "repeat")
   self.waterzonegfx = love.graphics.newImage("gfx/water_tiles_on_grass.png")
   self.shippiecegfx = love.graphics.newImage("gfx/shippiece.png")
@@ -323,16 +323,16 @@ function World:draw()
 		love.graphics.printf("You managed to escape from this planet!", playerX-200, playerY - self.centerPosY +30, 400, "center")
 	end
 
-	if self.effect_time >= 2 and self.effect_time <= 4 then
-		if self.effect_time <= 6 then
+	if self.effect_time >= 2 and self.effect_time <= 8 then
+		if self.effect_time <= 4 then
 			love.graphics.setColor(255, 255, 255, (self.effect_time - 2) * 63)
+		elseif self.effect_time <= 6 then
+			love.graphics.setColor(255, 255, 255, 127)
 		else
-			love.graphics.setColor(255, 255, 255,(4 - self.effect_time) * 63)
+			love.graphics.setColor(255, 255, 255,(8 - self.effect_time) * 63)
 		end
 
-		love.graphics.scale(2)
-		love.graphics.printf("Purple Planet", 0 - self.offsetX * 0.5, 8 - self.offsetY * 0.5, 200, "center")
-		love.graphics.scale(0.5)
+		love.graphics.printf("Purple Planet \n GGJ-15", 0 - self.offsetX, 8 - self.offsetY, 400, "center")
 		
 		love.graphics.setColor(255, 255, 255)
 	end

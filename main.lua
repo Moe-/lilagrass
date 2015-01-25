@@ -15,6 +15,10 @@ require('lib/light')
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
+  
+  gIcon = love.image.newImageData("gfx/icon.png")
+  love.window.setIcon(gIcon)
+  
 	font = love.graphics.newImageFont("gfx/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
@@ -165,6 +169,54 @@ function love.keyreleased(key)
 	end
   end
   gWorld:keyreleased(key)
+end
+
+function love.joystickpressed(joystick,button)
+  if button == 1 then
+    love.keypressed('w')
+  elseif button == 4 then
+    love.keypressed('a')
+  elseif button == 3 then
+    love.keypressed('s')
+  elseif button == 2 then
+    love.keypressed('d')
+  end
+end
+
+function love.joystickreleased(joystick,button)
+  if button == 1 then
+    love.keyreleased('w')
+  elseif button == 4 then
+    love.keyreleased('a')
+  elseif button == 3 then
+    love.keyreleased('s')
+  elseif button == 2 then
+    love.keyreleased('d')
+  end
+end
+
+function love.joystickaxis(joystick, axis, value)
+  -- -1 => up, left
+  -- +1 => down, right
+  if axis == 2 then --up/down
+    if value == -1 then
+      love.keypressed('w')
+    elseif value == 1 then
+      love.keypressed('s')
+    else
+      love.keyreleased('w')
+      love.keyreleased('s')
+    end
+  elseif axis == 1 then -- up/down
+    if value == -1 then
+      love.keypressed('a')
+    elseif value == 1 then
+      love.keypressed('d')
+    else
+      love.keyreleased('a')
+      love.keyreleased('d')
+    end
+  end
 end
 
 function setMusic()

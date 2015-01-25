@@ -9,7 +9,7 @@ function newObjects()
 	obj.img["item"] = love.graphics.newImage("gfx/item_tileset.png")
 	obj.quad["item"] = love.graphics.newQuad(0, 0, 24, 32, 72, 160)
 	
-	obj.img["trees"] = love.graphics.newImage("gfx/trees.png")
+	obj.img["trees"] = love.graphics.newImage("gfx/Trees.png")
 	obj.quad["trees"] = love.graphics.newQuad(0, 0, 48, 64, 96, 128)
 	
 	obj.img["spaceship"] = love.graphics.newImage("gfx/spaceship.png")

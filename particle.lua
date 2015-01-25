@@ -22,21 +22,21 @@ function Particle:__init(x, y, r, g, b, lifetime)
   
   self.p = love.graphics.newParticleSystem(i, 256)
   self.p:setEmissionRate          (20)
-  self.p:setParticleLifetime      (4)
+  self.p:setParticleLifetime      (2)
   self.p:setPosition              (0, 0)
   if lifetime < 1.0 then
-    self.p:setDirection             (1.7)
+    self.p:setDirection             (math.pi * 0.5)
   else
-    self.p:setDirection             (4.8)
+    self.p:setDirection             (math.pi * 1.5)
   end
   self.p:setSpread                (2)
-  self.p:setSpeed                 (10, 30)
+  self.p:setSpeed                 (10, 20)
   self.p:setRadialAcceleration    (10)
   self.p:setTangentialAcceleration(10)
   self.p:setSizes                 (0.1, 1)
   self.p:setSizeVariation         (0.5)
   self.p:setRotation              (0)
-  self.p:setSpin                  (0)
+  self.p:setSpin                  (math.pi)
   self.p:setSpinVariation         (0)
   self.p:setColors                (200, 200, 255, 240, 255, 255, 255, 10)
   self.p:stop();

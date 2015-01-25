@@ -72,7 +72,7 @@ function Gui:drawHunger(x, y)
 		love.graphics.setColor(63, 255, 127, 191)
 	elseif self.hunger > 25 then
 		love.graphics.setColor(255, 255, 127, 191)
-	elseif self.hunger > 25 then
+	else
 		love.graphics.setColor(255, 63, 0, 191)
 	end
 	love.graphics.setFont(font2)
