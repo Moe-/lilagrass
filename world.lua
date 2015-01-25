@@ -6,6 +6,7 @@ require('safezone')
 require('shippiece')
 require('water')
 require('bush')
+require('achievment')
 
 class "World" {
   width = 0;

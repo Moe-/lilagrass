@@ -9,6 +9,10 @@ function ShowCredits()
   setMusic(game_state)
 end
 
+function ShowAchievments()
+	game_state = 5
+end
+
 function QuitGame()
 	love.event.quit()
 end
@@ -49,9 +53,10 @@ function newMenu()
 	obj.update = function(self, dt)
 		self.effect_time = self.effect_time + dt
 		
-		self.updateButton(160, 128 + 0, 96, 24, StartGame)
-		self.updateButton(160, 128 + 32, 96, 24, ShowCredits)
-		self.updateButton(160, 128 + 64, 96, 24, QuitGame)
+		self.updateButton(140, 112 + 0, 130, 24, StartGame)
+		self.updateButton(140, 112 + 32, 130, 24, ShowCredits)
+		self.updateButton(140, 112 + 64, 130, 24, ShowAchievments)
+		self.updateButton(140, 112 + 96, 130, 24, QuitGame)
 		
 		self.sysParticle:update(dt);
 	end
@@ -93,9 +98,10 @@ function newMenu()
 		
 		love.graphics.push()
 		love.graphics.scale(2)
-		self.drawButton("Start", 160, 128 + 0, 96, 24)
-		self.drawButton("Credits", 160, 128 + 32, 96, 24)
-		self.drawButton("Quit", 160, 128 + 64, 96, 24)
+		self.drawButton("Start", 140, 112 + 0, 130, 24)
+		self.drawButton("Credits", 140, 112 + 32, 130, 24)
+		self.drawButton("Achievments", 140, 112 + 64, 130, 24)
+		self.drawButton("Quit", 140, 112 + 96, 130, 24)
 		love.graphics.pop()
 	end
 	

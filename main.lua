@@ -5,6 +5,7 @@ require('world')
 require('gui')
 require('menu')
 require('intro')
+require('achievments')
 require('outro')
 require('credits')
 require('object')
@@ -50,10 +51,12 @@ function love.load()
 	menu = newMenu()
 	intro = newIntro()
 	credits = newCredits()
+	achievments = newAchievments()
 	outro = newOutro()
 
 	gObjects = newObjects()
 	gObjects:init()
+	gAchievments = {}
 end
 
 function love.update(dt)
@@ -67,6 +70,8 @@ function love.update(dt)
 	elseif game_state == 4 then
 		credits:update(dt)
 	elseif game_state == 5 then
+		achievments:update(dt)
+	elseif game_state == 6 then
 		outro:update(dt)
 	end
 end
@@ -97,6 +102,8 @@ function love.draw()
 	elseif game_state == 4 then
 		credits:draw()
 	elseif game_state == 5 then
+		achievments:draw()
+	elseif game_state == 6 then
 		outro:draw()
 	end
 end
@@ -135,6 +142,9 @@ function love.keypressed(key)
 	resetGame()
   elseif key == "5" then
     game_state = 5
+	resetGame()
+  elseif key == "6" then
+    game_state = 6
 	outro:reset()
 	resetGame()
   elseif key == "9" then

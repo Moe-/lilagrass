@@ -318,6 +318,9 @@ function Player:useBush(v, dt)
       self.showText = "I never ate something so spicy!"
     elseif bType == 'poison' then
       self.poisoned = true
+	  if gAchievments["poison"] == nil then
+		gAchievments["poison"] = Achievment:new("You got poisoned!")
+	  end
       self.showText = "I cannot breath anymore!"
     else
       self.showText = "Tastes like a rice cake!"
