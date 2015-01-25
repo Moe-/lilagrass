@@ -316,7 +316,7 @@ function Player:useBush(v, dt)
     elseif bType == 'poison' then
       self.poisoned = true
 	  if gAchievments["poison"] == nil then
-		gAchievments["poison"] = Achievment:new("You got poisoned!")
+		gAchievments["poison"] = Achievment:new("poison")
 	  end
       self.showText = "I cannot breath anymore!"
     else

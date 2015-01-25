@@ -3,6 +3,14 @@ function ShowMenu()
   setMusic(game_state)
 end
 
+function NextPage()
+
+end
+
+function PrevPage()
+
+end
+
 function newAchievments()
 	local obj = {}
 
@@ -26,7 +34,16 @@ function newAchievments()
 	obj.update = function(self, dt)
 		self.effect_time = self.effect_time + dt
 		
+		self.achievmentCount = #gAchievments
+		self.lastPage = math.ceil(achievmentCount/3)
+		
 		self.updateButton(340, 270, 48, 24, ShowMenu)
+		if self.page ~= self.lastPage then
+			self.updateButton((love.window.getWidth()-125)/2, 150, 48, 32, NextPage)
+		end
+		if self.page ~= 1 then
+			self.updateButton((125)/2-48, 150, 48, 32, PrevPage)
+		end
 	end
 
 	obj.draw = function(self)
@@ -45,10 +62,21 @@ function newAchievments()
 		love.graphics.scale(2)
 		love.graphics.printf("Achievments", 0, 16, 200, "center")
 		love.graphics.scale(0.5)
-		local achievmentCount = 0
+		--[[local achievmentCount = 0
 		for i, v in pairs(gAchievments) do
 			self.drawAchievmentText(v:getText(), 0, 64 + achievmentCount*32)
 			achievmentCount = achievmentCount + 1
+		end]]--
+		local num = 1
+		local startNum = (self.page-1)*3+1
+		local endNum = (self.page-1)*3+3
+		for i, v in pairs(gAchievments) do
+			if num >= startNum then
+				v:draw(num-startNum+1)
+			end
+			if num > endNum then
+				break
+			end
 		end
 		love.graphics.rectangle("fill", 150*0.5, 75, (love.window.getWidth()-300)/2, 50)
 		love.graphics.rectangle("fill", 150*0.5, 150, (love.window.getWidth()-300)/2, 50)
