@@ -236,13 +236,26 @@ end
 
 function setMusic()
     if gLastMusicState ~= game_state then
-      if game_state == 3 then
-        gMusicMenu:stop()
-        gMusicGame:play()
-      elseif gLastMusicState == 3 then
-        gMusicGame:stop()
-        gMusicMenu:play()
-      end
+		if gLastMusicState == 1 then
+			gMusicMenu:stop()
+		elseif gLastMusicState == 2 then
+			gMusicIntro:stop()
+		elseif gLastMusicState == 3 then
+			gMusicGame:stop()
+		elseif gLastMusicState == 5 then
+			gMusicOutro:stop()
+		end
+
+		if game_state == 1 then
+			gMusicMenu:play()
+		elseif game_state == 2 then
+			gMusicIntro:play()
+		elseif game_state == 3 then
+			gMusicGame:play()
+		elseif game_state == 5 then
+			gMusicOutro:play()
+		end
+
+		gLastMusicState = game_state
     end
-    gLastMusicState = game_state
 end
