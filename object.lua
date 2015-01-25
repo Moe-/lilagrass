@@ -180,7 +180,7 @@ function newObjects()
 					end
 					
 					if v.win and gWorld.player.partsLeft <= 0 then
-						game_state = 5
+						game_state = 6
 						outro:reset()
 						resetGame()
 					end
