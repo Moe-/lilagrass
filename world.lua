@@ -446,6 +446,9 @@ function World:update(dt)
   local distance = getDistance(px, py, fx, fy)
   if distance < 24 then
     self.football:kick(fx - px, fy - py)
+	if not gAchievments["wilson"]:isUnlocked() then
+		gAchievments["wilson"]:progress()
+	end
   end
   
   self.spawnNextItemIn = self.spawnNextItemIn - dt
