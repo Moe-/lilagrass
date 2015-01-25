@@ -35,11 +35,9 @@ function love.load()
 	gMusicGame:setLooping(true)
 
 	gMusicIntro = love.audio.newSource("sfx/intro.mp3", "stream")
-	gMusicIntro:setLooping(true)
 	gMusicOutro = love.audio.newSource("sfx/outro.mp3", "stream")
-	gMusicOutro:setLooping(true)
 
-  gMusicGame:setVolume(0.8)
+	gMusicGame:setVolume(0.8)
 
 	gMusicMenu:play()
 	loadPlayerSounds()
@@ -252,7 +250,7 @@ function setMusic()
 			gMusicIntro:play()
 		elseif game_state == 3 then
 			gMusicGame:play()
-		elseif game_state == 5 then
+		elseif game_state == 6 then
 			gMusicOutro:play()
 		end
 
