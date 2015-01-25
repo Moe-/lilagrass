@@ -34,6 +34,7 @@ function love.load()
 	gMusicGame = love.audio.newSource("sfx/planet.ogg", "stream")
 	gMusicGame:setLooping(true)
 	gMusicMenu:play()
+  loadPlayerSounds()
   
   gScreenCount = 0
 
