@@ -1,0 +1,6 @@
+*.bat
+win32/*
+win64/*
+*.love
+*.zip
+*.exe
