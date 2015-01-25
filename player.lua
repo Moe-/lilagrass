@@ -22,6 +22,7 @@ class "Player" {
   thurstFactor = 1;
   airFactor = 1.5;
   hungerFactor = 0.75;
+  talkNext = 0;
 }
 
 function Player:__init(x, y, partsToFind, mapWidth, mapHeight)
@@ -163,6 +164,8 @@ function Player:update(dt, safe, bushes)
   self.currentDirection = direction
 	
   self.textDisplayTime = self.textDisplayTime - dt
+  
+  self:talk(dt)
 end
 
 function Player:keypressed(key)
@@ -352,4 +355,84 @@ end
 
 function Player:getOffset()
   return self.offsetx, self.offsety
+end
+
+function loadPlayerSounds()
+  gPlayerBreathe = {}
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_1a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_1b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_2a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_2b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_2c.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_3a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_3b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_3c.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/breathe_3d.mp3", "stream"))
+  
+  gPlayerHungry = {}
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_1c.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_2c.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3a.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3b.mp3", "stream"))
+  table.insert(gPlayerBreathe, love.audio.newSource("sfx/hungry_3c.mp3", "stream"))
+  
+  gPlayerThirsty = {}
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_1a.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_1b.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_1c.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_2a.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_2b.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_2c.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_3a.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_3b.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_3c.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_3d.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_4a.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_4b.mp3", "stream"))
+  table.insert(gPlayerThirsty, love.audio.newSource("sfx/thirsty_4c.mp3", "stream"))
+  
+  gPlayerTired = {}
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_1a.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_1b.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_1c.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_1d.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_1e.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_2a.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_2b.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_2c.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_3a.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_3b.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_4a.mp3", "stream"))
+  table.insert(gPlayerTired, love.audio.newSource("sfx/tired_4b.mp3", "stream"))
+end
+
+function Player:talk(dt)
+  self.talkNext = self.talkNext - dt 
+  if self.talkNext <= 0 then
+    if self.air < 50 and self.thurst < 50 and self.hunger < 50 then
+      local index = math.random(1, #gPlayerTired)
+      gPlayerTired[index]:rewind()
+      gPlayerTired[index]:play()
+      self.talkNext = 10
+    elseif self.air < 60 then
+      local index = math.random(1, #gPlayerBreathe)
+      gPlayerBreathe[index]:rewind()
+      gPlayerBreathe[index]:play()
+      self.talkNext = 10 
+    elseif self.thurst < 60 then
+      local index = math.random(1, #gPlayerThirsty)
+      gPlayerThirsty[index]:rewind()
+      gPlayerThirsty[index]:play()
+      self.talkNext = 10 
+    elseif self.hunger < 60 then
+      local index = math.random(1, #gPlayerHungry)
+      gPlayerHungry[index]:rewind()
+      gPlayerHungry[index]:play()
+      self.talkNext = 10 
+    end
+  end
 end
