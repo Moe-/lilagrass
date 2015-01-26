@@ -30,6 +30,16 @@ function Achievment:progress()
 		self.progressNum = 1
 		self.unlocked = true
 	end
+	if self.name == "winner" then
+		self.progressNum = 1
+		self.unlocked = true
+	end
+	if self.name == "wilson" then	
+		self.progressNum = self.progressNum + 1
+		if self.progressNum >= 5 then
+			self.unlocked = true
+		end
+	end
 end
 
 function Achievment:getName()

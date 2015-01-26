@@ -345,9 +345,9 @@ function Player:getPiece(v)
   self.partsLeft = self.partsLeft - 1
   self.textDisplayTime = 7.5
   if self.partsLeft == 0 then
-    self.showText = "Let's go home!"
-  else
     self.showText = "Back to the spaceship!"
+  else
+    self.showText = "We will be home soon again!"
   end
   
   gWoohooSound:rewind()

@@ -183,6 +183,9 @@ function newObjects()
 						setMusic(game_state)
 						outro:reset()
 						resetGame()
+						if not gAchievments["winner"]:isUnlocked() then
+							gAchievments["winner"]:progress()
+						end
 					end
 				end
 			end

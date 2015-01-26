@@ -7,12 +7,14 @@ Controls:
 Use either your joystick, joypad or WASD on your keyboard to walk around.
 
 Credits:
+Julian Colbus (Sound)
 Marcus Ihde (Code)
 Markus Vill (Code)
 Meral Leyla (Sound)
 Nico Reitmeier (Sound)
 Nicola Robin (Art)
 Philip Braun (Code)
+Zeis (Voice)
 
 SFX (not GPL):
 footsteps: http://www.freesound.org/people/CharlieX/
