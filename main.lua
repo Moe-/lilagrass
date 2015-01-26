@@ -240,7 +240,7 @@ function setMusic()
 			gMusicIntro:stop()
 		elseif gLastMusicState == 3 then
 			gMusicGame:stop()
-		elseif gLastMusicState == 5 then
+		elseif gLastMusicState == 6 then
 			gMusicOutro:stop()
 		end
 
